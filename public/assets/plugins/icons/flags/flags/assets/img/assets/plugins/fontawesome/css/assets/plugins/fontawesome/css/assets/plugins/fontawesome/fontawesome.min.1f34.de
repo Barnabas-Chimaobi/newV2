@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from preschool.dreamguystech.com/template/assets/plugins/icons/flags/flags/assets/img/assets/plugins/fontawesome/css/assets/plugins/fontawesome/css/assets/plugins/fontawesome/css/fontawesome.min.css by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 22 Aug 2023 16:17:24 GMT -->
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<title>School Management Admin Website Templates | Preskool</title>
+
+	<!-- Favicon -->
+	<link rel="shortcut icon" type="image/x-icon" href="css/favicon.b128.delaye">
+
+	<!-- Meta -->
+	<meta name="description" content="Preskool is a Education Management Admin Template for schools/colleges with various features for all your needs. Try Demo and Buy Now!">
+	<meta name="keywords" content="school management template, education template, admin management template">
+	<meta name="author" content="Dreamguys">
+
+	<!-- Facebook Meta Tags -->
+	<meta property="og:url" content="https://preschool.dreamguystech.com/">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="School Management Admin Website Templates | Preskool">
+	<meta property="og:description" content="Preskool is a Education Management Admin Template for schools/colleges with various features for all your needs. Try Demo and Buy Now!">
+	<meta property="og:image" content="../../../../../../../../../../../../../../../../../../../assets/img/preview-banner.jpg">
+
+	<!-- Twitter Meta Tags -->
+	<meta name="twitter:card" content="summary_large_image">
+	<meta property="twitter:domain" content="https://preschool.dreamguystech.com/">
+	<meta property="twitter:url" content="https://kofejob.dreamguystech.com/">
+	<meta name="twitter:title" content="School Management Admin Website Templates | Preskool">
+	<meta name="twitter:description" content="Preskool is a Education Management Admin Template for schools/colleges with various features for all your needs. Try Demo and Buy Now!">
+	<meta name="twitter:image" content="../../../../../../../../../../../../../../../../../../../assets/img/preview-banner.jpg">
+
+	<!-- Canonical -->
+	<link rel="canonical" href="https://preschool.dreamguystech.com/"/>
+
+
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,600;0,700;1,400&amp;display=swap" rel="stylesheet"> 
+
+	<link rel="stylesheet" href="css/animate.b129.delaye">
+	<link rel="stylesheet" href="bootstrap.min.b12a.dela">
+	<link rel="stylesheet" href="materialdesignicons.min">
+			
+	<!-- Fontawesome CSS -->
+	<link rel="stylesheet" href="fontawesome.min.b12c.de">
+	<link rel="stylesheet" href="css/ass/all.b12d.delaye">
+
+	<link rel="stylesheet" href="css/a/style.b12e.delaye">
+
+	<!-- Google Tag Manager -->
+	<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+	new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+	j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+	'../../../../../../../../../../../../../../../../../../../../www.googletagmanager.com/gtm5445.html?id='+i+dl;f.parentNode.insertBefore(j,f);
+	})(window,document,'script','dataLayer','GTM-KGQMVXR');</script>
+	<!-- End Google Tag Manager -->
+
+</head>
+	
+<body>  
+	<!-- Google Tag Manager (noscript) -->
+	<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KGQMVXR"
+	height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+	<!-- End Google Tag Manager (noscript)-->
+
+	<!-- Loader -->
+	<div id="loader-wrapper">
+		<div id="loader">
+			<div class="loader-ellips">
+				<span class="loader-ellips__dot"></span>
+				<span class="loader-ellips__dot"></span>
+				<span class="loader-ellips__dot"></span>
+				<span class="loader-ellips__dot"></span>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Header -->
+	<div class="top-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-6">
+					<div class="list-inline-items d-flex"><a href="tel:+91 9942576886" class="contact_list"><i class="fa fa-phone" aria-hidden="true"></i>+91 9942576886</a></div>
+				</div>  
+				<div class="col-md-6 text-right">
+					<ul class="list-inline-item list-unstyled m-0">
+						<li class="list-inline-items"><a href="https://preschool.dreamguystech.com/cdn-cgi/l/email-protection#523027213b3c37212112362037333f35272b212637313a7c313d3f" class="contact_list"><i class="fa fa-envelope" aria-hidden="true"></i><span class="__cf_email__" data-cfemail="30524543595e55434370544255515d57454943445553581e535f5d">[email&#160;protected]</span></a></li>
+						<li><span>|</span></li>
+						<li class="list-inline-items"><a href="https://preschool.dreamguystech.com/cdn-cgi/l/email-protection#1e6d6b6e6e716c6a5e7a6c7b7f73796b676d6a7b7d76307d7173" class="contact_list"><i class="fa fa-envelope" aria-hidden="true"></i><span class="__cf_email__" data-cfemail="96e5e3e6e6f9e4e2d6f2e4f3f7fbf1e3efe5e2f3f5feb8f5f9fb">[email&#160;protected]</span></a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<header id="home" class="header">
+
+		<!-- Start Navigation -->
+		<nav class="navbar navbar-expand-md home-menu hp4">
+			<div class="container-fluid">
+
+				<!-- Start Header Navigation -->
+				<a class="logo-link smooth-menu header-logo" href="css/index.html">
+					<img src="css/as/logo.b130.delaye" class="logo logo-display" alt="Logo">
+				</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu">
+					<i class="fa fa-bars"></i>
+				</button>
+				<!-- End Header Navigation -->
+
+				<div class="collapse navbar-collapse mainmenu" id="navbar-menu">
+					<ul class="nav navbar-nav ml-auto">
+						<li class="nav-item">
+							<a class="smooth-menu nav-link" href="#home">Home</a>
+						</li>
+						<li class="nav-item">
+							<a class="smooth-menu nav-link" href="#homepage">Demo</a>
+						</li>
+						<li class="nav-item">
+							<a class="smooth-menu nav-link" href="#pages">Pages</a>
+						</li>
+					</ul>
+					<div class="nav-btn header-btn">
+						<a href="https://themeforest.net/item/preskool-bootstrap-admin-html-template/29532878" target="_blank" class="button download-btn">Buy Template</a>
+					</div>
+				</div>
+			</div>
+
+		</nav>
+		<!-- End Navigation -->
+
+	</header>
+	<!-- End Header -->
+
+	<section class="hero-section">
+		<div class="container-fluid">
+			<div class="row align-items-center">
+				<div class="col-lg-5 wow fadeInLeft" data-wow-delay="0.2s">
+					<h1 style="color:#fff">Preskool</h1>
+					<h2 style="color:#fff">Bootstrap HTML Admin Dashboard Template</h2>
+					
+					<a href="css/t/index.b131.delaye" target="_blank" class="button">Live Demo</a>
+					<a href="https://themeforest.net/item/preskool-bootstrap-admin-html-template/29532878" target="_blank" class="button">Buy Template</a>
+				</div>
+				<div class="col-lg-7 wow fadeInRight" data-wow-delay="0.4s">
+					<div class="hero-4-img">
+						<a href="#" target="_blank"><img src="css/a/image.b132.delaye" alt="banner-img"></a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	
+	<section id="homepage" class="home-page">
+		<div class="container-fluid">
+			<div class="row justify-content-center">
+				<div class="col-lg-8 text-center wow fadeInRight" data-wow-delay="0.2s">
+					<div class="section-header text-center">
+						<h2>Home Page</h2>
+						<p class="sub-title">We build this template with HTML5,Angular,Vuejs Laravel and Nodejs.</p>
+					</div>
+				</div>
+			</div>
+	
+			<div class="row demo-row justify-content-center">
+				<div class="col-md-6 col-sm-6 col-12">
+					<div class="demo-wrap mb-0" data-aos="fade-up">
+						<div class="demo-tabs">
+							<ul class="nav nav-tabs">
+								<li class="nav-item"><a target="_blank" href="css/t/index.b131.delaye">HTML5</a></li>
+								<li class="nav-item"><a target="_blank" href="https://preschool.dreamguystech.com/laravel/template/public/">Laravel</a></li>
+								<li class="nav-item"><a target="_blank" href="https://preschool.dreamguystech.com/vuejs/template/index">Vuejs</a></li>
+								<li class="nav-item"><a target="_blank" href="https://preschool.dreamguystech.com/angular/preskool/">Angular</a></li>
+								<li class="nav-item"><a target="_blank" href="https://preschool.dreamguystech.com/react/admindashboard">Reactjs</a></li>
+								<li class="nav-item"><a target="_blank" href="https://nodejs.dreamguystech.com/preskool/login">Nodejs</a></li>
+							</ul>
+						</div>
+								<div class="demo-box">
+									<a href="css/t/index.b131.delaye" target="_blank" href="#"><img class="img-fluid" src="css/a/image.b132.delaye" alt="admin-ltr"></a>
+								</div>
+								<h5 class="text-center mt-3">Dashboard</h5>
+					</div>
+				</div>
+				<div class="col-md-6 col-sm-6 col-12">
+					<div class="demo-wrap mb-0" data-aos="fade-up">
+						<div class="demo-tabs">
+							<ul class="nav nav-tabs">
+								<li class="nav-item"><a target="_blank" href="css/t/index.b133.delaye">HTML5</a></li>
+								<li class="nav-item"><a target="_blank" href="https://preschool.dreamguystech.com/laravel/template-rtl/public/index">Laravel</a></li>
+								<li class="nav-item"><a target="_blank" href="https://preschool.dreamguystech.com/vuejs/template-rtl/index">Vuejs</a></li>
+								<li class="nav-item"><a target="_blank" href="https://preschool.dreamguystech.com/angular/preskool-rtl/">Angular</a></li>
+								<li class="nav-item"><a target="_blank" href="https://preschool.dreamguystech.com/react-rtl/admindashboard">ReactJs</a></li>
+								<li class="nav-item"><a target="_blank" href="css/t/index.b133.delaye">Nodejs</a></li>
+							</ul>
+						</div>
+								<div class="demo-box">
+									<a href="css/t/index.b133.delaye" target="_blank" href="#"><img class="img-fluid" src="css/as/home.b134.delaye" alt="admin-rtl"></a>
+								</div>
+								<h5 class="text-center mt-3">Dashboard RTL</h5>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	
+	<section id="pages" class="doctor-features">
+		<div class="container-fluid">
+			<div class="row justify-content-center">
+				<div class="col-lg-8 text-center wow fadeInRight" data-wow-delay="0.2s">
+					<div class="section-header text-center">
+						<h2>Preskool Pages</h2>
+						<p class="sub-title">Preskool template includes various features for providers such as student list, teachers list, department,etc.</p>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-6 col-md-6 col-sm-6 mb-30">
+					<div class="project-content wow fadeInUp" data-wow-delay="0.2s">
+						<div class="project-link"><a class="button" target="_blank" href="cs/teachers.b135.delaye"> View Demo</a></div>
+						<a class="overlay-link" href="cs/teachers.b135.delaye" target="_blank"><img src="css/image-1.b136.delaye" alt="Project Image" /></a>
+					</div>
+					<div class="project-info">
+						<div class="project-title"><a href="cs/teachers.b135.delaye" target="_blank">Teachers List</a></div>
+					</div>
+				</div>
+
+				<div class="col-lg-6 col-md-6 col-sm-6 mb-30">
+					<div class="project-content wow fadeInUp" data-wow-delay="0.2s">
+						<div class="project-link"><a class="button" href="teacher-details.b137.de" target="_blank"> View Demo</a></div>
+						<a class="overlay-link" href="teacher-details.b137.de" target="_blank"><img src="css/image-2.b138.delaye" alt="Project Image" /></a>
+					</div>
+					<div class="project-info">
+						<div class="project-title"><a href="teacher-details.b137.de" target="_blank">Teachers View</a></div>
+					</div>
+				</div>
+				<div class="col-lg-6 col-md-6 col-sm-6 mb-30">
+					<div class="project-content wow fadeInUp" data-wow-delay="0.2s">
+						<div class="project-link"><a class="button" href="departments.b139.delaye" target="_blank"> View Demo</a></div>
+						<a class="overlay-link" href="departments.b139.delaye" target="_blank"><img src="css/image-3.b13a.delaye" alt="Project Image" /></a>
+					</div>
+					<div class="project-info">
+						<div class="project-title"><a href="departments.b139.delaye" target="_blank">Departments</a></div>
+					</div>
+				</div>
+				<div class="col-lg-6 col-md-6 col-sm-6 mb-30">
+					<div class="project-content wow fadeInUp" data-wow-delay="0.2s">
+						<div class="project-link"><a class="button" href="cs/subjects.b13b.delaye" target="_blank"> View Demo</a></div>
+						<a class="overlay-link" href="cs/subjects.b13b.delaye" target="_blank"><img src="css/image-4.b13c.delaye" alt="Project Image" /></a>
+					</div>
+					<div class="project-info">
+						<div class="project-title"><a href="cs/subjects.b13b.delaye" target="_blank">Subjects</a></div>
+					</div>
+				</div>
+
+				<div class="col-lg-6 col-md-6 col-sm-6 mb-30">
+					<div class="project-content wow fadeInUp" data-wow-delay="0.2s">
+						<div class="project-link"><a class="button" href="fees-collections.b13d.d" target="_blank"> View Demo</a></div>
+						<a class="overlay-link" href="fees-collections.b13d.d" target="_blank"><img src="css/image-5.b13e.delaye" alt="Project Image" /></a>
+					</div>
+					<div class="project-info">
+						<div class="project-title"><a href="fees-collections.b13d.d" target="_blank">Fees</a></div>
+					</div>
+				</div>
+				<div class="col-lg-6 col-md-6 col-sm-6 mb-30">
+					<div class="project-content wow fadeInUp" data-wow-delay="0.2s">
+						<div class="project-link"><a class="button" href="cs/expenses.b13f.delaye" target="_blank"> View Demo</a></div>
+						<a class="overlay-link" href="cs/expenses.b13f.delaye" target="_blank"><img src="css/image-6.b140.delaye" alt="Project Image" /></a>
+					</div>
+					<div class="project-info">
+						<div class="project-title"><a href="cs/expenses.b13f.delaye" target="_blank"> Expenses</a></div>
+					</div>
+				</div>
+				<div class="col-lg-6 col-md-6 col-sm-6 mb-30">
+					<div class="project-content wow fadeInUp" data-wow-delay="0.2s">
+						<div class="project-link"><a class="button" href="css//salary.b141.delaye" target="_blank"> View Demo</a></div>
+						<a class="overlay-link" href="css//salary.b141.delaye" target="_blank"><img src="css/image-7.b142.delaye" alt="Project Image" /></a>
+					</div>
+					<div class="project-info">
+						<div class="project-title"><a href="css//salary.b141.delaye" target="_blank">Salary</a></div>
+					</div>
+				</div>
+				<div class="col-lg-6 col-md-6 col-sm-6 mb-30">
+					<div class="project-content wow fadeInUp" data-wow-delay="0.2s">
+						<div class="project-link"><a class="button" href="css/holiday.b143.delaye" target="_blank"> View Demo</a></div>
+						<a class="overlay-link" href="css/holiday.b143.delaye" target="_blank"><img src="css/image-8.b144.delaye" alt="Project Image" /></a>
+					</div>
+					<div class="project-info">
+						<div class="project-title"><a href="css/holiday.b143.delaye" target="_blank">Holiday</a></div>
+					</div>
+				</div>
+				<div class="col-lg-6 col-md-6 col-sm-6 mb-30">
+					<div class="project-content wow fadeInUp" data-wow-delay="0.2s">
+						<div class="project-link"><a class="button" href="css/t/event.b145.delaye" target="_blank"> View Demo</a></div>
+						<a class="overlay-link" href="css/t/event.b145.delaye" target="_blank"><img src="css/image-9.b146.delaye" alt="Project Image" /></a>
+					</div>
+					<div class="project-info">
+						<div class="project-title"><a href="css/t/event.b145.delaye" target="_blank">Events</a></div>
+					</div>
+				</div>
+				<div class="col-lg-6 col-md-6 col-sm-6 mb-30">
+					<div class="project-content wow fadeInUp" data-wow-delay="0.2s">
+						<div class="project-link"><a class="button" href="css/library.b147.delaye" target="_blank"> View Demo</a></div>
+						<a class="overlay-link" href="css/library.b147.delaye" target="_blank"><img src="cs/image-10.b148.delaye" alt="Project Image" /></a>
+					</div>
+					<div class="project-info">
+						<div class="project-title"><a href="css/library.b147.delaye" target="_blank">Library</a></div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="row justify-content-center">
+				<div class="col-lg-8 text-center wow fadeInRight" data-wow-delay="0.2s">
+					<div class="section-header text-center">
+						<h2>Preskool RTL Pages</h2>
+						<p class="sub-title">Preskool template includes various features for providers such as student list, teachers list, department,etc.</p>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-6 col-md-6 col-sm-6 mb-30">
+					<div class="project-content wow fadeInUp" data-wow-delay="0.2s">
+						<div class="project-link"><a class="button" target="_blank" href="cs/teachers.b149.delaye"> View Demo</a></div>
+						<a class="overlay-link" href="cs/teachers.b149.delaye" target="_blank"><img src="cs/image-01.b14a.delaye" alt="Project Image" /></a>
+					</div>
+					<div class="project-info">
+						<div class="project-title"><a href="cs/teachers.b149.delaye" target="_blank">Teachers List</a></div>
+					</div>
+				</div>
+
+				<div class="col-lg-6 col-md-6 col-sm-6 mb-30">
+					<div class="project-content wow fadeInUp" data-wow-delay="0.2s">
+						<div class="project-link"><a class="button" href="teacher-details.b14b.de" target="_blank"> View Demo</a></div>
+						<a class="overlay-link" href="teacher-details.b14b.de" target="_blank"><img src="cs/image-02.b14c.delaye" alt="Project Image" /></a>
+					</div>
+					<div class="project-info">
+						<div class="project-title"><a href="teacher-details.b14b.de" target="_blank">Teachers View</a></div>
+					</div>
+				</div>
+				<div class="col-lg-6 col-md-6 col-sm-6 mb-30">
+					<div class="project-content wow fadeInUp" data-wow-delay="0.2s">
+						<div class="project-link"><a class="button" href="departments.b14d.delaye" target="_blank"> View Demo</a></div>
+						<a class="overlay-link" href="departments.b14d.delaye" target="_blank"><img src="cs/image-03.b14e.delaye" alt="Project Image" /></a>
+					</div>
+					<div class="project-info">
+						<div class="project-title"><a href="departments.b14d.delaye" target="_blank">Departments</a></div>
+					</div>
+				</div>
+				<div class="col-lg-6 col-md-6 col-sm-6 mb-30">
+					<div class="project-content wow fadeInUp" data-wow-delay="0.2s">
+						<div class="project-link"><a class="button" href="cs/subjects.b14f.delaye" target="_blank"> View Demo</a></div>
+						<a class="overlay-link" href="cs/subjects.b14f.delaye" target="_blank"><img src="cs/image-04.b150.delaye" alt="Project Image" /></a>
+					</div>
+					<div class="project-info">
+						<div class="project-title"><a href="cs/subjects.b14f.delaye" target="_blank">Subjects</a></div>
+					</div>
+				</div>
+
+				<div class="col-lg-6 col-md-6 col-sm-6 mb-30">
+					<div class="project-content wow fadeInUp" data-wow-delay="0.2s">
+						<div class="project-link"><a class="button" href="css/te/fees.b151.delaye" target="_blank"> View Demo</a></div>
+						<a class="overlay-link" href="css/te/fees.b151.delaye" target="_blank"><img src="cs/image-05.b152.delaye" alt="Project Image" /></a>
+					</div>
+					<div class="project-info">
+						<div class="project-title"><a href="css/te/fees.b151.delaye" target="_blank">Fees</a></div>
+					</div>
+				</div>
+				<div class="col-lg-6 col-md-6 col-sm-6 mb-30">
+					<div class="project-content wow fadeInUp" data-wow-delay="0.2s">
+						<div class="project-link"><a class="button" href="css//alerts.b153.delaye" target="_blank"> View Demo</a></div>
+						<a class="overlay-link" href="css//alerts.b153.delaye" target="_blank"><img src="cs/image-06.b154.delaye" alt="Project Image" /></a>
+					</div>
+					<div class="project-info">
+						<div class="project-title"><a href="css//alerts.b153.delaye" target="_blank"> Base UI</a></div>
+					</div>
+				</div>
+				<div class="col-lg-6 col-md-6 col-sm-6 mb-30">
+					<div class="project-content wow fadeInUp" data-wow-delay="0.2s">
+						<div class="project-link"><a class="button" href="css//salary.b155.delaye" target="_blank"> View Demo</a></div>
+						<a class="overlay-link" href="css//salary.b155.delaye" target="_blank"><img src="cs/image-07.b156.delaye" alt="Project Image" /></a>
+					</div>
+					<div class="project-info">
+						<div class="project-title"><a href="css//salary.b155.delaye" target="_blank">Salary</a></div>
+					</div>
+				</div>
+				<div class="col-lg-6 col-md-6 col-sm-6 mb-30">
+					<div class="project-content wow fadeInUp" data-wow-delay="0.2s">
+						<div class="project-link"><a class="button" href="css/holiday.b157.delaye" target="_blank"> View Demo</a></div>
+						<a class="overlay-link" href="css/holiday.b157.delaye" target="_blank"><img src="cs/image-08.b158.delaye" alt="Project Image" /></a>
+					</div>
+					<div class="project-info">
+						<div class="project-title"><a href="css/holiday.b157.delaye" target="_blank">Holiday</a></div>
+					</div>
+				</div>
+				<div class="col-lg-6 col-md-6 col-sm-6 mb-30">
+					<div class="project-content wow fadeInUp" data-wow-delay="0.2s">
+						<div class="project-link"><a class="button" href="css/t/event.b159.delaye" target="_blank"> View Demo</a></div>
+						<a class="overlay-link" href="css/t/event.b159.delaye" target="_blank"><img src="cs/image-09.b15a.delaye" alt="Project Image" /></a>
+					</div>
+					<div class="project-info">
+						<div class="project-title"><a href="css/t/event.b159.delaye" target="_blank">Events</a></div>
+					</div>
+				</div>
+				<div class="col-lg-6 col-md-6 col-sm-6 mb-30">
+					<div class="project-content wow fadeInUp" data-wow-delay="0.2s">
+						<div class="project-link"><a class="button" href="css/library.b15b.delaye" target="_blank"> View Demo</a></div>
+						<a class="overlay-link" href="css/library.b15b.delaye" target="_blank"><img src="cs/image-10.b15c.delaye" alt="Project Image" /></a>
+					</div>
+					<div class="project-info">
+						<div class="project-title"><a href="css/library.b15b.delaye" target="_blank">Library</a></div>
+					</div>
+				</div>
+			</div>				
+		</div>
+	</section>
+
+	<!-- Contact Form -->
+	<section class="contact-form-sec">
+		<div class="container">
+			<div class="section-header text-center">
+				<h2>Request Demo</h2>
+				<p class="sub-title">For Complete Customization and Details on the Full Product</p>
+			</div>
+			<div class="row">
+				<div class="col-md-6 m-auto">
+					<form method="post" id="contact_form">
+						<div class="messages"></div>
+						<div class="row">
+							<div class="col-lg-6">
+								<div class="form-group mb-4">
+									<input type="text" id="full_name" name="full_name" class="form-control" placeholder="Full Name" autocomplete="off" required>
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="form-group mb-4">
+									<input type="email" id="email" name="email" class="form-control" placeholder="Email" autocomplete="off" required>
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="form-group mb-4">
+									<input type="text" id="company_name" name="company_name" class="form-control" placeholder="Company Name" autocomplete="off" required>
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="form-group mb-4">
+									<input type="text" id="phone-num" name="phone_num" class="form-control" placeholder="Phone Number" minlength="7" maxlength="15" autocomplete="off" required>
+								</div>
+							</div>
+							<div class="col-lg-12">
+								<div class="form-group mb-4">
+									<textarea type="text" class="form-control" rows="4" name="comments" placeholder="Your Comments here" id="comments" required></textarea>
+								</div>
+							</div>
+							<button type="submit" onclick="emailcreate()" class="button m-auto">Submit</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- /Contact Form -->
+	
+	<!-- Footer -->
+	<footer class="footer">
+		<div class="footer-content">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-md-12 text-center">
+						<div class="contact-info">
+							<h5>Contact Info</h5>
+							<p>22, Sri Kanchi Nagar,<br> Cheranmanagar, Coimbatore,<br> India , 641035</p>
+							<div class="list-text align-items-center"><i class="fa fa-phone mr-2" aria-hidden="true"></i><a href="tel:+91 9942576886">+91 9942576886</a></div>
+							<div class="list-text align-items-center"><i class="fa fa-envelope mr-2" aria-hidden="true"></i><a href="https://preschool.dreamguystech.com/cdn-cgi/l/email-protection#b5d7c0c6dcdbd0c6c6f5d1c7d0d4d8d2c0ccc6c1d0d6dd9bd6dad8"><span class="__cf_email__" data-cfemail="1b796e6872757e68685b7f697e7a767c6e62686f7e787335787476">[email&#160;protected]</span></a></div>
+							<div class="list-text align-items-center"><i class="fa fa-globe mr-2" aria-hidden="true"></i><a href="https://dreamguystech.com/" target="_blank">www.dreamguystech.com</a></div>
+						</div>
+						<div class="social-icon">
+							<ul>
+								<li><a href="https://www.facebook.com/dreamguystech" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+								<li><a href="https://www.instagram.com/dreamguystech" target="_blank"><i class="fab fa-instagram"></i></a></li>
+								<li><a href="https://www.behance.net/dreamguystech" target="_blank"><i class="fab fa-behance"></i></a></li>
+								<li><a href="https://in.linkedin.com/company/dreamguystech" target="_blank"><i class="fab fa-linkedin-in"></i></a></li>
+								<li><a href="https://twitter.com/dreamguystech" target="_blank"><i class="fab fa-twitter"></i></a></li>
+								<li><a href="https://www.youtube.com/channel/UCNi1cF0PYvQIg3uvxLrd3yA" target="_blank"><i class="fa-brands fa-youtube"></i></a></li>
+							</ul>
+						</div>
+						<div class="footer-bottom">
+							<span>A product of<a href="https://dreamguystech.com/"  target="_blank"><img src="company-name.b15d.delay" alt=""></a></span>
+							<p class="copy-right">&copy; 2023 Preskool All Rights Reserved</p>
+						</div>
+					</div>
+	     		</div>
+			</div>
+		</div>
+	</footer>
+	<!-- /Footer -->
+
+
+	<script data-cfasync="false" src="../../../../../../../../../../../../../../../../../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="jquery-3.6.0.min.b15e.d"></script>
+	<script src="bootstrap.bundle.min.b1"></script>
+	<script src="css/wow.min.b160.delaye"></script>
+
+	<script src="css/as/main.b161.delaye"></script>
+
+	<!--Start of Tawk.to Script-->
+	<script type="text/javascript">
+		var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+		(function(){
+		var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+		s1.async=true;
+		s1.src='https://embed.tawk.to/5d8a11a26c1dde20ed0329dd/default';
+		s1.charset='UTF-8';
+		s1.setAttribute('crossorigin','*');
+		s0.parentNode.insertBefore(s1,s0);
+		})();
+	</script>
+	<!--End of Tawk.to Script-->
+
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-XC2VG0XDTH"></script>
+		<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'G-XC2VG0XDTH');
+	</script>
+
+
+	<script type="application/ld+json">
+		{
+		  "@context": "https://schema.org/", 
+		  "@type": "Product", 
+		  "name": "PreSkool",
+		  "image": "https://preschool.dreamguystech.com/assets/img/logo.png",
+		  "description": "School Management HTML Admin Template",
+		  "brand": {
+			"@type": "Brand",
+			"name": "PreSkool"
+		  },
+		  "offers": {
+			"@type": "Offer",
+			"url": "https://themeforest.net/item/preskool-bootstrap-admin-html-template/29532878",
+			"priceCurrency": "USD",
+			"price": "24"
+		  }
+		}
+	</script>
+
+	<script>
+		function emailcreate () {
+			$.ajax({
+				url:"mail.php",    //the page containing php script
+				type: "post",    //request type,
+				dataType : "json",
+				data: $("#contact_form").serialize(),
+				success:function(result){
+					console.log(result);
+					var messageAlert = 'alert-' + result.type;
+					var messageText = result.message;
+					var alertBox = '<div class="alert ' + messageAlert + ' alert-dismissable"><button type="button" class="close" data-bs-dismiss="alert" aria-hidden="true">&times;</button>' + messageText + '</div>';
+					if (messageAlert && messageText) {
+						console.log(alertBox);
+						$('.messages').html(alertBox);
+						$('#contact_form')[0].reset();
+				}
+			}
+		});
+			return false;
+		}
+		$('#phone-num').keyup(function () {
+			if (this.value.match(/[^0-9]/g)) {
+			this.value = this.value.replace(/[^0-9^-]/g, '');
+			}
+		});
+	</script>
+		
+	
+</body>
+
+<!-- Mirrored from preschool.dreamguystech.com/template/assets/plugins/icons/flags/flags/assets/img/assets/plugins/fontawesome/css/assets/plugins/fontawesome/css/assets/plugins/fontawesome/css/fontawesome.min.css by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 22 Aug 2023 16:17:25 GMT -->
+</html>
