@@ -1,5 +1,5 @@
 "use client";
-//import AdminLayout from " ../components/AdminLayout";
+import AdminLayout from "../components/AdminLayout";
 import Script from "next/script";
 import "../public/assets/css/bootstrap-datetimepicker.min.css";
 import "../public/assets/css/ckeditor.css";
@@ -36,9 +36,10 @@ export default function Home({ Component, pageProps }) {
   const router = useRouter();
   const rootPath = router.pathname.split("/");
   //console.log(pathname, "router====sss");
-  console.log(pageProps, Component, "Page propssss");
+  //console.log(pageProps, Component, "Page propssss")
   // const rootPath = pathname?.split("/");
-  console.log(rootPath, router.pathname, "Root pathjhh");
+  //console.log(rootPath, router.pathname, "Root pathjhh")
+
 
   if (rootPath && rootPath[1] == "admin") {
     return (

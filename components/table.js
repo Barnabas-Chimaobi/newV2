@@ -38,7 +38,9 @@ export default function GenericTable({
   editFunc,
   dropDownObjects,
   showInvoiceButton,
-  fillApplicationForm
+  fillApplicationForm,
+  showCheckBox,
+  showAdmitButton
 }) {
   const router = useRouter();
 
@@ -69,7 +71,7 @@ export default function GenericTable({
   const [product, setProduct] = useState(tableObjectBody);
   const [productObj, setproductObj] = useState(dropDownObjects);
   const [submitted, setSubmitted] = useState(false);
-
+  console.log(selectedProducts, "selected products")
   const [content, setContent] = useState([]);
   const [
     saveFaculty,
@@ -251,6 +253,16 @@ export default function GenericTable({
       life: 3000,
     });
   };
+  const admitSelectedProducts = () => {
+    console.log(products);
+    saveFunc(products);
+    toast.current.show({
+      severity: "success",
+      summary: "Successful",
+      detail: "Saved",
+      life: 3000,
+    });
+  };
 
   const onCategoryChange = (e) => {
     let _product = { ...product };
@@ -384,6 +396,19 @@ export default function GenericTable({
         ) : (
           <></>
         )}
+        {
+          showAdmitButton ? (
+            <Button
+              label="Admit"
+              icon="pi pi-upload"
+              className="btn btn-outline-primary me-2"
+              onClick={admitSelectedProducts}
+            />
+          )
+            : (
+              <></>
+            )
+        }
       </div>
     );
   };
@@ -488,7 +513,7 @@ export default function GenericTable({
           value={content}
           selection={selectedProducts}
           onSelectionChange={(e) => setSelectedProducts(e.value)}
-          dataKey="id"
+          dataKey="Id"
           paginator
           rows={10}
           rowsPerPageOptions={[5, 10, 25]}
@@ -498,9 +523,14 @@ export default function GenericTable({
           }
           globalFilter={globalFilter}
           header={header}
-        >
 
-          <Column field="id" header="Id" style={{ display: "none" }} />
+        >
+          <Column
+            selectionMode="multiple"
+            exportable={false}
+            style={showCheckBox ? null : { display: "none" }}
+          />
+          <Column field="Id" header="Id" style={{ display: "none" }} />
           <Column exportable={false} style={dataTableStyle}></Column>
           {generateColumnTemplates(headers)}
           <Column
@@ -560,6 +590,6 @@ export default function GenericTable({
           )}
         </div>
       </Dialog>
-    </div>
+    </div >
   );
 }

@@ -11,9 +11,22 @@ export default function encryptString(text) {
     // const sanitizedEncryptedData = encryptedData.replace(/\//g, '_');
 
     // return sanitizedEncryptedData;
-    const encode = base64EncodeWithoutPadding(text);
-    return urlEncode(encode);
+    if (text?.includes('/')) {
+        var plainText = text?.replace(/\//g, '-');
+        console.log(plainText, "encrptyt inng")
+        const encode = base64EncodeWithoutPadding(plainText);
+        var encodeResponse = urlEncode(encode);
+        console.log(encode, "first encode value");
+        console.log(encodeResponse, "second encode");
+        return encodeResponse;
+    }
+    else {
 
+
+        const encode = base64EncodeWithoutPadding(text);
+        return urlEncode(encode);
+
+    }
 }
 
 

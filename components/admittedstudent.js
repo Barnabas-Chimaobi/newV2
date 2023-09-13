@@ -9,6 +9,7 @@ import { useRouter } from 'next/router';
 import { Constant } from '../constant';
 import Encrypt from "./encrypt"
 import { CHECK_ADMISSION_STATUS, OLEVEL_GRADE, OLEVEL_SUBJECT, OLEVEL_TYPE } from '../pages/api/queries/applicant';
+import { GENERATE_INVOICE } from '../pages/api/mutations/applicant'
 
 import { Card } from 'primereact/card';
 import Spinner from './spinner';
@@ -74,11 +75,11 @@ export default function Admittedstudent() {
                 }
             });
             setadmittedApplicatData(admissionStatusData?.data?.checkAdmissionStatus);
-
+            console.log(admissionStatusData?.data?.checkAdmissionStatus, "Admitted applicant data ");
 
             setfirstSitting(admissionStatusData?.data?.checkAdmissionStatus?.applicationForm?.applicationFormFullResponse?.submitOlevelResult[0]);
             setsecondSitting(admissionStatusData?.data?.checkAdmissionStatus?.applicationForm?.applicationFormFullResponse?.submitOlevelResult[1]);
-            if (firstSitting?.olevelResultsDto.length > 0) {
+            if (firstSitting?.olevelResultsDto?.length > 0) {
                 setfirstSub1({ name: firstSitting?.olevelResultsDto[0]?.subject })
                 setfirstGrade1({ name: firstSitting?.olevelResultsDto[0]?.grade })
                 setfirstSub2({ name: firstSitting?.olevelResultsDto[1]?.subject })
@@ -98,7 +99,7 @@ export default function Admittedstudent() {
                 setfirstSub9({ name: firstSitting?.olevelResultsDto[8]?.subject })
                 setfirstGrade9({ name: firstSitting?.olevelResultsDto[8]?.grade })
             }
-            if (secondSitting?.olevelResultsDto.length > 0) {
+            if (secondSitting?.olevelResultsDto?.length > 0) {
                 setsecondSub1({ name: secondSitting?.olevelResultsDto[0]?.subject })
                 setsecondGrade1({ name: secondSitting?.olevelResultsDto[0]?.grade })
                 setsecondSub2({ name: secondSitting?.olevelResultsDto[1]?.subject })
@@ -133,43 +134,41 @@ export default function Admittedstudent() {
     const [chartOptions, setChartOptions] = useState({});
 
     useEffect(() => {
-        const documentStyle = getComputedStyle(document.documentElement);
-        console.log(admissionStatusData?.data?.checkAdmissionStatus, "Admitted applicant data ");
-        if (admittedApplicatData?.applicantStatusId > 0) {
-            const statusProgress = admittedApplicatData?.applicantStatusId * 10;
-            console.log(statusProgress, "status progress")
-            const scaleprogress = 100 - statusProgress;
-            if (statusProgress >= 0) {
-                setscaleProgress(scaleprogress);
-                setadmissionProgress(statusProgress)
-            }
-            console.log(statusProgress, "progress card")
-            setloadedData(true)
-        }
-        const data = {
-            labels: ['Admission Progress'],
-            datasets: [
-                {
-                    data: [admissionProgress, scaleProgress],
-                    backgroundColor: [
-                        documentStyle.getPropertyValue('--blue-500'),
-                        documentStyle.getPropertyValue('fff')
-                    ],
-                    hoverBackgroundColor: [
-                        documentStyle.getPropertyValue('--blue-400'),
-                        documentStyle.getPropertyValue('fff')
-                    ]
-                }
-            ]
-        };
-        const options = {
-            cutout: '60%'
-        };
+        admissionStatusFunc("ILARO/REG/30")
+            .then((x) => {
+                const statusProgress = admittedApplicatData?.applicantStatusId * 10;
 
-        setChartData(data);
-        setChartOptions(options);
-        admissionStatusFunc("ILARO/REG/30");
+                setadmissionProgress(statusProgress);
+                setscaleProgress(100 - statusProgress);
+
+                const documentStyle = getComputedStyle(document.documentElement);
+
+                const data = {
+                    labels: ['Admission Progress'],
+                    datasets: [
+                        {
+                            data: [admissionProgress, scaleProgress],
+                            backgroundColor: [
+                                documentStyle.getPropertyValue('--blue-500'),
+                                documentStyle.getPropertyValue('fff')
+                            ],
+                            hoverBackgroundColor: [
+                                documentStyle.getPropertyValue('--blue-400'),
+                                documentStyle.getPropertyValue('fff')
+                            ]
+                        }
+                    ]
+                };
+                const options = {
+                    cutout: '60%'
+                };
+
+                setChartData(data);
+                setChartOptions(options);
+                setloadedData(true);
+            });
     }, []);
+
 
 
 
@@ -184,7 +183,7 @@ export default function Admittedstudent() {
     const [pageThree, setpageThree] = useState('')
     const [pageFour, setpageFour] = useState('')
     const [pageFive, setpageFive] = useState('')
-
+    const [loadingbutton, setloadingbutton] = useState(false);
 
     const selectedInvoice = (feetypeId) => {
         if (!admittedApplicatData?.payments) {
@@ -196,6 +195,38 @@ export default function Admittedstudent() {
         });
     };
 
+    const [generateInvoiceFee, { loading: generateInvoiceFeeLoad, error: generateInvoiceFeeError, data: generateInvoiceFeeData }] = useMutation(GENERATE_INVOICE);
+    const generateInvoice = async (feetype) => {
+        setloadingbutton(true)
+        try {
+            const invoice = await generateInvoiceFee({
+                variables: {
+                    personId: admittedApplicatData?.applicationForm?.applicantAppliedCourse?.personId,
+                    levelId: 1,
+                    formtypeid: 1,
+                    sessionId: 0,
+                    feetypeId: feetype,
+                    paymentMode: 1
+                }
+            })
+            console.log(invoice.data, "Invoiceeeeeeeeeee")
+            setloadingbutton(false)
+            router.push(Constant.BASE_URL + `/common/invoice/` + Encrypt(invoice?.data?.generateInvoice?.invoiceNumber));
+        } catch (error) {
+            console.error('Error fetching form:', error);
+            setloadingbutton(false)
+        }
+    }
+
+    const generateReceipt = async (invoiceNo) => {
+
+        try {
+
+            router.push(Constant.BASE_URL + `/common/receipt/` + Encrypt(invoiceNo));
+        } catch (error) {
+            console.error('Error fetching form:', error);
+        }
+    }
 
     const clearActiveTabsAndPages = () => {
         setTabOne('');
@@ -237,7 +268,7 @@ export default function Admittedstudent() {
                     <div className="Homepage-wrapper">
                         <div className="content container-fluid">
                             <div className="row">
-                                {/* <div className="col-lg-8-offset-2 col-sm-12"> */}
+
                                 <div className="col-lg-10 offset-lg-1 col-sm-12 offset-sm-1">
                                     <div className="card bg-white">
                                         <div className="card-header">
@@ -354,65 +385,17 @@ export default function Admittedstudent() {
                                                             <div className="card student-personals-grp">
                                                                 <div className="card-body">
                                                                     <div className="">
-                                                                        {/* <Card title="Congratulations !!!"> */}
+
                                                                         <>
-
-
-                                                                            {/* <main>
-                                                                                <div className="admission-details">
-
-                                                                                    <div className="px-4">
-                                                                                        <div class="row mb-0">
-                                                                                            <div class="col">
-                                                                                                <strong>  Instructions:</strong>
-                                                                                            </div>
-                                                                                        </div>
-
-                                                                                        <div class="row mb-2 ">
-
-                                                                                            <div class="col-md-4">
-                                                                                                <strong>1. Print Admission Slip by clicking</strong>
-                                                                                            </div>
-                                                                                            <div class="col-md-4">
-                                                                                                <a href="#" class="btn btn-outline-primary me-2 mb-2 "><i class="fas fa-download"></i> Print Admission Slip</a>
-                                                                                            </div>
-                                                                                        </div>
-
-                                                                                        <div class="row  mb-2 ">
-
-                                                                                            <div class="col-md-4">
-                                                                                                <strong>2. Generate an acceptance invoice by clicking</strong>
-                                                                                            </div>
-                                                                                            <div class="col-md-4">
-                                                                                                <a href="#" class="btn btn-outline-primary me-2 mb-2 "><i class="fas fa-download"></i> Generate Acceptance Invoice</a>
-                                                                                            </div>
-                                                                                        </div>
-
-                                                                                        <div class="row  mb-2">
-
-                                                                                            <div class="col-md-4">
-                                                                                                <strong>3. Generate an acceptance Receipt by clicking</strong>
-                                                                                            </div>
-                                                                                            <div class="col-md-4">
-                                                                                                <a href="#" class="btn btn-outline-primary me-2 mb-2 "><i class="fas fa-download"></i> Generate Acceptance Receipt</a>
-                                                                                            </div>
-                                                                                        </div>
-
-                                                                                    </div>
-
-                                                                                </div>
-
-                                                                            </main> */}
-
-                                                                            <Card title="(a). Admission Slip">
+                                                                            <Card title="">
                                                                                 <div className="card flex-fill bg-white">
-                                                                                    {/* <div className="card-header">
-                                                                                        <h5 className="card-title mb-0">School Fees Invoice Number: </h5>
-                                                                                    </div> */}
+                                                                                    <div className="card-header">
+                                                                                        <h5 className="card-title mb-0">(1). Admission Slip</h5>
+                                                                                    </div>
                                                                                     <div className="card-body">
                                                                                         <div
-                                                                                            className="bg-primary p-4 px-4"
-                                                                                            style={{ marginBottom: 15, color: "#fff", textAlign: "justify" }}
+                                                                                            className="bg-primary p-3 px-3"
+                                                                                            style={{ marginBottom: 5, color: "#fff", textAlign: "justify" }}
                                                                                         >
                                                                                             <p style={{ fontWeight: "bold" }}>
                                                                                                 Congratulations <b>{admittedApplicatData?.fullName}!</b> You have been given a Provisional
@@ -424,13 +407,13 @@ export default function Admittedstudent() {
                                                                                                 <cite title="Source Title" />
                                                                                             </small>
                                                                                         </div>
-                                                                                        <div class="row mb-2 ">
+                                                                                        <div class="row mb-1 ">
 
                                                                                             <div class="col-md-12">
                                                                                                 <strong>Print Admission Slip by clicking 'Print Admission Slip' Button </strong>
                                                                                             </div>
                                                                                             <div class="col-md-4 mt-3">
-                                                                                                <a href="#" class="btn btn-outline-primary me-2 mb-2 "><i class="fas fa-download"></i> Print Admission Slip</a>
+                                                                                                <a href={Constant.BASE_URL + `/common/admissionslip/` + Encrypt(admittedApplicatData?.applicationFormNumber)} class="btn btn-outline-primary me-2 mb-2 "><i class="fas fa-download"></i> Print Admission Slip</a>
                                                                                             </div>
                                                                                         </div>
 
@@ -439,12 +422,10 @@ export default function Admittedstudent() {
 
                                                                                     </div>
                                                                                 </div>
-                                                                            </Card>
 
-
-                                                                            <Card title="(b). Pay Acceptance Fees">
                                                                                 <div className="card flex-fill bg-white">
                                                                                     <div className="card-header">
+                                                                                        <h5 className="card-title mb-0">(2). Pay Acceptance Fees</h5>
                                                                                         <h5 className="card-title mb-0">Acceptance Fees Invoice Number: <>{selectedInvoice(2)[0]?.invoiceNumber}</></h5>
                                                                                     </div>
                                                                                     <div className="card-body">
@@ -453,13 +434,25 @@ export default function Admittedstudent() {
                                                                                             you can print your receipt.
                                                                                         </p>
                                                                                         <div class="row ">
-                                                                                            <a className="btn btn-primary col-lg-3 col-sm-12 mb-3 mr-2" href="#">
-                                                                                                Generate Invoice
-                                                                                            </a>
+                                                                                            {loadingbutton ?
+                                                                                                <button className="btn btn-primary col-lg-3 col-sm-12 mb-3 mr-2" type="button" disabled>
+                                                                                                    <span className="spinner-grow spinner-grow-sm me-1" role="status" aria-hidden="true"></span>
+                                                                                                    Generating Invoice...
+                                                                                                </button>
+                                                                                                :
 
-                                                                                            <a className="btn btn-primary  col-lg-3 col-sm-12 mb-3 " href="#">
+                                                                                                <button type="button" className="btn btn-primary col-lg-3 col-sm-12 mb-3 mr-2" onClick={() => generateInvoice(2)}>
+                                                                                                    Generate Invoice
+                                                                                                </button>
+                                                                                            }
+
+                                                                                            {/* <a className="btn btn-primary  col-lg-3 col-sm-12 mb-3 " href="#">
                                                                                                 Print Receipt
-                                                                                            </a>
+                                                                                            </a> */}
+                                                                                            <button type="button" className="btn btn-primary col-lg-3 col-sm-12 mb-3 "
+                                                                                                onClick={() => generateReceipt(selectedInvoice(2)[0]?.invoiceNumber)}>
+                                                                                                Print Receipt
+                                                                                            </button>
                                                                                         </div>
 
                                                                                     </div>
@@ -470,7 +463,7 @@ export default function Admittedstudent() {
                                                                                 <p>For assistance, contact our admissions office.</p>
                                                                             </footer>
                                                                         </>
-                                                                        {/* </Card> */}
+
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -859,9 +852,10 @@ export default function Admittedstudent() {
                                                                 <div className="card-body">
                                                                     <div className="col-md-12 col-lg-9 d-flex">
 
-                                                                        <Card title="(c). Pay School Fees">
+                                                                        <Card title="Manage Fees">
                                                                             <div className="card flex-fill bg-white">
                                                                                 <div className="card-header">
+                                                                                    <h5 className="card-title mb-0">(3). Pay School Fees</h5>
                                                                                     <h5 className="card-title mb-0">School Fees Invoice Number: <>{selectedInvoice(3)[0]?.invoiceNumber}</></h5>
                                                                                 </div>
                                                                                 <div className="card-body">
@@ -870,13 +864,27 @@ export default function Admittedstudent() {
                                                                                         you can print your receipt.
                                                                                     </p>
                                                                                     <div class="row ">
-                                                                                        <a className="btn btn-primary col-lg-3 col-sm-12 mb-3 mr-2" href="#">
-                                                                                            Generate Invoice
-                                                                                        </a>
 
-                                                                                        <a className="btn btn-primary  col-lg-3 col-sm-12 mb-3 " href="#">
+                                                                                        {loadingbutton ?
+                                                                                            <button className="btn btn-primary col-lg-3 col-sm-12 mb-3 mr-2" type="button" disabled>
+                                                                                                <span className="spinner-grow spinner-grow-sm me-1" role="status" aria-hidden="true"></span>
+                                                                                                Generating Invoice...
+                                                                                            </button>
+                                                                                            :
+
+                                                                                            <button type="button" className="btn btn-primary col-lg-3 col-sm-12 mb-3 mr-2" onClick={() => generateInvoice(3)}>
+                                                                                                Generate Invoice
+                                                                                            </button>
+                                                                                        }
+
+                                                                                        <button type="button" className="btn btn-primary col-lg-3 col-sm-12 mb-3 "
+                                                                                            onClick={() => generateReceipt(selectedInvoice(3)[0]?.invoiceNumber)}>
                                                                                             Print Receipt
-                                                                                        </a>
+                                                                                        </button>
+
+                                                                                        {/* <a className="btn btn-primary  col-lg-3 col-sm-12 mb-3 " href="#">
+                                                                                            Print Receipt
+                                                                                        </a> */}
                                                                                     </div>
 
                                                                                 </div>

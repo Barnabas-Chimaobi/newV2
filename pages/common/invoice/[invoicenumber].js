@@ -1,5 +1,5 @@
 import { useRouter } from "next/router"
-import Invoice from "@/app/components/invoice";
+import Invoice from "../../../components/invoice";
 export default function Page() {
     const router = useRouter();
     return <>
