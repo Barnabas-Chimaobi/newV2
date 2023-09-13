@@ -271,6 +271,9 @@ export const CHECK_ADMISSION_STATUS = gql`query CheckAdmissionStatus($applicatio
           }
         }
       }
+	  applicantAppliedCourse {
+        personId
+      }
     }
   }
 }`;
@@ -289,5 +292,18 @@ export const OLEVEL_TYPE = gql`query GellAllOLevelType {
   gellAllOLevelType {
     name
     id
+  }
+}`;
+export const ADMISSION_LETTER = gql`query AdmissionLetterDetails($applicationformnumber: String!) {
+  admissionLetterDetails(applicationformnumber: $applicationformnumber) {
+    applicantStatusId
+    departmentName
+    facultyName
+    fullName
+    passportUrl
+    programmeName
+    registrarName
+    session
+    applicantStatus
   }
 }`;
