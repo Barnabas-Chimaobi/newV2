@@ -1,5 +1,5 @@
 "use client";
-//import AdminLayout from " ../components/AdminLayout";
+import AdminLayout from "../components/AdminLayout";
 import Script from "next/script";
 import "../public/assets/css/bootstrap-datetimepicker.min.css";
 import "../public/assets/css/ckeditor.css";

@@ -85,7 +85,6 @@ export default function AdmissionSlip(applicationForm) {
 
 
     useEffect(() => {
-
         admissionletterFunc(Decrypt(applicationForm));
     }, [Decrypt(applicationForm)]);
 
