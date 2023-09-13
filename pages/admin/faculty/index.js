@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
-import Table from "../../../src/app/components/table";
-import { GET_ALL_FACULTY } from "../../../api/queries/admin";
+import Table from "../../../components/table";
+import { GET_ALL_FACULTY } from "../../../pages/api/queries/admin";
 import {
   SAVE_FACULTY,
   UPDATE_FACULTY,
   DELETE_FACULTY,
-} from "../../../api/mutations/admin";
+} from "../../../pages/api/mutations/admin";
 import { Column } from "primereact/column";
 import { isNullableType } from "graphql";
 
@@ -62,7 +62,7 @@ export default function index() {
     ));
   };
 
-  const TableObj = { Name: "", Description: "", id: "" };
+  const TableObj = { Name: "", Description: "", Id: "" };
   const DropDownObjects = [
     {
       Name: "Name",
@@ -167,6 +167,8 @@ export default function index() {
                     dropDownObjects={DropDownObjects}
                     editFunc={editFaculty}
                     deleteFunc={deleteFacultyFunc}
+                    showCheckBox={true}
+
                   />
                 </div>
               </div>
