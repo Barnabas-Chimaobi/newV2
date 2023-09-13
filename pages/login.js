@@ -30,6 +30,8 @@ export default function Login() {
             password: password,
           },
         });
+        localStorage.clear();
+        localStorage.setItem("authToken", payLoad?.data?.staffLogin?.authToken);
         toast.success("Login Successful");
         setIsLoading(false);
         console.log(payLoad, "payLoad");
