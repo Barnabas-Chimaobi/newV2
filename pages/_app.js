@@ -13,8 +13,7 @@ import "../public/assets/plugins/fontawesome/css/fontawesome.min.css";
 import "../public/assets/plugins/fontawesome/css/all.min.css";
 import "../public/assets/plugins/select2/css/select2.min.css";
 import "../public/assets/css/style.css";
-
-
+import AdminLayout from "@/components/AdminLayout";
 import {
   ApolloClient,
   InMemoryCache,
@@ -43,6 +42,7 @@ export default function Home({ Component, pageProps }) {
   //console.log(pageProps, Component, "Page propssss")
   // const rootPath = pathname?.split("/");
   //console.log(rootPath, router.pathname, "Root pathjhh")
+
 
   if (rootPath && rootPath[1] == "admin") {
     return (
@@ -151,6 +151,7 @@ export default function Home({ Component, pageProps }) {
             {/* </ThemeProvider> */}
           </ApolloProvider>
         </Provider>
+
       </>
     );
   }

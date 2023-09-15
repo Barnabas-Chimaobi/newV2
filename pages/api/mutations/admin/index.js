@@ -1,22 +1,23 @@
 import { gql, useMutation } from "@apollo/client";
 
 export const ADMISSION_LIST_DTO_NAMES = gql`
-  mutation AdmissionListDtoNames($admissionListFormNumber: [String!]!) {
-    admissionListDtoNames(admissionListFormNumber: $admissionListFormNumber) {
+  mutation AdmissionListDtoNames($admissionlistformnumber: [String!]!) {
+    admissionListDtoNames(admissionlistformnumber: $admissionlistformnumber) {
+      programmeId
+      departmentId
+      sessionId
+      departmentOptionId
+      applicationFormId
+      admissionListId
+      applicantionFormNumber
+      programmeName
+      departmentName
+      sessionName
+      personName
+      personId
       admissionBatchId
       admissionBatchName
-      applicantionFormNumber
-      applicationFormId
-      departmentId
-      departmentName
-      departmentOptionId
       departmentOptionName
-      personId
-      personName
-      programmeId
-      programmeName
-      sessionId
-      sessionName
     }
   }
 `;
