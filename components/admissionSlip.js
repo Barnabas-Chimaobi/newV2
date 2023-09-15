@@ -70,9 +70,11 @@ export default function AdmissionSlip(applicationForm) {
     const [admissionLetter, { loading: admissionLetterLoad, error: admissionLetterError, data: admissionLetterData }] = useLazyQuery(ADMISSION_LETTER);
     const admissionletterFunc = async (appNo) => {
         try {
+            var decryptedfrom = appNo?.applicationForm;
+            var applicationNo = decryptedfrom.replace(/-/g, '/');
             const admissionResponse = await admissionLetter({
                 variables: {
-                    applicationformnumber: appNo
+                    applicationformnumber: applicationNo
                 }
             });
             console.log(admissionResponse, "admission response")
@@ -85,8 +87,8 @@ export default function AdmissionSlip(applicationForm) {
 
 
     useEffect(() => {
-        admissionletterFunc(Decrypt(applicationForm));
-    }, [Decrypt(applicationForm)]);
+        admissionletterFunc(applicationForm);
+    }, [applicationForm]);
 
 
 

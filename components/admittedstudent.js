@@ -66,6 +66,7 @@ export default function Admittedstudent() {
     const [secondGrade9, setsecondGrade9] = useState("");
     const [scaleProgress, setscaleProgress] = useState(100);
     const [admissionProgress, setadmissionProgress] = useState(0)
+    const [admissionSlipUrl, setadmissionSlipUrl] = useState("");
 
     const admissionStatusFunc = async (formNo) => {
         try {
@@ -75,7 +76,6 @@ export default function Admittedstudent() {
                 }
             });
             setadmittedApplicatData(admissionStatusData?.data?.checkAdmissionStatus);
-            console.log(admissionStatusData?.data?.checkAdmissionStatus, "Admitted applicant data ");
 
             setfirstSitting(admissionStatusData?.data?.checkAdmissionStatus?.applicationForm?.applicationFormFullResponse?.submitOlevelResult[0]);
             setsecondSitting(admissionStatusData?.data?.checkAdmissionStatus?.applicationForm?.applicationFormFullResponse?.submitOlevelResult[1]);
@@ -413,7 +413,7 @@ export default function Admittedstudent() {
                                                                                                 <strong>Print Admission Slip by clicking 'Print Admission Slip' Button </strong>
                                                                                             </div>
                                                                                             <div class="col-md-4 mt-3">
-                                                                                                <a href={Constant.BASE_URL + `/common/admissionslip/` + Encrypt(admittedApplicatData?.applicationFormNumber)} class="btn btn-outline-primary me-2 mb-2 "><i class="fas fa-download"></i> Print Admission Slip</a>
+                                                                                                <a href={Constant.BASE_URL + `/common/admissionslip/` + admittedApplicatData?.applicationFormNumber.replace(/\//g, '-')} class="btn btn-outline-primary me-2 mb-2 "><i class="fas fa-download"></i> Print Admission Slip</a>
                                                                                             </div>
                                                                                         </div>
 

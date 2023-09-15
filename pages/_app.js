@@ -1,5 +1,6 @@
 "use client";
 import AdminLayout from "../components/AdminLayout";
+import StudentLayout from "../components/StudentLayout";
 import Script from "next/script";
 import "../public/assets/css/bootstrap-datetimepicker.min.css";
 import "../public/assets/css/ckeditor.css";
@@ -29,8 +30,10 @@ import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
 import Table from "../components/table";
-
 import { useRouter } from "next/router";
+import ErrorBoundary from "./error";
+import store from "../redux/stores";
+import { Provider } from "react-redux";
 
 export default function Home({ Component, pageProps }) {
   const router = useRouter();
@@ -63,11 +66,15 @@ export default function Home({ Component, pageProps }) {
         ></Script>
 
         <Script src="/js/script.js"></Script>
-        <ApolloProvider client={client}>
-          <AdminLayout>
-            <Component {...pageProps} />
-          </AdminLayout>
-        </ApolloProvider>
+        <Provider store={store}>
+          <ApolloProvider client={client}>
+            <AdminLayout>
+              <ErrorBoundary>
+                <Component {...pageProps} />
+              </ErrorBoundary>
+            </AdminLayout>
+          </ApolloProvider>
+        </Provider>
       </>
     );
   }
@@ -95,17 +102,17 @@ export default function Home({ Component, pageProps }) {
         ></Script>
 
         <Script src="/js/script.js" strategy="beforeInteractive"></Script>
-        <ApolloProvider client={client}>
-          <ThemeProvider>
-            <AdminLayout>
+        <Provider store={store}>
+          <ApolloProvider client={client}>
+            <StudentLayout>
               {/* <main className={inter.className}> */}
               <ErrorBoundary>
                 <Component {...pageProps} />
               </ErrorBoundary>
               {/* </main> */}
-            </AdminLayout>
-          </ThemeProvider>
-        </ApolloProvider>
+            </StudentLayout>
+          </ApolloProvider>
+        </Provider>
         {/* </Provider> */}
       </>
     );
@@ -132,12 +139,19 @@ export default function Home({ Component, pageProps }) {
           strategy="beforeInteractive"
         ></Script>
 
-        <Script src="/js/script.js"></Script>
-        <ApolloProvider client={client}>
-          <AdminLayout>
-            <Component {...pageProps} />
-          </AdminLayout>
-        </ApolloProvider>
+        <Script src="/js/script.js" strategy="beforeInteractive"></Script>
+        <Provider store={store}>
+          <ApolloProvider client={client}>
+            {/* <ThemeProvider> */}
+            <AdminLayout>
+              <ErrorBoundary>
+                <Component {...pageProps} />
+              </ErrorBoundary>
+            </AdminLayout>
+            {/* </ThemeProvider> */}
+          </ApolloProvider>
+        </Provider>
+
       </>
     );
   }
@@ -163,9 +177,13 @@ export default function Home({ Component, pageProps }) {
       ></Script>
 
       <Script src="/js/script.js" strategy="beforeInteractive"></Script>
-      <ApolloProvider client={client}>
-        <Component {...pageProps} />
-      </ApolloProvider>
+      <Provider store={store}>
+        <ApolloProvider client={client}>
+          <ErrorBoundary>
+            <Component {...pageProps} />
+          </ErrorBoundary>
+        </ApolloProvider>
+      </Provider>
     </>
   );
 }
