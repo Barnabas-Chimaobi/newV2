@@ -1183,3 +1183,51 @@ export const UPLOAD_SHEET = gql`
 		}
 	}
 `;
+
+
+export const ALL_PROGRAMME_DEPARTMENT = gql`query AllProgrammeDepartment($programmeid: Int!) {
+  allProgrammeDepartment(programmeid: $programmeid) {
+    totalSessions
+    programmeId
+    id
+    departmentId
+    active
+    activeForApplication
+    department {
+      name
+      id
+    }
+    programme {
+      id
+      name
+    }
+  }
+}`;
+
+export const ALL_PROGRAMME_SESSION = gql`query AllProgrammeSessionByProgramme($programmeid: Int!) {
+  allProgrammeSessionByProgramme(programmeid: $programmeid) {
+    id
+    programmeId
+    programme {
+      name
+      id
+    }
+    sessionId
+    session {
+      name
+      id
+    }
+    activeForResult
+    activeForAllocation
+    activeForApplication
+    activeForHostel
+    activeForFees
+    activated
+  }
+}`;
+export const PROGRAMME_NAME = gql`query Programme($programmeid: Int!) {
+  programme(programmeid: $programmeid) {
+    id
+    name
+  }
+}`;
