@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
 import Table from "../../../components/table";
+
 import { ALL_PROGRAMME } from "../../../pages/api/queries/admin";
 import {
     SAVE_PROGRAMME,
@@ -180,4 +181,5 @@ export default function Programme() {
             </div>
         </div>
     )
+
 }

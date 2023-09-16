@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
-import { STAFF_LOGIN } from "../api/mutations/authMutation";
+import { STAFF_LOGIN } from "./api/mutations/authMutation";
 import { useRouter } from "next/router";
 import Script from "next/script";
 import DashboardAdmin from "./admin/dashboard";
-import Spinner from "@/app/components/spinner";
-// import { useRouter } from "next/router";
+import Spinner from "@/components/spinner";
 
 export default function Login() {
   const [username, setUsername] = useState("");
