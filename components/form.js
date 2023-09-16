@@ -1,4 +1,4 @@
-
+'use client'
 import React, { useState, useEffect, useRef } from "react";
 import { useMutation, useQuery, useLazyQuery } from '@apollo/client';
 import { Column } from "primereact/column";
@@ -19,10 +19,10 @@ import Formgroup from "./formgroup";
 import { Calendar } from 'primereact/calendar';
 import Header from "./header";
 import { OLEVEL_GRADE, OLEVEL_SUBJECT, OLEVEL_TYPE } from '../pages/api/queries/applicant';
+import { SUBMIT_APPLICANT_FORM } from "../pages/api/mutations/applicantMutation";
 import { ProgressBar } from 'primereact/progressbar';
 import { Tooltip } from 'primereact/tooltip';
 import { Tag } from 'primereact/tag';
-import { useDispatch, useSelector } from "react-redux";
 
 
 export default function GenericForm({
@@ -42,7 +42,11 @@ export default function GenericForm({
     const [totalIndex, settotalIndex] = useState(0);
     const [olevelSubjects, setolevelSubjects] = useState("");
     const [olevelGrades, setolevelGrades] = useState("");
-    var form = useSelector((state) => state.form.generatedForm);
+    const [formSubmit, { formSubmiterror, formSubmitloading, formSubmitdata }] = useMutation(
+        SUBMIT_APPLICANT_FORM
+    );
+
+    const [pictureUrl, setPictureUrl] = useState("");
 
     const [firstexamNumber, setfirstexamNumber] = useState();
     const [firstexamType, setfirstexamType] = useState();
@@ -1250,6 +1254,102 @@ export default function GenericForm({
 
 
 
+    const submitFirstOlevelResult = [
+        {
+            "centerName": null,
+            "examCode": null,
+            "examNumber": firstexamNumber,
+            "examYear": firstexamYear,
+            "olevelResultsDto": [
+                {
+                    "grade": firstGrade1,
+                    "subject": firstSub1
+                },
+                {
+                    "grade": firstGrade2,
+                    "subject": firstSub2
+                },
+                {
+                    "grade": firstGrade3,
+                    "subject": firstSub3
+                },
+                {
+                    "grade": firstGrade4,
+                    "subject": firstSub4
+                },
+                {
+                    "grade": firstGrade5,
+                    "subject": firstSub5
+                },
+                {
+                    "grade": firstGrade6,
+                    "subject": firstSub6
+                },
+                {
+                    "grade": firstGrade7,
+                    "subject": firstSub7
+                },
+                {
+                    "grade": firstGrade8,
+                    "subject": firstSub8
+                },
+                {
+                    "grade": firstGrade9,
+                    "subject": firstSub9
+                }
+            ],
+            "olevelType": firstexamType,
+            "sitting": 1
+        }
+    ]
+    const submitSecondOlevelResult = [
+        {
+            "centerName": null,
+            "examCode": null,
+            "examNumber": secondexamNumber,
+            "examYear": secondexamYear,
+            "olevelResultsDto": [
+                {
+                    "grade": secondGrade1,
+                    "subject": secondSub1
+                },
+                {
+                    "grade": secondGrade2,
+                    "subject": secondSub2
+                },
+                {
+                    "grade": secondGrade3,
+                    "subject": secondSub3
+                },
+                {
+                    "grade": secondGrade4,
+                    "subject": secondSub4
+                },
+                {
+                    "grade": secondGrade5,
+                    "subject": secondSub5
+                },
+                {
+                    "grade": secondGrade6,
+                    "subject": secondSub6
+                },
+                {
+                    "grade": secondGrade7,
+                    "subject": secondSub7
+                }, {
+                    "grade": secondGrade8,
+                    "subject": secondSub8
+                },
+                {
+                    "grade": secondGrade9,
+                    "subject": secondSub9
+                },
+            ],
+            "olevelType": secondexamType,
+            "sitting": 2
+        }
+    ]
+
     const handleChange = (id, value) => {
 
         const updatedFields = fields.map((field) =>
@@ -1427,15 +1527,33 @@ export default function GenericForm({
         setTotalSize(_totalSize);
     };
 
-    const onTemplateUpload = (e) => {
+    const onTemplateUpload = async (e) => {
         let _totalSize = 0;
 
         e.files.forEach((file) => {
             _totalSize += file.size || 0;
         });
 
+
         setTotalSize(_totalSize);
+        // const formData = new FormData();
+
+        // // Append each selected file to the FormData object
+        // e.files.forEach((file) => {
+        //     formData.append("file", file, file.name);
+        // });
+
+        // // Make an HTTP POST request to the API endpoint
+        // const response = await fetch("http://backendvirtualschoolv2.lloydant.com/api/Passport", {
+        //     method: "POST",
+        //     body: formData,
+        // });
+
+        // let data = await response.text();
+        // console.log(data, "passport images")
+        // if (response.ok) {
         toast.current.show({ severity: 'info', summary: 'Success', detail: 'File Uploaded' });
+
     };
 
     const onTemplateRemove = (file, callback) => {
@@ -1464,6 +1582,8 @@ export default function GenericForm({
             </div>
         );
     };
+
+
 
     const itemTemplate = (file, props) => {
         return (
@@ -1498,21 +1618,44 @@ export default function GenericForm({
 
 
 
-    const SaveDynamicInput = (value, field) => {
-        setinputStore((prevInputStore) => {
-            const updatedInputStore = [...prevInputStore];
-            const existingIndex = updatedInputStore.findIndex((item) => item.fieldid === field);
 
-            if (existingIndex !== -1) {
-                // Replace the existing item if found
-                updatedInputStore[existingIndex] = { value: value, fieldid: field };
-            } else {
-                // Append the new value to the array if not found
-                updatedInputStore.push({ value: value, fieldid: field });
+
+    const submitForm = async () => {
+
+        console.log(
+            {
+                personId: form?.applicantForm?.personId,
+                formDetails: allPersonInfo,
+                submitOlevelResult: [submitFirstOlevelResult, submitSecondOlevelResult],
+                pictureUrl: pictureUrl,
+            },
+            "xfghjkl;jhvghvjbknlmknjbh====="
+        );
+
+        setTimeout(async () => {
+            try {
+                var forms = fields.map((item) => {
+                    return {
+                        feildId: item.id,
+                        response: item.response,
+                    };
+                });
+                const forms = await formSubmit({
+                    variables: {
+                        model: {
+                            personId: form?.applicantForm?.personId,
+                            formDetails: forms,
+                            submitOlevelResult: [submitFirstOlevelResult, submitSecondOlevelResult],
+                            pictureUrl: pictureUrl,
+                        },
+                    },
+                });
+                setLoad(false);
+            } catch (err) {
+                setLoad(false);
+                toast.error(err.message);
             }
-
-            return updatedInputStore;
-        });
+        }, 3000);
     };
 
     return (
@@ -1924,7 +2067,7 @@ export default function GenericForm({
                                                                     <Tooltip target=".custom-upload-btn" content="Upload" position="bottom" />
                                                                     <Tooltip target=".custom-cancel-btn" content="Clear" position="bottom" />
 
-                                                                    <FileUpload ref={fileUploadRef} name="demo[]" url="/api/upload" multiple accept="image/*" maxFileSize={1000000}
+                                                                    <FileUpload ref={fileUploadRef} name="file" url="http://backendvirtualschoolv2.lloydant.com/api/Passport" multiple accept="image/*" maxFileSize={1000000}
                                                                         onUpload={onTemplateUpload} onSelect={onTemplateSelect} onError={onTemplateClear} onClear={onTemplateClear}
                                                                         headerTemplate={headerTemplate} itemTemplate={itemTemplate} emptyTemplate={emptyTemplate}
                                                                         chooseOptions={chooseOptions} uploadOptions={uploadOptions} cancelOptions={cancelOptions} />
@@ -1960,7 +2103,7 @@ export default function GenericForm({
                                                             {nextactiveButton === false ?
                                                                 <button
                                                                     className="btn btn-outline-primary me-2"
-                                                                    onClick={() => handleTabNavigation(activeTabIndex - 1)} // Navigate to the previous tab
+                                                                    onClick={() => submitForm()} // Navigate to the previous tab
                                                                 >
                                                                     <i className="fas fa-paper-plane"></i> Submit
                                                                 </button>
