@@ -193,7 +193,7 @@ export default function GenericTable({
     setSubmitted(true);
 
     var status = false;
-    if (product.id === null || product.id === "") {
+    if (product.Id === null || product.Id === "") {
       status = saveFunc(product);
       console.log(status, "tableeeeeeee save");
       toast.current.show({
@@ -203,7 +203,8 @@ export default function GenericTable({
         life: 3000,
       });
       setProductDialog(false);
-    } else {
+    }
+    else {
       status = editFunc(product);
       toast.current.show({
         severity: "success",
