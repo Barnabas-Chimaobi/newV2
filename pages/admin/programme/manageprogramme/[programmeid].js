@@ -387,13 +387,13 @@ export default function ManageProgramme() {
 
                                 <div class="card card-table">
                                     <div class="card-body">
-                                        <h4>{programme?.name}</h4>
+                                        <h4>Manage {programme?.name}(s) Setup</h4>
                                     </div>
                                 </div>
                                 <div class="card card-table">
                                     <div class="card-body">
                                         <TabView>
-                                            <TabPanel header="Manage Sessions">
+                                            <TabPanel header="Programme Sessions">
 
 
                                                 <Table
@@ -416,7 +416,7 @@ export default function ManageProgramme() {
                                                     showOnlyDeleteButton={false}
                                                 />
                                             </TabPanel>
-                                            <TabPanel header="Manage Departments">
+                                            <TabPanel header="Programme Departments">
 
                                                 <Table
                                                     saveFunc={saveprogrammedepartment}
@@ -439,7 +439,7 @@ export default function ManageProgramme() {
                                                 />
 
                                             </TabPanel>
-                                            <TabPanel header="Manage Departments Options">
+                                            <TabPanel header="Programme Departments Options">
                                             </TabPanel>
                                         </TabView>
                                     </div></div>
