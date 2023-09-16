@@ -394,8 +394,6 @@ export default function ManageProgramme() {
                                     <div class="card-body">
                                         <TabView>
                                             <TabPanel header="Manage Sessions">
-                                                {/* <div class="card card-table">
-                                                    <div class="card-body"> */}
 
 
                                                 <Table
@@ -417,13 +415,8 @@ export default function ManageProgramme() {
                                                     showManageButton={false}
                                                     showOnlyDeleteButton={false}
                                                 />
-                                                {/* </div>
-                                                </div> */}
                                             </TabPanel>
                                             <TabPanel header="Manage Departments">
-                                                {/* <div class="card card-table">
-                                                    <div class="card-body"> */}
-
 
                                                 <Table
                                                     saveFunc={saveprogrammedepartment}
@@ -444,8 +437,7 @@ export default function ManageProgramme() {
                                                     showCheckBox={false}
                                                     showManageButton={false}
                                                 />
-                                                {/* </div>
-                                                </div> */}
+
                                             </TabPanel>
                                             <TabPanel header="Manage Departments Options">
                                             </TabPanel>
