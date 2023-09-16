@@ -13,7 +13,6 @@ import "../public/assets/plugins/fontawesome/css/fontawesome.min.css";
 import "../public/assets/plugins/fontawesome/css/all.min.css";
 import "../public/assets/plugins/select2/css/select2.min.css";
 import "../public/assets/css/style.css";
-import AdminLayout from "@/components/AdminLayout";
 import {
   ApolloClient,
   InMemoryCache,
