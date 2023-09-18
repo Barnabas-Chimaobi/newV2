@@ -16,6 +16,7 @@ import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
 import { SAVE_FACULTY } from "../pages/api/mutations/admin";
 import { useRouter } from "next/router";
 import { Dropdown } from "primereact/dropdown";
+import { InputSwitch } from "primereact/inputswitch";
 
 import { Constant } from "../constant";
 
@@ -41,6 +42,9 @@ export default function GenericTable({
   fillApplicationForm,
   showCheckBox,
   showAdmitButton,
+  showManageButton,
+  showOnlyDeleteButton
+
 }) {
   const router = useRouter();
 
@@ -91,7 +95,7 @@ export default function GenericTable({
   const RenderInputs = () => {
     //console.log(productObj, "Drop down List");
     return Object.keys(product).map((fieldName) => {
-      console.log(fieldName, "ppppppppp");
+      // console.log(fieldName, "ppppppppp");
       if (fieldName === "id") {
         console.log(fieldName, "changing id values");
         // if (e.target.value !== null && e.target.value > 0) {
@@ -102,6 +106,7 @@ export default function GenericTable({
           (obj) => obj.Name === fieldName
         );
 
+        //  console.log(dropDownObject, "drop down object")
         if (!dropDownObject) {
           // Handle the case where there's no corresponding definition in DropDownObjects
           return null;
@@ -124,7 +129,22 @@ export default function GenericTable({
               />
             </div>
           );
-        } else if (dropDownObject.Type === "Text") {
+        }
+        else if (dropDownObject.Type === "Switch") {
+          return (
+            <div key={fieldName} className="field">
+              <div className="flex items-center">
+                <label htmlFor={fieldName} className="font-bold">
+                  {toSentenceCase(fieldName)}
+                </label>
+
+                <InputSwitch checked={product[fieldName]} onChange={(e) => onSaveValueChange(fieldName, e.target.value)} className="ml-2" />
+              </div>
+            </div>
+          );
+        }
+
+        else if (dropDownObject.Type === "Text") {
           // Render a text input component
           return (
             <div key={fieldName} className="field">
@@ -139,6 +159,7 @@ export default function GenericTable({
             </div>
           );
         }
+
       }
       return null;
     });
@@ -183,7 +204,8 @@ export default function GenericTable({
         life: 3000,
       });
       setProductDialog(false);
-    } else {
+    }
+    else {
       status = editFunc(product);
       toast.current.show({
         severity: "success",
@@ -415,6 +437,53 @@ export default function GenericTable({
   };
 
   const actionBodyTemplate = (rowData) => {
+    if (showOnlyDeleteButton) {
+      return (
+        <React.Fragment>
+
+          <Button
+            icon="pi pi-trash"
+            rounded
+            outlined
+            severity="danger"
+            className="ml-2"
+            onClick={() => confirmDeleteProduct(rowData)}
+          />
+        </React.Fragment>
+      );
+    }
+    if (showManageButton) {
+      return (
+        <React.Fragment>
+          <Button
+            icon="pi pi-pencil"
+            rounded
+            outlined
+            className="mr-2"
+            onClick={() => editProduct(rowData)}
+          />
+
+          <Button
+            label="Manage"
+            rounded
+            outlined
+            severity="outline-primary"
+            onClick={() => {
+              const url = Constant.BASE_URL + `/admin/programme/manageprogramme/` + rowData?.Id;
+              window.open(url, '_blank');
+            }}
+          />
+          <Button
+            icon="pi pi-trash"
+            rounded
+            outlined
+            severity="danger"
+            className="ml-2"
+            onClick={() => confirmDeleteProduct(rowData)}
+          />
+        </React.Fragment>
+      );
+    }
     if (allowEdit) {
       return (
         <React.Fragment>
@@ -435,6 +504,7 @@ export default function GenericTable({
         </React.Fragment>
       );
     }
+
     if (showInvoiceButton && rowData?.Status === 1) {
       return (
         <React.Fragment>
@@ -467,6 +537,7 @@ export default function GenericTable({
         </React.Fragment>
       );
     }
+
     if (fillApplicationForm && rowData?.Status > 1) {
       return (
         <React.Fragment>
@@ -570,7 +641,7 @@ export default function GenericTable({
               Are you sure you want to delete{" "}
               <b>
                 {Object.keys(product).map((field) =>
-                  field !== "id" ? (
+                  field !== "Id" ? (
                     <div key={field} className="field">
                       <label htmlFor={field} className="font-bold">
                         {toSentenceCase(field)} : {product[field]}

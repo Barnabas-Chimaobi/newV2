@@ -307,7 +307,6 @@ export default function Generateapplicationinvoice() {
                 <div className="Homepage-wrapper">
                     <div className="content container-fluid">
                         <div className="row">
-                            {/* <div className="col-lg-8-offset-2 col-sm-12"> */}
                             <div className="col-lg-10 offset-lg-1 col-sm-12 offset-sm-1">
                                 <div className="card bg-white">
                                     <div className="card-header">

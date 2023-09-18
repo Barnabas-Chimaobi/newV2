@@ -30,15 +30,7 @@ export default function decryptString(ciphertext) {
 
         var decode = urlDecode(ciphertext);
         var response = base64Decode(decode);
-        console.log(response, "response for decryption")
-        if (response?.includes('-')) {
-            // Replace the character back to '/'
-            var decryptedText = response?.replace(/-/g, '/');
-            return decryptedText;
-        }
-        else {
-            return response;
-        }
+        return response;
 
     } catch (error) {
         console.error('Decryption Error:', error);

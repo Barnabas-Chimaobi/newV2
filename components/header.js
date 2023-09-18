@@ -25,6 +25,7 @@ export default function header({ children }) {
                     <a className="mobile_btn" id="mobile_btn">
                         <i className="fas fa-bars" />
                     </a>
+
                     <ul className="nav user-menu" >
 
                         <li className="nav-item dropdown noti-dropdown me-2">
@@ -53,6 +54,7 @@ export default function header({ children }) {
                                 <img src="/assets/img/icons/header-icon-04.svg" alt="" />
                             </a>
                         </li>
+
                         <li className="nav-item dropdown has-arrow new-user-menus">
                             <a
                                 href="#"
@@ -95,9 +97,11 @@ export default function header({ children }) {
                                 </a>
                             </div>
                         </li>
+
                     </ul>
                 </div>
                 {children}
+
             </div >
         </>
     )
