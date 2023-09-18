@@ -162,7 +162,7 @@ export default function feeSetup() {
 
   const onSecondChange = (e) => {
     setAllFees(e.source);
-    setSelectedFees(e.source);
+    setSelectedFees(e.target);
   };
 
   const saveFeeDetailsFunc = async () => {
@@ -183,7 +183,7 @@ export default function feeSetup() {
       const details = await SavefeeDetails({
         variables: {
           model: {
-            departmentIds: selectedDept?.id,
+            departmentIds: selectedDept,
             feeTypeId: feeType?.Id,
             fees: selectedFees,
             levelId: level?.Id,
