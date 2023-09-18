@@ -1,6 +1,7 @@
 "use client";
 import AdminLayout from "../components/AdminLayout";
 import StudentLayout from "../components/StudentLayout";
+
 import Script from "next/script";
 import "../public/assets/css/bootstrap-datetimepicker.min.css";
 import "../public/assets/css/ckeditor.css";
@@ -41,7 +42,6 @@ export default function Home({ Component, pageProps }) {
   //console.log(pageProps, Component, "Page propssss")
   // const rootPath = pathname?.split("/");
   //console.log(rootPath, router.pathname, "Root pathjhh")
-
 
   if (rootPath && rootPath[1] == "admin") {
     return (
