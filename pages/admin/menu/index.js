@@ -2,7 +2,11 @@ import React, { useState, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { useMutation, useQuery, useLazyQuery, from } from "@apollo/client";
 import { ALL_MENU, ALL_MENU_GROUP } from "@/pages/api/queries/admin";
-import { SAVE_MENU, UPDATE_MENU } from "@/pages/api/mutations/admin";
+import {
+  SAVE_MENU,
+  UPDATE_MENU,
+  DELETE_MENU,
+} from "@/pages/api/mutations/admin";
 
 import Table from "../../../components/table";
 import { Column } from "primereact/column";
@@ -30,6 +34,9 @@ export default function index() {
     updateMenu,
     { loading: updateMenuLoad, error: updateMenuError, data: updateMenuData },
   ] = useMutation(UPDATE_MENU);
+
+  const [deleteMenu, { loading: delMenu, error: menuErr, data: menuDel }] =
+    useMutation(DELETE_MENU);
 
   const [
     menuGroup,
@@ -89,7 +96,7 @@ export default function index() {
           icon: data?.Icon?.Icon,
         },
       });
-
+      allMenu();
       if (updateMenuResponse?.data?.updateMenu?.id > 0) {
         toast.success("Menu has been updated");
         allMenu();
@@ -97,6 +104,15 @@ export default function index() {
     } catch (err) {
       toast.error(err.message);
     }
+  };
+
+  const deleteMenuFunc = async (data) => {
+    const delResponse = await deleteMenu({
+      variables: {
+        deleteMenuId: data?.Id,
+      },
+    });
+    allMenu();
   };
 
   const menuGroupList = allMenuGroupData?.allMenuGroup?.map((item) => {
@@ -131,8 +147,8 @@ export default function index() {
 
   const TableObj = {
     Name: "",
-    Action: "",
     Controller: "",
+    Action: "",
     Menugroup: "",
     Icon: "",
     Id: "",
@@ -146,14 +162,14 @@ export default function index() {
       id: "",
     },
     {
-      Name: "Action",
+      Name: "Controller",
       Type: "Text",
       List: isNullableType,
       Description: "",
       id: "",
     },
     {
-      Name: "Controller",
+      Name: "Action",
       Type: "Text",
       List: isNullableType,
       Description: "",
@@ -245,7 +261,7 @@ export default function index() {
                       tableContent={tableRow}
                       dropDownObjects={DropDownObjects}
                       editFunc={updateMenuFunc}
-                      deleteFunc={{}}
+                      deleteFunc={deleteMenuFunc}
                     />
                   </div>
                 </div>

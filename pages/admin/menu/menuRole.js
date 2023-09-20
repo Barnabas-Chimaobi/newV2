@@ -137,7 +137,7 @@ export default function menuRole() {
       const menuRolePayload = await saveMenuRole({
         variables: {
           menuid: data?.Menu?.Id,
-          roleid: parseInt(role),
+          roleid: data?.Role?.Id,
         },
       });
     } catch (err) {
@@ -149,7 +149,7 @@ export default function menuRole() {
     try {
       const funcResponse = await menuRoleByRoleIdQ({
         variables: {
-          roleid: role.Id,
+          roleid: role?.Id,
         },
       });
       console.log(role, "roleeee");

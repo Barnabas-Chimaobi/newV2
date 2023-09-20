@@ -18,7 +18,7 @@ import { useRouter } from "next/router";
 import { Dropdown } from "primereact/dropdown";
 import { InputSwitch } from "primereact/inputswitch";
 
-import { Constant } from '../constant';
+import { Constant } from "../constant";
 
 import Decrypt from "./decrypt";
 import Encrypt from "./encrypt";
@@ -44,6 +44,7 @@ export default function GenericTable({
   showAdmitButton,
   showManageButton,
   showOnlyDeleteButton
+
 }) {
   const router = useRouter();
 
@@ -74,7 +75,7 @@ export default function GenericTable({
   const [product, setProduct] = useState(tableObjectBody);
   const [productObj, setproductObj] = useState(dropDownObjects);
   const [submitted, setSubmitted] = useState(false);
-  console.log(selectedProducts, "selected products")
+  console.log(selectedProducts, "selected products");
   const [content, setContent] = useState([]);
   const [
     saveFaculty,
@@ -417,19 +418,16 @@ export default function GenericTable({
         ) : (
           <></>
         )}
-        {
-          showAdmitButton ? (
-            <Button
-              label="Admit"
-              icon="pi pi-upload"
-              className="btn btn-outline-primary me-2"
-              onClick={admitSelectedProducts}
-            />
-          )
-            : (
-              <></>
-            )
-        }
+        {showAdmitButton ? (
+          <Button
+            label="Admit"
+            icon="pi pi-upload"
+            className="btn btn-outline-primary me-2"
+            onClick={admitSelectedProducts}
+          />
+        ) : (
+          <></>
+        )}
       </div>
     );
   };
@@ -516,8 +514,11 @@ export default function GenericTable({
             outlined
             severity="outline-primary"
             onClick={() => {
-              const url = Constant.BASE_URL + `/common/invoice/` + Encrypt(rowData?.InvoiceNumber);
-              window.open(url, '_blank');
+              const url =
+                Constant.BASE_URL +
+                `/common/invoice/` +
+                Encrypt(rowData?.InvoiceNumber);
+              window.open(url, "_blank");
             }}
           />
           <Button
@@ -526,8 +527,11 @@ export default function GenericTable({
             outlined
             severity="outline-success"
             onClick={() => {
-              const url = Constant.BASE_URL + `/common/receipt/` + Encrypt(rowData?.InvoiceNumber);
-              window.open(url, '_blank');
+              const url =
+                Constant.BASE_URL +
+                `/common/receipt/` +
+                Encrypt(rowData?.InvoiceNumber);
+              window.open(url, "_blank");
             }}
           />
         </React.Fragment>
@@ -557,14 +561,11 @@ export default function GenericTable({
               const url = Constant.BASE_URL + `/applicant/fillform/` + rowData?.InvoiceNumber;
               window.open(url, '_blank');
             }}
+
           />
         </React.Fragment>
       );
     }
-
-
-
-
   };
 
   const toSentenceCase = (inputString) => {
@@ -607,7 +608,6 @@ export default function GenericTable({
           }
           globalFilter={globalFilter}
           header={header}
-
         >
           <Column
             selectionMode="multiple"
@@ -623,8 +623,6 @@ export default function GenericTable({
             style={{ minWidth: "12rem", backgroundColor: "white" }}
           ></Column>
         </DataTable>
-
-
       </div>
 
       <Dialog
@@ -674,6 +672,6 @@ export default function GenericTable({
           )}
         </div>
       </Dialog>
-    </div >
+    </div>
   );
 }
