@@ -12,12 +12,11 @@ import {
 import { toast, ToastContainer } from 'react-toastify';
 import { SAVE_BIODATA } from '../pages/api/mutations/applicant';
 import { Dropdown } from 'primereact/dropdown';
-import Invoice from './invoice';
 import Header from './header';
 import { useRouter } from 'next/router';
 import { Constant } from '../constant';
-import Encrypt from "./encrypt"
 import NairaFormatter from "./nairaformatter"
+import Encrypt from "@/components/encrypt"
 
 export default function Generateapplicationinvoice() {
     const router = useRouter();
@@ -297,6 +296,25 @@ export default function Generateapplicationinvoice() {
         setTabFour('Active');
         setpageFour('Active Show');
     }
+    const openSpecificPage = (no) => {
+
+
+        // if (no === 2) {
+        //     clearActiveTabsAndPages();
+        //     setTabTwo('Active');
+        //     setpageTwo('Active Show');
+        // }
+        // if (no === 3) {
+        //     clearActiveTabsAndPages();
+        //     settableData('Active');
+        //     setpageThree('Active Show');
+        // }
+        // if (no === 4) {
+        //     clearActiveTabsAndPages();
+        //     setTabFour('Active');
+        //     setpageFour('Active Show');
+        // }
+    }
 
     return (
         <>
@@ -316,8 +334,8 @@ export default function Generateapplicationinvoice() {
                                         <ul className="nav nav-tabs nav-tabs-solid nav-tabs-rounded">
                                             <li className="nav-item"><a className={`nav-link ${tabOne !== '' ? 'active' : ''}`} href="#solid-rounded-tab1" data-bs-toggle="tab"  {...(email === '' ? { disabled: 'disabled' } : {})} >Email Verification</a></li>
                                             <li className="nav-item"><a className={`nav-link ${tabTwo !== '' ? 'active' : ''}`} href="#solid-rounded-tab2" data-bs-toggle="tab"  {...(email === '' ? { disabled: 'disabled' } : {})} >Save Profile</a></li>
-                                            <li className="nav-item"><a className={`nav-link ${tabThree !== '' ? 'active' : ''}`} href="#solid-rounded-tab3" data-bs-toggle="tab"  {...(email === '' ? { disabled: 'disabled' } : {})} >Previous Applications</a></li>
-                                            <li className="nav-item"><a className={`nav-link ${tabFour !== '' ? 'active' : ''}`} href="#solid-rounded-tab4" data-bs-toggle="tab"  {...(email === '' ? { disabled: 'disabled' } : {})} >Apply</a></li>
+                                            <li className="nav-item"><a className={`nav-link ${tabThree !== '' ? 'active' : ''}`} href="#solid-rounded-tab3" data-bs-toggle="tab"  {...(email === '' ? { disabled: 'disabled' } : {})}  >Previous Applications</a></li>
+                                            <li className="nav-item"><a className={`nav-link ${tabFour !== '' ? 'active' : ''}`} href="#solid-rounded-tab4" data-bs-toggle="tab"  {...(email === '' ? { disabled: 'disabled' } : {})}  >Apply</a></li>
                                             <li className="nav-item"><a className={`nav-link ${tabFive !== '' ? 'active' : ''}`} href="#solid-rounded-tab5" data-bs-toggle="tab" disabled >Print Invoice</a></li>
                                         </ul>
                                         <div className="tab-content">
@@ -696,7 +714,7 @@ export default function Generateapplicationinvoice() {
                                                     <div className="col-sm-12">
                                                         <div className="card">
                                                             <div className="card-body">
-                                                                <Invoice />
+
                                                             </div>
                                                         </div>
                                                     </div>

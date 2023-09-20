@@ -17,7 +17,6 @@ import { TabView, TabPanel } from 'primereact/tabview';
 import Formgroup from "./formgroup";
 import { Calendar } from 'primereact/calendar';
 import Header from "./header";
-import { OLEVEL_GRADE, OLEVEL_SUBJECT, OLEVEL_TYPE } from '../pages/api/queries/applicant';
 import { SUBMIT_APPLICANT_FORM } from "../pages/api/mutations/applicantMutation";
 import { ProgressBar } from 'primereact/progressbar';
 import { Tooltip } from 'primereact/tooltip';
@@ -26,15 +25,16 @@ import Spinner from './spinner'
 
 
 export default function GenericForm({
-    tableObjectBody,
-    dropDownObjects,
+    data,
+    olevelSubjectsData,
+    olevelGradesData
 }) {
-    const [isLoading, setisLoading] = useState(true);
+    const [isLoading, setisLoading] = useState(false);
     const [visible, setVisible] = useState(false);
+    const [isSaving, setisSaving] = useState(false);
+    const [canSubmitForm, setcanSubmitForm] = useState(false);
     const [products, setProducts] = useState(null);
     const [productDialog, setProductDialog] = useState(false);
-    const [product, setProduct] = useState(tableObjectBody);
-    const [productObj, setproductObj] = useState(dropDownObjects);
     const [submitted, setSubmitted] = useState(false);
     const [content, setContent] = useState([]);
     const [activeTabIndex, setActiveTabIndex] = useState(0);
@@ -43,18 +43,19 @@ export default function GenericForm({
     const [totalIndex, settotalIndex] = useState(0);
     const [olevelSubjects, setolevelSubjects] = useState("");
     const [olevelGrades, setolevelGrades] = useState("");
+    const [formpreview, setformpreview] = useState(false);
     const [formSubmit, { formSubmiterror, formSubmitloading, formSubmitdata }] = useMutation(
         SUBMIT_APPLICANT_FORM
     );
 
     const [pictureUrl, setPictureUrl] = useState("");
 
-    const [firstexamNumber, setfirstexamNumber] = useState();
-    const [firstexamType, setfirstexamType] = useState();
-    const [firstexamYear, setfirstexamYear] = useState();
-    const [secondexamNumber, setsecondexamNumber] = useState();
-    const [secondexamType, setsecondexamType] = useState();
-    const [secondexamYear, setsecondexamYear] = useState();
+    const [firstexamNumber, setfirstexamNumber] = useState("");
+    const [firstexamType, setfirstexamType] = useState("");
+    const [firstexamYear, setfirstexamYear] = useState("");
+    const [secondexamNumber, setsecondexamNumber] = useState("");
+    const [secondexamType, setsecondexamType] = useState("");
+    const [secondexamYear, setsecondexamYear] = useState("");
 
     const [firstSub1, setfirstSub1] = useState("");
     const [firstSub2, setfirstSub2] = useState("");
@@ -93,26 +94,84 @@ export default function GenericForm({
     const [secondGrade8, setsecondGrade8] = useState("");
     const [secondGrade9, setsecondGrade9] = useState("");
 
-    const [OlevelGrade, { loading: OlevelGradeLoad, error: OlevelGradeError, data: OlevelGradeData }] = useLazyQuery(OLEVEL_GRADE);
-    const [OlevelSubject, { loading: OlevelSubjectLoad, error: OlevelSubjectError, data: OlevelSubjectData }] = useLazyQuery(OLEVEL_SUBJECT);
     const [fields, setFields] = useState([]);
 
     const dropdowns = async () => {
-        const subjects = await OlevelSubject();
-        setolevelSubjects(subjects?.data?.gellAllOLevelSubject);
-        const grades = await OlevelGrade();
-        setolevelGrades(grades?.data?.gellAllOLevelGrade);
         const fieldDetails = [];
-        const stateList = data?.data?.applicantForm?.mainPages.flatMap((item, index) =>
-            item?.sections?.flatMap((item2, index2) =>
-                item2.fieldDetails.map((item3, index3) => {
-                    fieldDetails.push({ id: item3.id, response: item3.response });
-                    return item3;
-                })
-            )
-        );
+        console.log(data, "Dataaaaa tabkle")
+        if (data?.applicantForm !== null) {
+            const stateList = data?.applicantForm?.mainPages.flatMap((item, index) =>
+                item?.sections?.flatMap((item2, index2) =>
+                    item2.fieldDetails.map((item3, index3) => {
+                        fieldDetails.push({ id: item3.id, response: item3.response });
+                        return item3;
+                    })
+                )
+            );
+            console.log(data?.applicantForm, "Picture   url....")
+        }
+        if (data?.applicantForm?.personUrl !== null && data?.applicantForm?.personUrl !== "" && data?.applicantForm?.personUrl !== "undefined") {
+            setPictureUrl(data?.applicantForm?.personUrl);
+        }
+        console.log(data?.applicantForm?.submitOlevelResult, "First sitting results")
+        if (data?.applicantForm?.submitOlevelResult?.length > 0) {
+            var firstSitting = data?.applicantForm?.submitOlevelResult[0];
+
+            if (firstSitting !== null && firstSitting !== "" && firstSitting !== "undefined") {
+                setfirstexamNumber(firstSitting?.examNumber);
+                setfirstexamYear(firstSitting?.examYear);
+                setfirstexamType(firstSitting?.olevelType);
+                setfirstGrade1({ name: firstSitting?.olevelResultsDto[0]?.grade });
+                setfirstSub1({ name: firstSitting?.olevelResultsDto[0]?.subject });
+                setfirstGrade2({ name: firstSitting?.olevelResultsDto[1]?.grade });
+                setfirstSub2({ name: firstSitting?.olevelResultsDto[1]?.subject });
+                setfirstGrade3({ name: firstSitting?.olevelResultsDto[2]?.grade });
+                setfirstSub3({ name: firstSitting?.olevelResultsDto[2]?.subject });
+                setfirstGrade4({ name: firstSitting?.olevelResultsDto[3]?.grade });
+                setfirstSub4({ name: firstSitting?.olevelResultsDto[3]?.subject });
+                setfirstGrade5({ name: firstSitting?.olevelResultsDto[4]?.grade });
+                setfirstSub5({ name: firstSitting?.olevelResultsDto[4]?.subject });
+                setfirstGrade6({ name: firstSitting?.olevelResultsDto[5]?.grade });
+                setfirstSub6({ name: firstSitting?.olevelResultsDto[5]?.subject });
+                setfirstGrade7({ name: firstSitting?.olevelResultsDto[6]?.grade });
+                setfirstSub7({ name: firstSitting?.olevelResultsDto[6]?.subject });
+                setfirstGrade8({ name: firstSitting?.olevelResultsDto[7]?.grade });
+                setfirstSub8({ name: firstSitting?.olevelResultsDto[7]?.subject });
+                setfirstGrade9({ name: firstSitting?.olevelResultsDto[8]?.grade });
+                setfirstSub9({ name: firstSitting?.olevelResultsDto[8]?.subject });
+            }
+            if (data?.applicantForm?.submitOlevelResult?.length > 1) {
+                var secondSitting = data?.applicantForm?.submitOlevelResult[1];
+                if (secondSitting !== null && secondSitting !== "" && secondSitting !== "undefined") {
+                    setsecondexamNumber(secondSitting?.examNumber);
+                    setsecondexamYear(secondSitting?.examYear);
+                    setsecondexamType(secondSitting?.olevelType);
+                    setsecondGrade1({ name: secondSitting?.olevelResultsDto[0]?.grade });
+                    setsecondSub1({ name: secondSitting?.olevelResultsDto[0]?.subject });
+                    setsecondGrade2({ name: secondSitting?.olevelResultsDto[1]?.grade });
+                    setsecondSub2({ name: secondSitting?.olevelResultsDto[1]?.subject });
+                    setsecondGrade3({ name: secondSitting?.olevelResultsDto[2]?.grade });
+                    setsecondSub3({ name: secondSitting?.olevelResultsDto[2]?.subject });
+                    setsecondGrade4({ name: secondSitting?.olevelResultsDto[3]?.grade });
+                    setsecondSub4({ name: secondSitting?.olevelResultsDto[3]?.subject });
+                    setsecondGrade5({ name: secondSitting?.olevelResultsDto[4]?.grade });
+                    setsecondSub5({ name: secondSitting?.olevelResultsDto[4]?.subject });
+                    setsecondGrade6({ name: secondSitting?.olevelResultsDto[5]?.grade });
+                    setsecondSub6({ name: secondSitting?.olevelResultsDto[5]?.subject });
+                    setsecondGrade7({ name: secondSitting?.olevelResultsDto[6]?.grade });
+                    setsecondSub7({ name: secondSitting?.olevelResultsDto[6]?.subject });
+                    setsecondGrade8({ name: secondSitting?.olevelResultsDto[7]?.grade });
+                    setsecondSub8({ name: secondSitting?.olevelResultsDto[7]?.subject });
+                    setsecondGrade9({ name: secondSitting?.olevelResultsDto[8]?.grade });
+                    setsecondSub9({ name: secondSitting?.olevelResultsDto[8]?.subject });
+                }
+            }
+        }
+
         setFields(fieldDetails);
         console.log(fieldDetails, "Flat LIST")
+        setolevelSubjects(olevelSubjectsData);
+        setolevelGrades(olevelGradesData);
         setisLoading(false)
     }
 
@@ -120,1237 +179,105 @@ export default function GenericForm({
         dropdowns();
     }, []);
 
-    var data = {
-        "data": {
-            "applicantForm": {
-                "mainPages": [
-                    {
-                        "pageId": 31,
-                        "pageName": "Page 1",
-                        "programmeId": 1,
-                        "programmeName": "Regular",
-                        "sessionId": 32,
-                        "sessionName": "2022/2023",
-                        "sections": [
-                            {
-                                "sectionId": 102,
-                                "sectionName": "Bio Data",
-                                "fieldDetails": [
-                                    {
-                                        "id": 102,
-                                        "input_type": "text",
-                                        "label": "Surname",
-                                        "list": null,
-                                        "required": null,
-                                        "response": "Obinna",
-                                        "errorMessage": null,
-                                        "dynamicFormPageSectionSetupId": 34,
-                                        "isReadonly": true
-                                    },
-                                    {
-                                        "id": 103,
-                                        "input_type": "text",
-                                        "label": "First Name",
-                                        "list": null,
-                                        "required": null,
-                                        "response": "Uche",
-                                        "errorMessage": null,
-                                        "dynamicFormPageSectionSetupId": 34,
-                                        "isReadonly": true
-                                    },
-                                    {
-                                        "id": 104,
-                                        "input_type": "text",
-                                        "label": "Other Name",
-                                        "list": null,
-                                        "required": null,
-                                        "response": "Emma",
-                                        "errorMessage": null,
-                                        "dynamicFormPageSectionSetupId": 34,
-                                        "isReadonly": true
-                                    },
-                                    {
-                                        "id": 105,
-                                        "input_type": "select",
-                                        "label": "Sex",
-                                        "list": [
-                                            "Male",
-                                            "Female"
-                                        ],
-                                        "required": null,
-                                        "response": "Male",
-                                        "errorMessage": null,
-                                        "dynamicFormPageSectionSetupId": 34,
-                                        "isReadonly": false
-                                    },
-                                    {
-                                        "id": 106,
-                                        "input_type": "date",
-                                        "label": "Date of Birth",
-                                        "list": null,
-                                        "required": null,
-                                        "response": "04-10-1995",
-                                        "errorMessage": null,
-                                        "dynamicFormPageSectionSetupId": 34,
-                                        "isReadonly": false
-                                    },
-                                    {
-                                        "id": 107,
-                                        "input_type": "select",
-                                        "label": "State",
-                                        "list": [
-                                            "ABIA",
-                                            "ADAMAWA",
-                                            "AKWA IBOM",
-                                            "ANAMBRA",
-                                            "BAUCHI",
-                                            "BENUE",
-                                            "BORNU",
-                                            "BAYELSA",
-                                            "CROSS RIVERS",
-                                            "DELTA",
-                                            "EBONYI",
-                                            "EDO",
-                                            "ENUGU",
-                                            "EKITI",
-                                            "FEDERAL CAPITAL",
-                                            "GOMBE",
-                                            "IMO",
-                                            "JIGAWA",
-                                            "KEBBI",
-                                            "KADUNA",
-                                            "KOGI",
-                                            "KANO",
-                                            "KATSINA",
-                                            "KWARA",
-                                            "LAGOS",
-                                            "NIGER",
-                                            "NASSARAWA",
-                                            "ONDO",
-                                            "OGUN",
-                                            "OSUN",
-                                            "NON-NIGERIAN",
-                                            "OYO",
-                                            "PLATEAU",
-                                            "RIVERS",
-                                            "SOKOTO",
-                                            "TARABA",
-                                            "YOBE"
-                                        ],
-                                        "required": null,
-                                        "response": "EBONYI",
-                                        "errorMessage": null,
-                                        "dynamicFormPageSectionSetupId": 34,
-                                        "isReadonly": true
-                                    },
-                                    {
-                                        "id": 108,
-                                        "input_type": "select",
-                                        "label": "Local government",
-                                        "list": [
-                                            "Abakaliki",
-                                            "Afikpo-North",
-                                            "Afikpo-South",
-                                            "Aliero",
-                                            "Arewa-Dandi",
-                                            "Argungu",
-                                            "Augie",
-                                            "Bagudo",
-                                            "Birnin-Kebbi",
-                                            "Bunza",
-                                            "Dandi",
-                                            "Ebonyi Local Government Area",
-                                            "Ezza-North",
-                                            "Ezza-South",
-                                            "Fakai",
-                                            "Gwandu",
-                                            "Ikwo",
-                                            "Ishielu",
-                                            "Ivo",
-                                            "Izzi",
-                                            "Jega",
-                                            "Kalgo",
-                                            "Koko/Besse",
-                                            "Maiyama",
-                                            "Ngaski",
-                                            "Ohaozara",
-                                            "Ohaukwu",
-                                            "Onicha",
-                                            "Sakaba",
-                                            "Shanga",
-                                            "Suru, Nigeria",
-                                            "Wasagu/Danko",
-                                            "Yauri, Nigeria",
-                                            "Zuru"
-                                        ],
-                                        "required": null,
-                                        "response": "",
-                                        "errorMessage": null,
-                                        "dynamicFormPageSectionSetupId": 34,
-                                        "isReadonly": false
-                                    },
-                                    {
-                                        "id": 109,
-                                        "input_type": "text",
-                                        "label": "HomeTown",
-                                        "list": null,
-                                        "required": null,
-                                        "response": "",
-                                        "errorMessage": null,
-                                        "dynamicFormPageSectionSetupId": 34,
-                                        "isReadonly": false
-                                    },
-                                    {
-                                        "id": 110,
-                                        "input_type": "number",
-                                        "label": "Mobile Phonee",
-                                        "list": null,
-                                        "required": null,
-                                        "response": "09070899207334",
-                                        "errorMessage": null,
-                                        "dynamicFormPageSectionSetupId": 34,
-                                        "isReadonly": true
-                                    },
-                                    {
-                                        "id": 111,
-                                        "input_type": "text",
-                                        "label": "Email",
-                                        "list": null,
-                                        "required": null,
-                                        "response": "iknowyouarecomingcom",
-                                        "errorMessage": null,
-                                        "dynamicFormPageSectionSetupId": 34,
-                                        "isReadonly": true
-                                    },
-                                    {
-                                        "id": 112,
-                                        "input_type": "select",
-                                        "label": "Religion",
-                                        "list": [
-                                            "Christianity",
-                                            "Islam",
-                                            "Hinduism",
-                                            "Buddhism",
-                                            "Sikhism",
-                                            "Judaism",
-                                            "Bahá'í Faith",
-                                            "Jainism",
-                                            "Shinto",
-                                            "Taoism",
-                                            "Zoroastrianism",
-                                            "Confucianism",
-                                            "Animism",
-                                            "African Traditional Religions",
-                                            "Native American Religions",
-                                            "Rastafari",
-                                            "Scientism",
-                                            "Atheism",
-                                            "Agnosticism"
-                                        ],
-                                        "required": null,
-                                        "response": "",
-                                        "errorMessage": null,
-                                        "dynamicFormPageSectionSetupId": 34,
-                                        "isReadonly": false
-                                    },
-                                    {
-                                        "id": 113,
-                                        "input_type": "text",
-                                        "label": "Permanent Address",
-                                        "list": null,
-                                        "required": null,
-                                        "response": "",
-                                        "errorMessage": null,
-                                        "dynamicFormPageSectionSetupId": 34,
-                                        "isReadonly": false
-                                    },
-                                    {
-                                        "id": 114,
-                                        "input_type": "select",
-                                        "label": "Disability",
-                                        "list": [
-                                            "None",
-                                            "Other"
-                                        ],
-                                        "required": null,
-                                        "response": "",
-                                        "errorMessage": null,
-                                        "dynamicFormPageSectionSetupId": 34,
-                                        "isReadonly": false
-                                    },
-                                    {
-                                        "id": 115,
-                                        "input_type": "text",
-                                        "label": "If other Specify",
-                                        "list": null,
-                                        "required": null,
-                                        "response": "",
-                                        "errorMessage": null,
-                                        "dynamicFormPageSectionSetupId": 34,
-                                        "isReadonly": false
-                                    },
-                                    {
-                                        "id": 116,
-                                        "input_type": "text",
-                                        "label": "Extra-Curricular Activities e.g (Sports/Hobbies)",
-                                        "list": null,
-                                        "required": null,
-                                        "response": "",
-                                        "errorMessage": null,
-                                        "dynamicFormPageSectionSetupId": 34,
-                                        "isReadonly": false
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "pageId": 32,
-                        "pageName": "Page 2",
-                        "programmeId": 1,
-                        "programmeName": "Regular",
-                        "sessionId": 32,
-                        "sessionName": "2022/2023",
-                        "sections": [
-                            {
-                                "sectionId": 117,
-                                "sectionName": "Next of Kin",
-                                "fieldDetails": [
-                                    {
-                                        "id": 117,
-                                        "input_type": "text",
-                                        "label": "Next of Kin's Name",
-                                        "list": null,
-                                        "required": null,
-                                        "response": "",
-                                        "errorMessage": null,
-                                        "dynamicFormPageSectionSetupId": 35,
-                                        "isReadonly": false
-                                    },
-                                    {
-                                        "id": 118,
-                                        "input_type": "text",
-                                        "label": "Next of Kin's Address",
-                                        "list": null,
-                                        "required": null,
-                                        "response": "",
-                                        "errorMessage": null,
-                                        "dynamicFormPageSectionSetupId": 35,
-                                        "isReadonly": false
-                                    },
-                                    {
-                                        "id": 119,
-                                        "input_type": "select",
-                                        "label": "Next of Kin's Relationship",
-                                        "list": [
-                                            "Father",
-                                            "Mother",
-                                            "Brother",
-                                            "Sister",
-                                            "Cousin",
-                                            "Nephew",
-                                            "Uncle",
-                                            "Niece",
-                                            "Aunt",
-                                            "Grand Father",
-                                            "Grand Mother",
-                                            "Self",
-                                            "Husband",
-                                            "Wife",
-                                            "Son",
-                                            "Daughter"
-                                        ],
-                                        "required": null,
-                                        "response": "",
-                                        "errorMessage": null,
-                                        "dynamicFormPageSectionSetupId": 35,
-                                        "isReadonly": false
-                                    },
-                                    {
-                                        "id": 120,
-                                        "input_type": "number",
-                                        "label": "Next of Kin's Mobile Phone",
-                                        "list": null,
-                                        "required": null,
-                                        "response": "09070899207334",
-                                        "errorMessage": null,
-                                        "dynamicFormPageSectionSetupId": 35,
-                                        "isReadonly": true
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "pageId": 33,
-                        "pageName": "Page 3(O-level Result)",
-                        "programmeId": 1,
-                        "programmeName": "Regular",
-                        "sessionId": 32,
-                        "sessionName": "2022/2023",
-                        "sections": [
-                            {
-                                "sectionId": 121,
-                                "sectionName": "O-Level Result",
-                                "fieldDetails": [
-                                    {
-                                        "id": 121,
-                                        "input_type": "text",
-                                        "label": "O-Level",
-                                        "list": [
-                                            "100 Level"
-                                        ],
-                                        "required": null,
-                                        "response": "",
-                                        "errorMessage": null,
-                                        "dynamicFormPageSectionSetupId": 36,
-                                        "isReadonly": false
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "pageId": 34,
-                        "pageName": "Page 4",
-                        "programmeId": 1,
-                        "programmeName": "Regular",
-                        "sessionId": 32,
-                        "sessionName": "2022/2023",
-                        "sections": [
-                            {
-                                "sectionId": 122,
-                                "sectionName": "UTME Details/Mode of Reference",
-                                "fieldDetails": [
-                                    {
-                                        "id": 122,
-                                        "input_type": "text",
-                                        "label": "Jamb Registration No",
-                                        "list": null,
-                                        "required": null,
-                                        "response": "",
-                                        "errorMessage": null,
-                                        "dynamicFormPageSectionSetupId": 37,
-                                        "isReadonly": false
-                                    },
-                                    {
-                                        "id": 123,
-                                        "input_type": "text",
-                                        "label": "Jamb Score",
-                                        "list": null,
-                                        "required": null,
-                                        "response": "",
-                                        "errorMessage": null,
-                                        "dynamicFormPageSectionSetupId": 37,
-                                        "isReadonly": false
-                                    },
-                                    {
-                                        "id": 124,
-                                        "input_type": "select",
-                                        "label": "Choice",
-                                        "list": [
-                                            "First",
-                                            "Second",
-                                            "Third"
-                                        ],
-                                        "required": null,
-                                        "response": "",
-                                        "errorMessage": null,
-                                        "dynamicFormPageSectionSetupId": 37,
-                                        "isReadonly": false
-                                    },
-                                    {
-                                        "id": 125,
-                                        "input_type": "select",
-                                        "label": "First Subject",
-                                        "list": [
-                                            "English",
-                                            "Mathematics",
-                                            "Physics",
-                                            "Chemistry",
-                                            "Agriculture",
-                                            "Biology",
-                                            "Economics",
-                                            "Food and Nutrition",
-                                            "Commerce",
-                                            "Government",
-                                            "Insurance",
-                                            "Christian Religious Knowledge",
-                                            "Dying and Blishing",
-                                            "Account",
-                                            "Literature In English",
-                                            "Integrated Science",
-                                            "Civic Education",
-                                            "Igbo Language",
-                                            "French",
-                                            "Home Economics",
-                                            "Computer",
-                                            "Creative and Cultural Art",
-                                            "Intro Technology",
-                                            "Music",
-                                            "Social Studies",
-                                            "Business Studies",
-                                            "Basic Technology",
-                                            "General Paper",
-                                            "Basic Science",
-                                            "Physical and Health Education",
-                                            "Fine Arts",
-                                            "Data Processing",
-                                            "Financial Accounting",
-                                            "Geography",
-                                            "Painting and Decoration",
-                                            "Catering Craft",
-                                            "Moral Instruction",
-                                            "Business Method",
-                                            "Principles of Accounts",
-                                            "Office Practice",
-                                            "History",
-                                            "Typewriting",
-                                            "Shorthand",
-                                            "Basic Electricity",
-                                            "Technical Drawing",
-                                            "Further Mathematics",
-                                            "Book Keeping & Principles of Accounting",
-                                            "Health Science",
-                                            "Wood Work",
-                                            "Basic Electronics",
-                                            "Auto Mechanics",
-                                            "Metal Work",
-                                            "Home Management",
-                                            "AGRICULTURAL EQUIPMENT MECHANICS WORKS (INTRODUCTI",
-                                            "BASKETRY",
-                                            "AGRICULTURAL EQUIPMENT MECHANICS WORKS (TRACTOR SY",
-                                            "ANIMAL HUSBANDARY",
-                                            "APPLIED ELECTRICITY",
-                                            "APPLIED ELECTRICITY AND AUTOMOBILE",
-                                            "ARABIC",
-                                            "ARITHMETIC PROCESS",
-                                            "AUTO ELECTRICAL WORKS",
-                                            "AUTOMOBILE ELECTRICAL WORKS",
-                                            "BLOCKLAYING, BRICKLAYING AND CONCRETING",
-                                            "BUILDING CONSTRUCTION",
-                                            "BUILDING/ENGINEERING DRAWING",
-                                            "BUSINESS MANAGEMENT",
-                                            "CARPENTRY AND JOINERY",
-                                            "CERAMICS",
-                                            "CERAMICS (CERAMICS DESIGN)",
-                                            "CHRISTIAN RELIGIOUS STUDIES",
-                                            "CIVIC EDUCATION",
-                                            "CLERICAL OFFICE DUTIES",
-                                            "CLOTHING AND TEXTILE",
-                                            "COMPUTER CRAFT STUDIES",
-                                            "COSMETOLOGY",
-                                            "CROP HUSBANDARY AND HORTICULTURE",
-                                            "DRAUGHTMANSHIP CRAFT PRACTICE (DRAUGHTMANSHIP)",
-                                            "ELECTRICAL INSTALLATION AND MAINTENANCE WORK",
-                                            "ELECTRONICS",
-                                            "ELECTRONICS WORKS",
-                                            "ENGINEERING SCIENCE",
-                                            "FABRICATION AND WEILDING",
-                                            "FISHERIES",
-                                            "FITTING DRILLING AND GRINDING",
-                                            "FORESTERY",
-                                            "FOUNDRY CRAFT PRACTICE",
-                                            "FURNITURE MAKING",
-                                            "GENERAL METAL WORK",
-                                            "GENERAL WOOD WORK",
-                                            "GRAPHIC ART (GRAPHIC DESIGN)",
-                                            "GRAPHIC DESIGN",
-                                            "HAUSA LANGUAGE",
-                                            "HISTORY",
-                                            "INFORMATION COMMUNICATION TECHNOLOGY (ICT)",
-                                            "INSTRUMENT MECHANICS WORKS",
-                                            "INTRODUCTION TO BUILDING CONSTRUCTION",
-                                            "ISLAMIC STUDIES",
-                                            "JEWELLERY",
-                                            "",
-                                            "LADIES GARMENT MAKING (GARMENT CONSTRUCTION AND FI",
-                                            "LEATHER TRADES (FOOTWEAR MANUFACTURE)",
-                                            "LEATHER TRADES (LEATHER GOODS MANUFACTURE)",
-                                            "LEATHER TRADES (LEATHER TRANNING)",
-                                            "LEATHERWORK",
-                                            "LIGHT VEHICLE BODY REPAIR WORKS",
-                                            "MACHING WOOD WORKING",
-                                            "MANAGEMENT IN-LIVING",
-                                            "MARINE ENGINEERING CRAFT",
-                                            "MARINE ENGINEERING CRAFT PRACTICE",
-                                            "MECHANICAL ENGINEERING CRAFT PRACTICE",
-                                            "MEDICAL ENGINEERING CRAFT PRACTICE",
-                                            "MEN'S GARMENT MAKING (GARMENT CONSTRUCTION AND FIN",
-                                            "MOTOR VEHICLE MECHANICS WORK",
-                                            "PHOTOGRAPHIC PRACTICE",
-                                            "PHYSICAL EDUCATION",
-                                            "PICTURE MAKING",
-                                            "PLUMBING AND PIPE FITTING",
-                                            "PRATICAL TEACHING",
-                                            "PRINCIPLE & PRACTICE OF  EDUCATION",
-                                            "PRINCIPLES & PRACTICE OF EDUCATION",
-                                            "PRINTING CRAFT PRACTICE",
-                                            "REFRIGERATION AND AIR-CONDITIONING",
-                                            "SALESMANSHIP",
-                                            "SCULPTURE",
-                                            "SECRETARIAL STUDIES",
-                                            "SHIP CRAFT PRACTICE",
-                                            "TEXTILE TRADE (BLEACHING, DYEING AND FINISHING)",
-                                            "TEXTILE TRADE (SPINNING)",
-                                            "TEXTILE TRADE (WEAVING)",
-                                            "TEXTILE TRADES (SURFACE DESIGN AND TEXTILE PRINTIN",
-                                            "TEXTILES",
-                                            "TOURISM",
-                                            "TURNING MILLING AND SHAPING",
-                                            "VEHICLE BODY BUILDING",
-                                            "VISUAL ART",
-                                            "YORUBA LANGUAGE",
-                                            "Marketing"
-                                        ],
-                                        "required": null,
-                                        "response": "",
-                                        "errorMessage": null,
-                                        "dynamicFormPageSectionSetupId": 37,
-                                        "isReadonly": false
-                                    },
-                                    {
-                                        "id": 126,
-                                        "input_type": "select",
-                                        "label": "Second Subject",
-                                        "list": [
-                                            "English",
-                                            "Mathematics",
-                                            "Physics",
-                                            "Chemistry",
-                                            "Agriculture",
-                                            "Biology",
-                                            "Economics",
-                                            "Food and Nutrition",
-                                            "Commerce",
-                                            "Government",
-                                            "Insurance",
-                                            "Christian Religious Knowledge",
-                                            "Dying and Blishing",
-                                            "Account",
-                                            "Literature In English",
-                                            "Integrated Science",
-                                            "Civic Education",
-                                            "Igbo Language",
-                                            "French",
-                                            "Home Economics",
-                                            "Computer",
-                                            "Creative and Cultural Art",
-                                            "Intro Technology",
-                                            "Music",
-                                            "Social Studies",
-                                            "Business Studies",
-                                            "Basic Technology",
-                                            "General Paper",
-                                            "Basic Science",
-                                            "Physical and Health Education",
-                                            "Fine Arts",
-                                            "Data Processing",
-                                            "Financial Accounting",
-                                            "Geography",
-                                            "Painting and Decoration",
-                                            "Catering Craft",
-                                            "Moral Instruction",
-                                            "Business Method",
-                                            "Principles of Accounts",
-                                            "Office Practice",
-                                            "History",
-                                            "Typewriting",
-                                            "Shorthand",
-                                            "Basic Electricity",
-                                            "Technical Drawing",
-                                            "Further Mathematics",
-                                            "Book Keeping & Principles of Accounting",
-                                            "Health Science",
-                                            "Wood Work",
-                                            "Basic Electronics",
-                                            "Auto Mechanics",
-                                            "Metal Work",
-                                            "Home Management",
-                                            "AGRICULTURAL EQUIPMENT MECHANICS WORKS (INTRODUCTI",
-                                            "BASKETRY",
-                                            "AGRICULTURAL EQUIPMENT MECHANICS WORKS (TRACTOR SY",
-                                            "ANIMAL HUSBANDARY",
-                                            "APPLIED ELECTRICITY",
-                                            "APPLIED ELECTRICITY AND AUTOMOBILE",
-                                            "ARABIC",
-                                            "ARITHMETIC PROCESS",
-                                            "AUTO ELECTRICAL WORKS",
-                                            "AUTOMOBILE ELECTRICAL WORKS",
-                                            "BLOCKLAYING, BRICKLAYING AND CONCRETING",
-                                            "BUILDING CONSTRUCTION",
-                                            "BUILDING/ENGINEERING DRAWING",
-                                            "BUSINESS MANAGEMENT",
-                                            "CARPENTRY AND JOINERY",
-                                            "CERAMICS",
-                                            "CERAMICS (CERAMICS DESIGN)",
-                                            "CHRISTIAN RELIGIOUS STUDIES",
-                                            "CIVIC EDUCATION",
-                                            "CLERICAL OFFICE DUTIES",
-                                            "CLOTHING AND TEXTILE",
-                                            "COMPUTER CRAFT STUDIES",
-                                            "COSMETOLOGY",
-                                            "CROP HUSBANDARY AND HORTICULTURE",
-                                            "DRAUGHTMANSHIP CRAFT PRACTICE (DRAUGHTMANSHIP)",
-                                            "ELECTRICAL INSTALLATION AND MAINTENANCE WORK",
-                                            "ELECTRONICS",
-                                            "ELECTRONICS WORKS",
-                                            "ENGINEERING SCIENCE",
-                                            "FABRICATION AND WEILDING",
-                                            "FISHERIES",
-                                            "FITTING DRILLING AND GRINDING",
-                                            "FORESTERY",
-                                            "FOUNDRY CRAFT PRACTICE",
-                                            "FURNITURE MAKING",
-                                            "GENERAL METAL WORK",
-                                            "GENERAL WOOD WORK",
-                                            "GRAPHIC ART (GRAPHIC DESIGN)",
-                                            "GRAPHIC DESIGN",
-                                            "HAUSA LANGUAGE",
-                                            "HISTORY",
-                                            "INFORMATION COMMUNICATION TECHNOLOGY (ICT)",
-                                            "INSTRUMENT MECHANICS WORKS",
-                                            "INTRODUCTION TO BUILDING CONSTRUCTION",
-                                            "ISLAMIC STUDIES",
-                                            "JEWELLERY",
-                                            "",
-                                            "LADIES GARMENT MAKING (GARMENT CONSTRUCTION AND FI",
-                                            "LEATHER TRADES (FOOTWEAR MANUFACTURE)",
-                                            "LEATHER TRADES (LEATHER GOODS MANUFACTURE)",
-                                            "LEATHER TRADES (LEATHER TRANNING)",
-                                            "LEATHERWORK",
-                                            "LIGHT VEHICLE BODY REPAIR WORKS",
-                                            "MACHING WOOD WORKING",
-                                            "MANAGEMENT IN-LIVING",
-                                            "MARINE ENGINEERING CRAFT",
-                                            "MARINE ENGINEERING CRAFT PRACTICE",
-                                            "MECHANICAL ENGINEERING CRAFT PRACTICE",
-                                            "MEDICAL ENGINEERING CRAFT PRACTICE",
-                                            "MEN'S GARMENT MAKING (GARMENT CONSTRUCTION AND FIN",
-                                            "MOTOR VEHICLE MECHANICS WORK",
-                                            "PHOTOGRAPHIC PRACTICE",
-                                            "PHYSICAL EDUCATION",
-                                            "PICTURE MAKING",
-                                            "PLUMBING AND PIPE FITTING",
-                                            "PRATICAL TEACHING",
-                                            "PRINCIPLE & PRACTICE OF  EDUCATION",
-                                            "PRINCIPLES & PRACTICE OF EDUCATION",
-                                            "PRINTING CRAFT PRACTICE",
-                                            "REFRIGERATION AND AIR-CONDITIONING",
-                                            "SALESMANSHIP",
-                                            "SCULPTURE",
-                                            "SECRETARIAL STUDIES",
-                                            "SHIP CRAFT PRACTICE",
-                                            "TEXTILE TRADE (BLEACHING, DYEING AND FINISHING)",
-                                            "TEXTILE TRADE (SPINNING)",
-                                            "TEXTILE TRADE (WEAVING)",
-                                            "TEXTILE TRADES (SURFACE DESIGN AND TEXTILE PRINTIN",
-                                            "TEXTILES",
-                                            "TOURISM",
-                                            "TURNING MILLING AND SHAPING",
-                                            "VEHICLE BODY BUILDING",
-                                            "VISUAL ART",
-                                            "YORUBA LANGUAGE",
-                                            "Marketing"
-                                        ],
-                                        "required": null,
-                                        "response": "",
-                                        "errorMessage": null,
-                                        "dynamicFormPageSectionSetupId": 37,
-                                        "isReadonly": false
-                                    },
-                                    {
-                                        "id": 127,
-                                        "input_type": "select",
-                                        "label": "Third Subject",
-                                        "list": [
-                                            "English",
-                                            "Mathematics",
-                                            "Physics",
-                                            "Chemistry",
-                                            "Agriculture",
-                                            "Biology",
-                                            "Economics",
-                                            "Food and Nutrition",
-                                            "Commerce",
-                                            "Government",
-                                            "Insurance",
-                                            "Christian Religious Knowledge",
-                                            "Dying and Blishing",
-                                            "Account",
-                                            "Literature In English",
-                                            "Integrated Science",
-                                            "Civic Education",
-                                            "Igbo Language",
-                                            "French",
-                                            "Home Economics",
-                                            "Computer",
-                                            "Creative and Cultural Art",
-                                            "Intro Technology",
-                                            "Music",
-                                            "Social Studies",
-                                            "Business Studies",
-                                            "Basic Technology",
-                                            "General Paper",
-                                            "Basic Science",
-                                            "Physical and Health Education",
-                                            "Fine Arts",
-                                            "Data Processing",
-                                            "Financial Accounting",
-                                            "Geography",
-                                            "Painting and Decoration",
-                                            "Catering Craft",
-                                            "Moral Instruction",
-                                            "Business Method",
-                                            "Principles of Accounts",
-                                            "Office Practice",
-                                            "History",
-                                            "Typewriting",
-                                            "Shorthand",
-                                            "Basic Electricity",
-                                            "Technical Drawing",
-                                            "Further Mathematics",
-                                            "Book Keeping & Principles of Accounting",
-                                            "Health Science",
-                                            "Wood Work",
-                                            "Basic Electronics",
-                                            "Auto Mechanics",
-                                            "Metal Work",
-                                            "Home Management",
-                                            "AGRICULTURAL EQUIPMENT MECHANICS WORKS (INTRODUCTI",
-                                            "BASKETRY",
-                                            "AGRICULTURAL EQUIPMENT MECHANICS WORKS (TRACTOR SY",
-                                            "ANIMAL HUSBANDARY",
-                                            "APPLIED ELECTRICITY",
-                                            "APPLIED ELECTRICITY AND AUTOMOBILE",
-                                            "ARABIC",
-                                            "ARITHMETIC PROCESS",
-                                            "AUTO ELECTRICAL WORKS",
-                                            "AUTOMOBILE ELECTRICAL WORKS",
-                                            "BLOCKLAYING, BRICKLAYING AND CONCRETING",
-                                            "BUILDING CONSTRUCTION",
-                                            "BUILDING/ENGINEERING DRAWING",
-                                            "BUSINESS MANAGEMENT",
-                                            "CARPENTRY AND JOINERY",
-                                            "CERAMICS",
-                                            "CERAMICS (CERAMICS DESIGN)",
-                                            "CHRISTIAN RELIGIOUS STUDIES",
-                                            "CIVIC EDUCATION",
-                                            "CLERICAL OFFICE DUTIES",
-                                            "CLOTHING AND TEXTILE",
-                                            "COMPUTER CRAFT STUDIES",
-                                            "COSMETOLOGY",
-                                            "CROP HUSBANDARY AND HORTICULTURE",
-                                            "DRAUGHTMANSHIP CRAFT PRACTICE (DRAUGHTMANSHIP)",
-                                            "ELECTRICAL INSTALLATION AND MAINTENANCE WORK",
-                                            "ELECTRONICS",
-                                            "ELECTRONICS WORKS",
-                                            "ENGINEERING SCIENCE",
-                                            "FABRICATION AND WEILDING",
-                                            "FISHERIES",
-                                            "FITTING DRILLING AND GRINDING",
-                                            "FORESTERY",
-                                            "FOUNDRY CRAFT PRACTICE",
-                                            "FURNITURE MAKING",
-                                            "GENERAL METAL WORK",
-                                            "GENERAL WOOD WORK",
-                                            "GRAPHIC ART (GRAPHIC DESIGN)",
-                                            "GRAPHIC DESIGN",
-                                            "HAUSA LANGUAGE",
-                                            "HISTORY",
-                                            "INFORMATION COMMUNICATION TECHNOLOGY (ICT)",
-                                            "INSTRUMENT MECHANICS WORKS",
-                                            "INTRODUCTION TO BUILDING CONSTRUCTION",
-                                            "ISLAMIC STUDIES",
-                                            "JEWELLERY",
-                                            "",
-                                            "LADIES GARMENT MAKING (GARMENT CONSTRUCTION AND FI",
-                                            "LEATHER TRADES (FOOTWEAR MANUFACTURE)",
-                                            "LEATHER TRADES (LEATHER GOODS MANUFACTURE)",
-                                            "LEATHER TRADES (LEATHER TRANNING)",
-                                            "LEATHERWORK",
-                                            "LIGHT VEHICLE BODY REPAIR WORKS",
-                                            "MACHING WOOD WORKING",
-                                            "MANAGEMENT IN-LIVING",
-                                            "MARINE ENGINEERING CRAFT",
-                                            "MARINE ENGINEERING CRAFT PRACTICE",
-                                            "MECHANICAL ENGINEERING CRAFT PRACTICE",
-                                            "MEDICAL ENGINEERING CRAFT PRACTICE",
-                                            "MEN'S GARMENT MAKING (GARMENT CONSTRUCTION AND FIN",
-                                            "MOTOR VEHICLE MECHANICS WORK",
-                                            "PHOTOGRAPHIC PRACTICE",
-                                            "PHYSICAL EDUCATION",
-                                            "PICTURE MAKING",
-                                            "PLUMBING AND PIPE FITTING",
-                                            "PRATICAL TEACHING",
-                                            "PRINCIPLE & PRACTICE OF  EDUCATION",
-                                            "PRINCIPLES & PRACTICE OF EDUCATION",
-                                            "PRINTING CRAFT PRACTICE",
-                                            "REFRIGERATION AND AIR-CONDITIONING",
-                                            "SALESMANSHIP",
-                                            "SCULPTURE",
-                                            "SECRETARIAL STUDIES",
-                                            "SHIP CRAFT PRACTICE",
-                                            "TEXTILE TRADE (BLEACHING, DYEING AND FINISHING)",
-                                            "TEXTILE TRADE (SPINNING)",
-                                            "TEXTILE TRADE (WEAVING)",
-                                            "TEXTILE TRADES (SURFACE DESIGN AND TEXTILE PRINTIN",
-                                            "TEXTILES",
-                                            "TOURISM",
-                                            "TURNING MILLING AND SHAPING",
-                                            "VEHICLE BODY BUILDING",
-                                            "VISUAL ART",
-                                            "YORUBA LANGUAGE",
-                                            "Marketing"
-                                        ],
-                                        "required": null,
-                                        "response": "",
-                                        "errorMessage": null,
-                                        "dynamicFormPageSectionSetupId": 37,
-                                        "isReadonly": false
-                                    },
-                                    {
-                                        "id": 128,
-                                        "input_type": "select",
-                                        "label": "Fourth Subject",
-                                        "list": [
-                                            "English",
-                                            "Mathematics",
-                                            "Physics",
-                                            "Chemistry",
-                                            "Agriculture",
-                                            "Biology",
-                                            "Economics",
-                                            "Food and Nutrition",
-                                            "Commerce",
-                                            "Government",
-                                            "Insurance",
-                                            "Christian Religious Knowledge",
-                                            "Dying and Blishing",
-                                            "Account",
-                                            "Literature In English",
-                                            "Integrated Science",
-                                            "Civic Education",
-                                            "Igbo Language",
-                                            "French",
-                                            "Home Economics",
-                                            "Computer",
-                                            "Creative and Cultural Art",
-                                            "Intro Technology",
-                                            "Music",
-                                            "Social Studies",
-                                            "Business Studies",
-                                            "Basic Technology",
-                                            "General Paper",
-                                            "Basic Science",
-                                            "Physical and Health Education",
-                                            "Fine Arts",
-                                            "Data Processing",
-                                            "Financial Accounting",
-                                            "Geography",
-                                            "Painting and Decoration",
-                                            "Catering Craft",
-                                            "Moral Instruction",
-                                            "Business Method",
-                                            "Principles of Accounts",
-                                            "Office Practice",
-                                            "History",
-                                            "Typewriting",
-                                            "Shorthand",
-                                            "Basic Electricity",
-                                            "Technical Drawing",
-                                            "Further Mathematics",
-                                            "Book Keeping & Principles of Accounting",
-                                            "Health Science",
-                                            "Wood Work",
-                                            "Basic Electronics",
-                                            "Auto Mechanics",
-                                            "Metal Work",
-                                            "Home Management",
-                                            "AGRICULTURAL EQUIPMENT MECHANICS WORKS (INTRODUCTI",
-                                            "BASKETRY",
-                                            "AGRICULTURAL EQUIPMENT MECHANICS WORKS (TRACTOR SY",
-                                            "ANIMAL HUSBANDARY",
-                                            "APPLIED ELECTRICITY",
-                                            "APPLIED ELECTRICITY AND AUTOMOBILE",
-                                            "ARABIC",
-                                            "ARITHMETIC PROCESS",
-                                            "AUTO ELECTRICAL WORKS",
-                                            "AUTOMOBILE ELECTRICAL WORKS",
-                                            "BLOCKLAYING, BRICKLAYING AND CONCRETING",
-                                            "BUILDING CONSTRUCTION",
-                                            "BUILDING/ENGINEERING DRAWING",
-                                            "BUSINESS MANAGEMENT",
-                                            "CARPENTRY AND JOINERY",
-                                            "CERAMICS",
-                                            "CERAMICS (CERAMICS DESIGN)",
-                                            "CHRISTIAN RELIGIOUS STUDIES",
-                                            "CIVIC EDUCATION",
-                                            "CLERICAL OFFICE DUTIES",
-                                            "CLOTHING AND TEXTILE",
-                                            "COMPUTER CRAFT STUDIES",
-                                            "COSMETOLOGY",
-                                            "CROP HUSBANDARY AND HORTICULTURE",
-                                            "DRAUGHTMANSHIP CRAFT PRACTICE (DRAUGHTMANSHIP)",
-                                            "ELECTRICAL INSTALLATION AND MAINTENANCE WORK",
-                                            "ELECTRONICS",
-                                            "ELECTRONICS WORKS",
-                                            "ENGINEERING SCIENCE",
-                                            "FABRICATION AND WEILDING",
-                                            "FISHERIES",
-                                            "FITTING DRILLING AND GRINDING",
-                                            "FORESTERY",
-                                            "FOUNDRY CRAFT PRACTICE",
-                                            "FURNITURE MAKING",
-                                            "GENERAL METAL WORK",
-                                            "GENERAL WOOD WORK",
-                                            "GRAPHIC ART (GRAPHIC DESIGN)",
-                                            "GRAPHIC DESIGN",
-                                            "HAUSA LANGUAGE",
-                                            "HISTORY",
-                                            "INFORMATION COMMUNICATION TECHNOLOGY (ICT)",
-                                            "INSTRUMENT MECHANICS WORKS",
-                                            "INTRODUCTION TO BUILDING CONSTRUCTION",
-                                            "ISLAMIC STUDIES",
-                                            "JEWELLERY",
-                                            "",
-                                            "LADIES GARMENT MAKING (GARMENT CONSTRUCTION AND FI",
-                                            "LEATHER TRADES (FOOTWEAR MANUFACTURE)",
-                                            "LEATHER TRADES (LEATHER GOODS MANUFACTURE)",
-                                            "LEATHER TRADES (LEATHER TRANNING)",
-                                            "LEATHERWORK",
-                                            "LIGHT VEHICLE BODY REPAIR WORKS",
-                                            "MACHING WOOD WORKING",
-                                            "MANAGEMENT IN-LIVING",
-                                            "MARINE ENGINEERING CRAFT",
-                                            "MARINE ENGINEERING CRAFT PRACTICE",
-                                            "MECHANICAL ENGINEERING CRAFT PRACTICE",
-                                            "MEDICAL ENGINEERING CRAFT PRACTICE",
-                                            "MEN'S GARMENT MAKING (GARMENT CONSTRUCTION AND FIN",
-                                            "MOTOR VEHICLE MECHANICS WORK",
-                                            "PHOTOGRAPHIC PRACTICE",
-                                            "PHYSICAL EDUCATION",
-                                            "PICTURE MAKING",
-                                            "PLUMBING AND PIPE FITTING",
-                                            "PRATICAL TEACHING",
-                                            "PRINCIPLE & PRACTICE OF  EDUCATION",
-                                            "PRINCIPLES & PRACTICE OF EDUCATION",
-                                            "PRINTING CRAFT PRACTICE",
-                                            "REFRIGERATION AND AIR-CONDITIONING",
-                                            "SALESMANSHIP",
-                                            "SCULPTURE",
-                                            "SECRETARIAL STUDIES",
-                                            "SHIP CRAFT PRACTICE",
-                                            "TEXTILE TRADE (BLEACHING, DYEING AND FINISHING)",
-                                            "TEXTILE TRADE (SPINNING)",
-                                            "TEXTILE TRADE (WEAVING)",
-                                            "TEXTILE TRADES (SURFACE DESIGN AND TEXTILE PRINTIN",
-                                            "TEXTILES",
-                                            "TOURISM",
-                                            "TURNING MILLING AND SHAPING",
-                                            "VEHICLE BODY BUILDING",
-                                            "VISUAL ART",
-                                            "YORUBA LANGUAGE",
-                                            "Marketing"
-                                        ],
-                                        "required": null,
-                                        "response": "",
-                                        "errorMessage": null,
-                                        "dynamicFormPageSectionSetupId": 37,
-                                        "isReadonly": false
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "pageId": 35,
-                        "pageName": "Page 5",
-                        "programmeId": 1,
-                        "programmeName": "Regular",
-                        "sessionId": 32,
-                        "sessionName": "2022/2023",
-                        "sections": [
-                            {
-                                "sectionId": 129,
-                                "sectionName": "Academic Details",
-                                "fieldDetails": [
-                                    {
-                                        "id": 129,
-                                        "input_type": "text",
-                                        "label": "Programme",
-                                        "list": [
-                                            "Regular",
-                                            "ND part-time",
-                                            "HND ",
-                                            "HND MORNING",
-                                            "",
-                                            "test"
-                                        ],
-                                        "required": null,
-                                        "response": "",
-                                        "errorMessage": null,
-                                        "dynamicFormPageSectionSetupId": 38,
-                                        "isReadonly": false
-                                    },
-                                    {
-                                        "id": 130,
-                                        "input_type": "text",
-                                        "label": "School",
-                                        "list": null,
-                                        "required": null,
-                                        "response": "",
-                                        "errorMessage": null,
-                                        "dynamicFormPageSectionSetupId": 38,
-                                        "isReadonly": false
-                                    },
-                                    {
-                                        "id": 131,
-                                        "input_type": "text",
-                                        "label": "Course of Study",
-                                        "list": null,
-                                        "required": null,
-                                        "response": "",
-                                        "errorMessage": null,
-                                        "dynamicFormPageSectionSetupId": 38,
-                                        "isReadonly": false
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "pageId": 36,
-                        "pageName": "Page 6(Passport)",
-                        "programmeId": 1,
-                        "programmeName": "Regular",
-                        "sessionId": 32,
-                        "sessionName": "2022/2023",
-                        "sections": [
-                            {
-                                "sectionId": 132,
-                                "sectionName": "Passport Photograph",
-                                "fieldDetails": [
-                                    {
-                                        "id": 132,
-                                        "input_type": "text",
-                                        "label": "Passport Photograph",
-                                        "list": null,
-                                        "required": null,
-                                        "response": "",
-                                        "errorMessage": null,
-                                        "dynamicFormPageSectionSetupId": 39,
-                                        "isReadonly": false
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ],
-                "submitOlevelResult": [],
-                "personId": 33,
-                "personUrl": null
+
+
+
+    const submitFirstOlevelResult =
+    {
+        "centerName": "",
+        "examCode": "",
+        "examNumber": (firstexamNumber !== "" || firstexamNumber !== 'undefined' || firstexamNumber !== "") ? firstexamNumber : "",
+        "examYear": firstexamYear !== "" ? parseInt(firstexamYear) : null,
+        "olevelResultsDto": [
+            {
+                "grade": firstGrade1 !== "" && firstGrade1 !== 'undefined' ? firstGrade1?.name : "",
+                "subject": firstSub1 !== "" && firstSub1 !== 'undefined' ? firstSub1?.name : ""
+            },
+            {
+                "grade": firstGrade2 !== "" ? firstGrade2?.name : "",
+                "subject": firstSub2 !== "" ? firstSub2?.name : ""
+            },
+            {
+                "grade": firstGrade3 !== "" ? firstGrade3?.name : "",
+                "subject": firstSub3 !== "" ? firstSub3?.name : ""
+            },
+            {
+                "grade": firstGrade4 !== "" ? firstGrade4?.name : "",
+                "subject": firstSub4 !== "" ? firstSub4?.name : ""
+            },
+            {
+                "grade": firstGrade5 !== "" ? firstGrade5?.name : "",
+                "subject": firstSub5 !== "" ? firstSub5?.name : ""
+            },
+            {
+                "grade": firstGrade6 !== "" ? firstGrade6?.name : "",
+                "subject": firstSub6 !== "" ? firstSub6?.name : ""
+            },
+            {
+                "grade": firstGrade7 !== "" ? firstGrade7?.name : "",
+                "subject": firstSub7 !== "" ? firstSub7?.name : ""
+            },
+            {
+                "grade": firstGrade8 !== "" ? firstGrade8?.name : "",
+                "subject": firstSub8 !== "" ? firstSub8?.name : ""
+            },
+            {
+                "grade": firstGrade9 !== "" ? firstGrade9?.name : "",
+                "subject": firstSub9 !== "" ? firstSub9?.name : ""
             }
-        }
-    };
+        ],
+        "olevelType": firstexamType !== "" ? firstexamType : "",
+        "sitting": 1
+    }
+
+    const submitSecondOlevelResult =
+    {
+        "centerName": null,
+        "examCode": null,
+        "examNumber": secondexamNumber !== "" ? secondexamNumber : null,
+        "examYear": secondexamYear !== "" ? parseInt(secondexamYear) : null,
+        "olevelResultsDto": [
+            {
+                "grade": secondGrade1 !== "" ? secondGrade1?.name : null,
+                "subject": secondSub1 !== "" ? secondSub1?.name : null
+            },
+            {
+                "grade": secondGrade2 !== "" ? secondGrade2?.name : null,
+                "subject": secondSub2 !== "" ? secondSub2?.name : null
+            },
+            {
+                "grade": secondGrade3 !== "" ? secondGrade3?.name : null,
+                "subject": secondSub3 !== "" ? secondSub3?.name : null
+            },
+            {
+                "grade": secondGrade4 !== "" ? secondGrade4?.name : null,
+                "subject": secondSub4 !== "" ? secondSub4?.name : null
+            },
+            {
+                "grade": secondGrade5 !== "" ? secondGrade5?.name : null,
+                "subject": secondSub5 !== "" ? secondSub5?.name : null
+            },
+            {
+                "grade": secondGrade6 !== "" ? secondGrade6?.name : null,
+                "subject": secondSub6 !== "" ? secondSub6?.name : null
+            },
+            {
+                "grade": secondGrade7 !== "" ? secondGrade7?.name : null,
+                "subject": secondSub7 !== "" ? secondSub7?.name : null
+            }, {
+                "grade": secondGrade8 !== "" ? secondGrade8?.name : null,
+                "subject": secondSub8 !== "" ? secondSub8?.name : null
+            },
+            {
+                "grade": secondGrade9 !== "" ? secondGrade9?.name : null,
+                "subject": secondSub9 !== "" ? secondSub9?.name : null
+            },
+        ],
+        "olevelType": secondexamType !== "" ? secondexamType : null,
+        "sitting": 2
+    }
 
 
-
-    const submitFirstOlevelResult = [
-        {
-            "centerName": null,
-            "examCode": null,
-            "examNumber": firstexamNumber,
-            "examYear": firstexamYear,
-            "olevelResultsDto": [
-                {
-                    "grade": firstGrade1,
-                    "subject": firstSub1
-                },
-                {
-                    "grade": firstGrade2,
-                    "subject": firstSub2
-                },
-                {
-                    "grade": firstGrade3,
-                    "subject": firstSub3
-                },
-                {
-                    "grade": firstGrade4,
-                    "subject": firstSub4
-                },
-                {
-                    "grade": firstGrade5,
-                    "subject": firstSub5
-                },
-                {
-                    "grade": firstGrade6,
-                    "subject": firstSub6
-                },
-                {
-                    "grade": firstGrade7,
-                    "subject": firstSub7
-                },
-                {
-                    "grade": firstGrade8,
-                    "subject": firstSub8
-                },
-                {
-                    "grade": firstGrade9,
-                    "subject": firstSub9
-                }
-            ],
-            "olevelType": firstexamType,
-            "sitting": 1
-        }
-    ]
-    const submitSecondOlevelResult = [
-        {
-            "centerName": null,
-            "examCode": null,
-            "examNumber": secondexamNumber,
-            "examYear": secondexamYear,
-            "olevelResultsDto": [
-                {
-                    "grade": secondGrade1,
-                    "subject": secondSub1
-                },
-                {
-                    "grade": secondGrade2,
-                    "subject": secondSub2
-                },
-                {
-                    "grade": secondGrade3,
-                    "subject": secondSub3
-                },
-                {
-                    "grade": secondGrade4,
-                    "subject": secondSub4
-                },
-                {
-                    "grade": secondGrade5,
-                    "subject": secondSub5
-                },
-                {
-                    "grade": secondGrade6,
-                    "subject": secondSub6
-                },
-                {
-                    "grade": secondGrade7,
-                    "subject": secondSub7
-                }, {
-                    "grade": secondGrade8,
-                    "subject": secondSub8
-                },
-                {
-                    "grade": secondGrade9,
-                    "subject": secondSub9
-                },
-            ],
-            "olevelType": secondexamType,
-            "sitting": 2
-        }
-    ]
 
     const handleChange = (id, value) => {
 
@@ -1380,7 +307,7 @@ export default function GenericForm({
                         onChange={(e) => handleChange(field.id, e.target.value)}
                         name={field.id}>
                         <option>Select {field.label}</option>
-                        {field?.list.map((x) => (
+                        {field?.list?.map((x) => (
                             <option>{x}</option>
                         ))}
                     </select>
@@ -1434,7 +361,7 @@ export default function GenericForm({
                         onChange={(e) => handleChange(field.id, e.target.value)}
                         name={field.id}>
                         <option>Select {field.label}</option>
-                        {field?.list.map((x) => (
+                        {field?.list?.map((x) => (
                             <option>{x}</option>
                         ))}
                     </select>
@@ -1474,15 +401,16 @@ export default function GenericForm({
 
 
     const handleTabNavigation = (targetTabIndex) => {
-        // console.log(data?.data?.applicantForm?.mainPages.length, "index lemgth")
-        if (targetTabIndex >= 0 && targetTabIndex < data?.data?.applicantForm?.mainPages.length) {
+        saveAndContinue();
+        // console.log(data?.applicantForm?.mainPages.length, "index lemgth")
+        if (targetTabIndex >= 0 && targetTabIndex < data?.applicantForm?.mainPages.length) {
             setActiveTabIndex(targetTabIndex);
             if (targetTabIndex == 0) {
                 setpreviousactiveButton(false);
             } else {
                 setpreviousactiveButton(true)
             }
-            if (targetTabIndex == data?.data?.applicantForm?.mainPages?.length - 1) {
+            if (targetTabIndex == data?.applicantForm?.mainPages?.length - 1) {
                 setnextactiveButton(false)
             } else {
                 setnextactiveButton(true)
@@ -1606,12 +534,12 @@ export default function GenericForm({
     const emptyTemplate = () => {
         return (
             <div className="flex align-items-center flex-column">
-                {false ? <>
+                {(pictureUrl === null || pictureUrl === '' || pictureUrl === "undefined") ? <>
                     <i className="pi pi-image mt-3 p-5" style={{ fontSize: '5em', borderRadius: '50%', backgroundColor: 'var(--surface-b)', color: 'var(--surface-d)' }}></i>
                     <span style={{ fontSize: '1.2em', color: 'var(--text-color-secondary)' }} className="my-5">
                         Drag and Drop Image Here
                     </span></> :
-                    <img alt="Pictures" role="presentation" src="http://backendvirtualschoolv2.lloydant.com/Images/Pictures/9fec955a-dff4-4175-aadd-397351d467d95_92.PNG" width={200} />
+                    <img alt="Pictures" role="presentation" src={`${pictureUrl}`} width={200} />
                 }
             </div>
         );
@@ -1625,53 +553,80 @@ export default function GenericForm({
 
 
     const NullChecker = () => {
-        var check = true;
+        var check = 1;
         var formsDto = fields.map((item) => {
             if (item.response === null || item.response === "") {
                 setVisible(true)
-                check = false;
+                check = 0;
             }
         });
         if (pictureUrl === null || pictureUrl === "") {
-            check = false;
+            check = 0;
         }
         if (submitFirstOlevelResult?.examNumber === null || submitFirstOlevelResult?.examNumber === "") {
-            check = false;
+            check = 0;
         }
+        var setsubmitvalue = check == 1 ? true : false;
+        setcanSubmitForm(setsubmitvalue)
         return check;
     }
 
 
     const submitForm = async () => {
+        setisSaving(true);
+        saveAndContinue();
         var checkNull = NullChecker();
+        console.log(checkNull, "null check")
+        if (checkNull === 1) {
+            setformpreview(true)
 
-        if (checkNull) {
-            setTimeout(async () => {
-                try {
-                    var formsDto = fields.map((item) => {
-                        return {
-                            feildId: item.id,
-                            response: item.response,
-                        };
-                    });
-                    const forms = await formSubmit({
-                        variables: {
-                            model: {
-                                personId: form?.applicantForm?.personId,
-                                formDetails: formsDto,
-                                submitOlevelResult: [submitFirstOlevelResult, submitSecondOlevelResult],
-                                pictureUrl: pictureUrl,
-                            },
-                        },
-                    });
-                    setLoad(false);
-                } catch (err) {
-                    setLoad(false);
-                    toast.error(err.message);
-                }
-            }, 3000);
         }
     };
+    const submitAfterPreview = async () => {
+        var checkNull = NullChecker();
+
+        if (checkNull === 1) {
+
+            await saveAndContinue();
+
+        }
+    };
+    const saveAndContinue = async () => {
+        setisSaving(true)
+        setTimeout(async () => {
+
+            // console.log({
+            //     personId: data?.applicantForm?.personId,
+            //     formDetails: formsDto,
+            //     submitOlevelResult: [submitFirstOlevelResult, submitSecondOlevelResult],
+            //     pictureUrl: pictureUrl,
+            // }, "Submit datatankjim")
+            try {
+                var formsDto = fields.map((item) => {
+                    return {
+                        feildId: item.id,
+                        response: item.response,
+                    };
+                });
+                //console.log(formsDto, "feilds sskkskslsl")
+                const formsApplicant = await formSubmit({
+                    variables: {
+                        model: {
+                            personId: data?.applicantForm?.personId,
+                            formDetails: formsDto,
+                            submitOlevelResult: [submitFirstOlevelResult, submitSecondOlevelResult],
+                            pictureUrl: pictureUrl,
+                            canSubmit: canSubmitForm
+                        },
+                    },
+                });
+                setisSaving(false)
+
+            } catch (err) {
+                setisSaving(false)
+            }
+        }, 3000);
+    }
 
     return (
         <>
@@ -1684,10 +639,11 @@ export default function GenericForm({
                                     <div className="card bg-white">
                                         <div className="card-header">
                                             <h5 className="card-title">Application Form</h5>
+
                                         </div>
                                         <div className="card-body">
                                             <ul className="nav nav-tabs nav-tabs-solid nav-tabs-rounded">
-                                                {data?.data?.applicantForm?.mainPages.map((item0, index0) => (
+                                                {data?.applicantForm?.mainPages.map((item0, index0) => (
                                                     < >
                                                         <li className="nav-item"><a className={`nav-link ${index0 === activeTabIndex ? 'active' : ''}`} href={`#solid-rounded-tab${index0 + 1}`}
                                                             data-bs-toggle="tab" onClick={() => handleTabNavigation(index0)}
@@ -1697,7 +653,7 @@ export default function GenericForm({
                                                 ))}
                                             </ul>
                                             <div className="tab-content">
-                                                {data?.data?.applicantForm?.mainPages.map((item, index) => (
+                                                {data?.applicantForm?.mainPages.map((item, index) => (
                                                     < >
 
                                                         <div key={index} className={`tab-pane ${index === activeTabIndex ? 'show active' : ''}`} id={`solid-rounded-tab${index + 1}`}>
@@ -2084,7 +1040,7 @@ export default function GenericForm({
                                                                         <Tooltip target=".custom-upload-btn" content="Upload" position="bottom" />
                                                                         <Tooltip target=".custom-cancel-btn" content="Clear" position="bottom" />
 
-                                                                        <FileUpload ref={fileUploadRef} name="file" url="http://backendvirtualschoolv2.lloydant.com/api/Passport" multiple accept="image/*" maxFileSize={1000000}
+                                                                        <FileUpload ref={fileUploadRef} name="file" url="/api/Passport" multiple accept="image/*" maxFileSize={1000000}
                                                                             onUpload={onTemplateUpload} onSelect={onTemplateSelect} onError={onTemplateClear} onClear={onTemplateClear}
                                                                             headerTemplate={headerTemplate} itemTemplate={itemTemplate} emptyTemplate={emptyTemplate}
                                                                             chooseOptions={chooseOptions} uploadOptions={uploadOptions} cancelOptions={cancelOptions} />
@@ -2143,6 +1099,7 @@ export default function GenericForm({
                                                                 </button>
 
                                                             </div>
+                                                            {isSaving ? <i className="pi pi-spin pi-sync" style={{ fontSize: '1rem' }}></i> : <></>}
                                                         </div >
 
                                                     </>
@@ -2166,9 +1123,9 @@ export default function GenericForm({
                     team at support@lloydant.com/07088391544 or 090838920222.
                 </p>
             </Dialog>
-            <Dialog header="Preview" visible={visible} maximizable style={{ width: '50vw' }} onHide={() => setVisible(false)}>
+            <Dialog header="Preview" visible={formpreview} maximizable style={{ width: '50vw' }} onHide={() => setformpreview(false)}>
                 <div>
-                    {data?.data?.applicantForm?.mainPages.map((item, index) => (
+                    {data?.applicantForm?.mainPages.map((item, index) => (
                         < >
 
                             <div key={index} >
@@ -2558,7 +1515,7 @@ export default function GenericForm({
                                             <Tooltip target=".custom-upload-btn" content="Upload" position="bottom" />
                                             <Tooltip target=".custom-cancel-btn" content="Clear" position="bottom" /> */}
 
-                                            <FileUpload ref={fileUploadRef} name="file" url="http://backendvirtualschoolv2.lloydant.com/api/Passport" multiple accept="image/*"
+                                            <FileUpload ref={fileUploadRef} name="file" url="/api/Passport" multiple accept="image/*"
                                                 maxFileSize={1000000}
                                                 onUpload={onTemplateUpload} onSelect={onTemplateSelect} onError={onTemplateClear} onClear={onTemplateClear}
                                                 headerTemplate={previewheaderTemplate} itemTemplate={itemTemplate} emptyTemplate={emptyTemplate}
@@ -2602,7 +1559,7 @@ export default function GenericForm({
 
                         <button
                             className="btn btn-outline-primary me-2"
-                            onClick={() => submitForm()} // Navigate to the previous tab
+                            onClick={() => submitAfterPreview()} // Navigate to the previous tab
                         >
                             <i className="fas fa-paper-plane"></i> Submit
                         </button>

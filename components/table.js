@@ -535,14 +535,28 @@ export default function GenericTable({
     }
 
     if (fillApplicationForm && rowData?.Status > 1) {
+      console.log(rowData, "Row data aaa")
       return (
         <React.Fragment>
+          <Button
+            label="Print Receipt"
+            rounded
+            outlined
+            severity="outline-success"
+            onClick={() => {
+              const url = Constant.BASE_URL + `/common/receipt/` + Encrypt(rowData?.InvoiceNumber);
+              window.open(url, '_blank');
+            }}
+          />
           <Button
             label="Fill Form"
             rounded
             outlined
-            severity="outline-success"
-
+            severity="outline-primary"
+            onClick={() => {
+              const url = Constant.BASE_URL + `/applicant/fillform/` + rowData?.InvoiceNumber;
+              window.open(url, '_blank');
+            }}
           />
         </React.Fragment>
       );
