@@ -56,6 +56,7 @@ export default function menuGroup() {
     { Name: "Calendar", Icon: "pi-calendar" },
     { Name: "Inbox", Icon: "pi-inbox" },
     { Name: "Down Arrow", Icon: "pi pi-arrow-down" },
+    { Name: "User", Icon: "pi-user" },
     // Add more icons as needed
   ];
 
@@ -143,7 +144,7 @@ export default function menuGroup() {
                 saveFunc={saveMenuGroupFunc}
                 headers={headers}
                 generateColumnTemplates={generateColumnTemplates}
-                tableName={"Menu Role"}
+                tableName={"Menu Group"}
                 allowEdit={true}
                 allowApply={false}
                 tableObjectBody={TableObj}

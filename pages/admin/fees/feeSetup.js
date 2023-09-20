@@ -195,6 +195,7 @@ export default function feeSetup() {
         },
       });
       console.log(details, "detailsssss");
+      toast.success("Fee Setup added");
     } catch (err) {
       toast.error(err.message);
     }
