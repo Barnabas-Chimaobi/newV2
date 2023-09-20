@@ -68,7 +68,7 @@ export default function index() {
   console.log(facultyList?.allFaculty, "faculty");
 
   const FacultyListItem = facultyList?.allFaculty?.map((item) => ({
-    id: item?.id,
+    Id: item?.id,
     Name: item?.name,
   }));
 
