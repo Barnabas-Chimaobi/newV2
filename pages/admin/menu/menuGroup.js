@@ -138,28 +138,31 @@ export default function menuGroup() {
     <div>
       <div className="page-wrapper">
         <div className="content container-fluid">
-          <div className="row">
-            <div class="card-body">
-              <Table
-                saveFunc={saveMenuGroupFunc}
-                headers={headers}
-                generateColumnTemplates={generateColumnTemplates}
-                tableName={"Menu Group"}
-                allowEdit={true}
-                allowApply={false}
-                tableObjectBody={TableObj}
-                showExport={true}
-                showAddButton={true}
-                variablesForQuery={{}}
-                tableContent={tableRow}
-                dropDownObjects={DropDownObjects}
-                editFunc={{}}
-                deleteFunc={{}}
-              />
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="card card-table">
+                <div class="card-body">
+                  <Table
+                    saveFunc={saveMenuGroupFunc}
+                    headers={headers}
+                    generateColumnTemplates={generateColumnTemplates}
+                    tableName={"Menu Group"}
+                    allowEdit={true}
+                    allowApply={false}
+                    tableObjectBody={TableObj}
+                    showExport={true}
+                    showAddButton={true}
+                    variablesForQuery={{}}
+                    tableContent={tableRow}
+                    dropDownObjects={DropDownObjects}
+                    editFunc={{}}
+                    deleteFunc={{}}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </div></div>
   );
 }
