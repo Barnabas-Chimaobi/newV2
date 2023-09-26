@@ -1,6 +1,6 @@
-import React from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 import { Constant } from "../constant";
-
 
 export default function Layout({ children }) {
     return (
@@ -237,6 +237,7 @@ export default function Layout({ children }) {
                                             <span className="menu-arrow" />
                                         </a>
                                         {/* <ul>
+
                     <li>
                       <a href="index.html">Admin Dashboard</a>
                     </li>
@@ -257,4 +258,5 @@ export default function Layout({ children }) {
             </html>
         </>
     );
+
 }
