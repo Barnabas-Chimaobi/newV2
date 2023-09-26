@@ -4,6 +4,7 @@ import { Constant } from "../constant";
 import Link from "next/link";
 
 export default function Layout({ children }) {
+
   const [domLoaded, setDomLoaded] = useState(false);
   const [fullName, setfullName] = useState("");
   const [passport, setpassport] = useState("");
@@ -124,4 +125,5 @@ export default function Layout({ children }) {
       )}
     </>
   );
+
 }

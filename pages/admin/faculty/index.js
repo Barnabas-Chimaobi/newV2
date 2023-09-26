@@ -163,7 +163,8 @@ export default function index() {
                     dropDownObjects={DropDownObjects}
                     editFunc={editFaculty}
                     deleteFunc={deleteFacultyFunc}
-                    showCheckBox={true}
+                    showCheckBox={false}
+
                   />
                 </div>
               </div>

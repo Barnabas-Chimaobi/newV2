@@ -27,7 +27,8 @@ import Spinner from './spinner'
 export default function GenericForm({
     data,
     olevelSubjectsData,
-    olevelGradesData
+    olevelGradesData,
+    isPreview
 }) {
     const [isLoading, setisLoading] = useState(false);
     const [visible, setVisible] = useState(false);
@@ -592,40 +593,42 @@ export default function GenericForm({
         }
     };
     const saveAndContinue = async () => {
-        setisSaving(true)
-        setTimeout(async () => {
+        if (isPreview === false) {
+            setisSaving(true)
+            setTimeout(async () => {
 
-            // console.log({
-            //     personId: data?.applicantForm?.personId,
-            //     formDetails: formsDto,
-            //     submitOlevelResult: [submitFirstOlevelResult, submitSecondOlevelResult],
-            //     pictureUrl: pictureUrl,
-            // }, "Submit datatankjim")
-            try {
-                var formsDto = fields.map((item) => {
-                    return {
-                        feildId: item.id,
-                        response: item.response,
-                    };
-                });
-                //console.log(formsDto, "feilds sskkskslsl")
-                const formsApplicant = await formSubmit({
-                    variables: {
-                        model: {
-                            personId: data?.applicantForm?.personId,
-                            formDetails: formsDto,
-                            submitOlevelResult: [submitFirstOlevelResult, submitSecondOlevelResult],
-                            pictureUrl: pictureUrl,
-                            canSubmit: canSubmitForm
+                // console.log({
+                //     personId: data?.applicantForm?.personId,
+                //     formDetails: formsDto,
+                //     submitOlevelResult: [submitFirstOlevelResult, submitSecondOlevelResult],
+                //     pictureUrl: pictureUrl,
+                // }, "Submit datatankjim")
+                try {
+                    var formsDto = fields.map((item) => {
+                        return {
+                            feildId: item.id,
+                            response: item.response,
+                        };
+                    });
+                    //console.log(formsDto, "feilds sskkskslsl")
+                    const formsApplicant = await formSubmit({
+                        variables: {
+                            model: {
+                                personId: data?.applicantForm?.personId,
+                                formDetails: formsDto,
+                                submitOlevelResult: [submitFirstOlevelResult, submitSecondOlevelResult],
+                                pictureUrl: pictureUrl,
+                                canSubmit: canSubmitForm
+                            },
                         },
-                    },
-                });
-                setisSaving(false)
+                    });
+                    setisSaving(false)
 
-            } catch (err) {
-                setisSaving(false)
-            }
-        }, 3000);
+                } catch (err) {
+                    setisSaving(false)
+                }
+            }, 3000);
+        }
     }
 
     return (

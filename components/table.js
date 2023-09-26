@@ -46,6 +46,7 @@ export default function GenericTable({
   showManageButton,
   showOnlyDeleteButton,
   checkFunction,
+  showAddPages
 }) {
   const router = useRouter();
 
@@ -434,6 +435,19 @@ export default function GenericTable({
         ) : (
           <></>
         )}
+        {
+          showAddPages ? (
+            <Button
+              label="Start Form"
+              icon="pi pi-arrow-up-right"
+              className="btn btn-outline-primary me-2"
+              onClick={() => {
+                const url = Constant.BASE_URL + `/admin/manageform/newform`;
+                window.open(url);
+              }}
+            />
+          ) : (<></>)
+        }
       </div>
     );
   };
