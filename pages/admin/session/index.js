@@ -1,13 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
-// import Table from "../../../src/app/components/table";
-// import { GET_ALL_SESSION } from "../../../api/queries/admin";
-// import {
-//   SAVE_SESSION,
-//   UPDATE_SESSION,
-//   DELETE_SESSION,
-// } from "../../../api/mutations/admin";
 import Table from "../../../components/table";
 import { GET_ALL_SESSION } from "@/pages/api/queries/admin";
 import {

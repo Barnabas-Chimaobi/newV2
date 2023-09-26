@@ -124,6 +124,37 @@ export default function AdminLayout({ children }) {
                   })}
                 </ul>
               </div>
+
+            </li>
+          </ul>
+        </div>
+        <div className="sidebar" id="sidebar">
+          <div className="sidebar-inner slimscroll">
+            <div id="sidebar-menu" className="sidebar-menu">
+              <ul className="">
+                {showMenu?.menu?.map((item) => {
+                  console.log(item, "itemmmmmAdmin");
+                  return (
+                    <li className="submenu">
+                      <a href="#">
+                        <i></i> <span> {item?.name}</span>{" "}
+                        <span class="menu-arrow"></span>
+                      </a>
+                      <ul>
+                        {item?.dropdowns?.map((drops) => {
+                          console.log(drops, "dropdownnn");
+                          return (
+                            <li className="">
+                              <a href={drops?.path}>{drops?.name}</a>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </li>
+                  );
+                })}
+              </ul>
+
             </div>
           </div>
           {children}
