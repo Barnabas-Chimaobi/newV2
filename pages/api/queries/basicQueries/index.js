@@ -1185,3 +1185,54 @@ export const UPLOAD_SHEET = gql`
 		}
 	}
 `;
+
+
+export const STUDENT_COURSE_REG = gql`query CourseRegisterForAll {
+  courseRegisterForAll {
+    cGPA
+    courseRegDatas {
+      gpa
+      isActive
+      isResultAvailable
+      levelId
+      levelName
+      sessionId
+      sessionName
+      semesterCourseDisplayDtos {
+        compulsoryCourseCount
+        gpa
+        isActive
+        isResultAvailable
+        maxCreditUnit
+        optionalCourseCount
+        results {
+          alreadyRegistered
+          courseCode
+          courseId
+          courseType
+          courseName
+          courseWeightValue
+          creditUnit
+          grade
+          gradeWeight
+          isAlreadyRegistered
+          isCarryOver
+          lastModified
+          score
+        }
+        semesterId
+        semesterName
+        activeIndex
+      }
+    }
+    currentLevel
+    currentSemester
+   departmentName
+    fullName
+    passportUrl
+    programmeName
+    activeIndex
+	 departmentId
+    programmeId
+  }
+}`;

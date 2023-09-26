@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Dropdown } from 'primereact/dropdown';
 import { Chip } from 'primereact/chip';
 
@@ -10,19 +10,23 @@ import { Card } from "primereact/card";
 import {
     SAVE_DYNAMIC_FORM_SETUP,
     SAVE_DYNAMIC_PROGRAMME_AND_SESSION,
-} from "../../../pages/api/mutations/adminMutation";
+} from "../../../../pages/api/mutations/adminMutation";
 import {
     ALL_PROGRAMME,
     GET_ALL_SESSION,
     GET_ALL_PAGES,
     GET_ALL_SET_UP_DONE
-} from "../../../pages/api/queries/basicQueries";
+} from "../../../../pages/api/queries/basicQueries";
 import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 import { Column } from "primereact/column";
 import Spinner from "@/components/spinner";
 
+import { Toast } from "primereact/toast";
+
 export default function CreateNewForm() {
+    const router = useRouter()
+    const toast = useRef(null);
     const [pages, setpages] = useState([]);
     const [page, setpage] = useState("");
     const [programme, setprogramme] = useState('');
@@ -41,12 +45,13 @@ export default function CreateNewForm() {
     let [completeFormList, setCompleteFormList] = useState({});
     let [error, setError] = useState("");
     let [errorModal, setErrorModal] = useState(false);
-    let [showSucess, setShowSuccess] = useState(false);
+    let [isSaving, setisSaving] = useState(false);
     let [formLists, setFormLists] = useState([]);
     const [
         setupForm,
         { loading: setupLoading, error: setupError, data: setupData },
     ] = useMutation(SAVE_DYNAMIC_PROGRAMME_AND_SESSION);
+    console.log(router.query.newform, "Query  paramsss")
     let [formDesign, setformDesign] = useState({
 
         "applicantForm": {
@@ -146,19 +151,36 @@ export default function CreateNewForm() {
     }, []);
 
     const SaveForPages = async () => {
+        setisSaving(true)
         const response = await setupForm({
             variables: {
                 model: {
                     programmeId: JSON.parse(programme?.Id),
                     sessionId: JSON.parse(sessionVal?.Id),
-                    pageName: tabArr,
+                    pageName: pages,
                 },
             },
         });
+        if (response?.data?.saveDynamicProgrammeAndPageSetup?.success === true) {
+            toast.current.show({
+                severity: "success",
+                summary: "Successful",
+                detail: response?.data?.saveDynamicProgrammeAndPageSetup?.message,
+                life: 3000,
+            });
+        } else if (response?.data?.saveDynamicProgrammeAndPageSetup?.success === false) {
+            toast.current.show({
+                severity: 'error', summary: 'Error',
+                detail: response?.data?.saveDynamicProgrammeAndPageSetup?.message,
+                life: 3000,
+            });
+        }
+        setisSaving(false)
     }
 
     return (
         <div>
+            <Toast ref={toast} />
             <div className="page-wrapper">
                 <div className="content container-fluid">
                     <div class="row">
@@ -314,15 +336,24 @@ export default function CreateNewForm() {
 
                                     <Form data={formDesign} isPreview={true} />
                                     <div className='col-auto text-end float-end ms-auto download-grp'>
-                                        <Button
-                                            label="Save Form"
-                                            icon="pi pi-save"
-                                            rounded
 
-                                            severity="primary"
-                                            className=""
-                                            onClick={() => SaveForPages()}
-                                        />
+
+                                        {isSaving == false ?
+                                            <Button
+                                                label="Save Form"
+                                                icon="pi pi-save"
+                                                rounded
+
+                                                severity="primary"
+                                                className=""
+                                                onClick={() => SaveForPages()}
+                                            />
+                                            :
+                                            <button className="btn btn-primary" type="button" disabled>
+                                                <span className="spinner-grow spinner-grow-sm me-1" role="status" aria-hidden="true"></span>
+                                                Saving.....
+                                            </button>
+                                        }
                                     </div>
                                 </div></div>
                         </div>
