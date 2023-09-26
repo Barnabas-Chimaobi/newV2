@@ -5,6 +5,7 @@ import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
 import CreateCourse from "./createCourse";
 import CourseAllocation from "./courseAllocation";
 import CourseAssignment from "./courseAssignment";
+import AssignCourses from "./assignCourses";
 
 export default function index() {
   return (
@@ -20,8 +21,11 @@ export default function index() {
                 <TabPanel header="Course Allocation">
                   <CourseAllocation />
                 </TabPanel>
-                <TabPanel header="Course Assignment">
+                <TabPanel header="View Assigned Courses">
                   <CourseAssignment />
+                </TabPanel>
+                <TabPanel header="Assign Courses">
+                  <AssignCourses />
                 </TabPanel>
               </TabView>
             </div>
