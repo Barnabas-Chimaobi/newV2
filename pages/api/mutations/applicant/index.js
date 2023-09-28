@@ -9,20 +9,36 @@ export const SUBMIT_APPLICANT_FORM = gql`
 	}
 `;
 export const SAVE_BIODATA = gql`
-mutation SaveBiodata($firstname: String!, $lastname: String!, $othername: String!, $email: String!, $phonenumber: String!, $stateid: String!, $nationality: String!) {
-	saveBiodata(firstname: $firstname, lastname: $lastname, othername: $othername, email: $email, phonenumber: $phonenumber, stateid: $stateid, nationality: $nationality) {
-	  id
-	  personTypeId
+	mutation SaveBiodata(
+		$firstname: String!
+		$lastname: String!
+		$othername: String!
+		$email: String!
+		$phonenumber: String!
+		$stateid: String!
+		$nationality: String!
+	) {
+		saveBiodata(
+			firstname: $firstname
+			lastname: $lastname
+			othername: $othername
+			email: $email
+			phonenumber: $phonenumber
+			stateid: $stateid
+			nationality: $nationality
+		) {
+			id
+			personTypeId
 
-	  email
-	  firstName
-	  otherName
-	  lastName
-	  phoneNumber
-	  state
-	  nationality
+			email
+			firstName
+			otherName
+			lastName
+			phoneNumber
+			state
+			nationality
+		}
 	}
-  }
 `;
 export const GENERATE_INVOICE = gql`
 	mutation GenerateInvoice(
@@ -112,6 +128,7 @@ export const GENERATE_INVOICE = gql`
 				}
 				active
 			}
+			paystackredirectUrl
 		}
 	}
 `;

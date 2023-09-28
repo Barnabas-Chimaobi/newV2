@@ -240,6 +240,10 @@ export default function Layout({ children }) {
 											<span>Manage Department</span>{" "}
 											<span className="menu-arrow" />
 										</a>
+										<a href="../../../student/fees">
+											<i className="feather-grid" /> <span>Fees</span>{" "}
+											<span className="menu-arrow" />
+										</a>
 										{/* <ul>
                     <li>
                       <a href="index.html">Admin Dashboard</a>

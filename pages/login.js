@@ -37,6 +37,8 @@ export default function Login() {
 				console.log(payLoad, "payLoad");
 				if (payLoad?.data?.staffLogin?.role === "Administrator") {
 					router.push("./admin/dashboard");
+				} else {
+					router.push("./student");
 				}
 			} catch (err) {
 				toast.error(err.message);

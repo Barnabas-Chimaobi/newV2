@@ -351,39 +351,47 @@ export const ADMISSION_LETTER = gql`
 `;
 
 export const EXPECTED_FEES = gql`
-	query AllStudentExpectedFees($applicationformnumber: String!) {
-		allStudentExpectedFees(applicationformnumber: $applicationformnumber) {
-			payment {
+	query AllStudentExpectedFees {
+		allStudentExpectedFees {
+			level {
 				id
-				personId
-				personTypeId
-				feeDetailId
-				paymentSerial
-				invoiceNumber
-				sessionId
-				dateGenerated
-				isPaid
-				datePaid
-				paymentGatewayId
+				name
 			}
 			session {
 				id
 				name
-				startDate
-				endDate
-				activated
-				activeForResult
-				activeForAllocation
-				activeForApplication
-				activeForHostel
-				activeForFees
-				slug
 			}
-			fees {
-				id
-				name
-				amount
-				description
+			listOfFees {
+				payment {
+					id
+					personId
+					paymentTypeId
+					paymentModeId
+					personTypeId
+					feeDetailId
+					feeDetail {
+						id
+						programmeId
+						levelId
+						paymentModeId
+						departmentId
+						sessionId
+						fees {
+							id
+							name
+							amount
+							description
+						}
+						active
+					}
+					paymentSerial
+					invoiceNumber
+				}
+				feeType {
+					name
+					description
+					id
+				}
 			}
 		}
 	}
