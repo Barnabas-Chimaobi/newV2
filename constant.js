@@ -8,6 +8,7 @@ const Constant = {
     SCHOOL_LOGO: "/assets/img/logo.png",
     SMALL_SCHOOL_LOGO: "/assets/img/logo-small.png",
     BASE_URL: "http://localhost:3000"
+    //BASE_URL: "https://www.portalv2.lloydant.com"
 }
 
 export { Constant }
