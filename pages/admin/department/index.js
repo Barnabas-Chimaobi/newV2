@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
-import Table from "../../../src/app/components/table";
+import Table from "../../../components/table";
 import { Column } from "primereact/column";
 import { isNullableType } from "graphql";
-import { GET_ALL_FACULTY } from "../../../api/queries/admin";
-import { ALL_DEPARTMENT } from "../../../api/queries/admin";
+import { GET_ALL_FACULTY } from "../../../pages/api/queries/admin";
+import { ALL_DEPARTMENT } from "../../../pages/api/queries/admin";
 import {
   UPDATE_DEPARTMENT,
   SAVE_DEPARTMENT,
-} from "../../../api/mutations/admin";
-import Spinner from "../../../src/app/components/spinner";
+} from "../../../pages/api/mutations/admin";
+import Spinner from "../../../components/spinner";
 export default function index() {
   const [getfacultyList, setGetFaculty] = useState([]);
   const [isLoading, setIsLoading] = useState(true); // Initially set loading to true
@@ -38,8 +38,8 @@ export default function index() {
       style: { minWidth: "12rem", backgroundColor: "white" },
     },
     {
-      field: "Dept Code",
-      header: "DeptCode",
+      field: "deptCode",
+      header: "Dept Code",
       sortable: true,
       style: { minWidth: "16rem", backgroundColor: "white" },
     },
@@ -68,7 +68,7 @@ export default function index() {
   console.log(facultyList?.allFaculty, "faculty");
 
   const FacultyListItem = facultyList?.allFaculty?.map((item) => ({
-    id: item?.id,
+    Id: item?.id,
     Name: item?.name,
   }));
 
@@ -84,11 +84,11 @@ export default function index() {
         variables: {
           name: data?.Name,
           facultyid: data?.Faculty?.id,
-          deptCode: data?.DeptCode,
+          deptCode: data?.deptCode,
         },
       });
-      console.log(saveResponse, "saveresponse");
-      allDepartment();
+      //console.log(saveResponse, "saveresponse");
+      await allDepartment();
     } catch (err) {
       toast.error(err.message);
     }
@@ -104,8 +104,8 @@ export default function index() {
           facultyId: data?.Faculty?.id,
         },
       });
-      console.log(editResponse, "responseedit");
-      allDepartment();
+      //console.log(editResponse, "responseedit");
+      await allDepartment();
     } catch (err) {
       toast.error(err.message);
     }
@@ -133,7 +133,7 @@ export default function index() {
     deptCode: "",
     Faculty: "",
     FacultyId: "",
-    DeptId: "",
+    Id: "",
   };
 
   const DropDownObjects = [
@@ -160,10 +160,11 @@ export default function index() {
     },
   ];
 
+
   const tableRow = departmentData?.allDepartment?.map((item) => {
     return {
       Name: item?.name,
-      DeptCode: item?.code,
+      deptCode: item?.code,
       Faculty: item?.faculty?.name,
       Id: item?.id,
     };

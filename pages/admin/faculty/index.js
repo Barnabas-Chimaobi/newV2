@@ -67,20 +67,16 @@ export default function index() {
     {
       Name: "Name",
       Type: "Text",
-      //   List: [
-      //     { id: 1, Name: "Fix" },
-      //     { id: 2, Name: "French" }
-      //   ],
       List: isNullableType,
       Description: "",
-      id: "",
+      Id: "",
     },
     {
       Name: "Description",
       Type: "Text",
       List: isNullableType,
       Description: "",
-      id: "",
+      Id: "",
     },
   ];
 
@@ -168,7 +164,6 @@ export default function index() {
                     editFunc={editFaculty}
                     deleteFunc={deleteFacultyFunc}
                     showCheckBox={true}
-
                   />
                 </div>
               </div>
