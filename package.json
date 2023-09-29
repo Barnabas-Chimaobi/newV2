@@ -22,6 +22,7 @@
     "primereact": "^9.6.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-pro-sidebar": "^1.1.0-alpha.1",
     "react-qr-code": "^2.0.12",
     "react-redux": "^8.1.2",
     "react-toastify": "^9.1.3",
