@@ -2,6 +2,7 @@ import { Toolbar } from "primereact/toolbar";
 import React, { useState, useEffect, useRef } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
+import { Checkbox } from "primereact/checkbox";
 import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
@@ -43,8 +44,9 @@ export default function GenericTable({
   showCheckBox,
   showAdmitButton,
   showManageButton,
-  showOnlyDeleteButton
-
+  showOnlyDeleteButton,
+  checkFunction,
+  showAddPages
 }) {
   const router = useRouter();
 
@@ -63,7 +65,6 @@ export default function GenericTable({
     backgroundColor: "white",
     // Add any other CSS properties you need
   };
-  console.log(dropDownObjects, "drop down objectsss");
   const [selectedProducts, setSelectedProducts] = useState([]);
   const toast = useRef(null);
   const dt = useRef(null);
@@ -77,6 +78,7 @@ export default function GenericTable({
   const [submitted, setSubmitted] = useState(false);
   console.log(selectedProducts, "selected products");
   const [content, setContent] = useState([]);
+  const [checked, setChecked] = useState(false);
   const [
     saveFaculty,
     { loading: facultyLoad, error: facultyError, data: facultyData },
@@ -87,6 +89,10 @@ export default function GenericTable({
       style: "currency",
       currency: "USD",
     });
+  };
+  const testHand = (e) => {
+    setSelectedProducts(e);
+    checkFunction();
   };
   const handleReloadPage = () => {
     router.reload(); // This reloads the current page
@@ -129,8 +135,7 @@ export default function GenericTable({
               />
             </div>
           );
-        }
-        else if (dropDownObject.Type === "Switch") {
+        } else if (dropDownObject.Type === "Switch") {
           return (
             <div key={fieldName} className="field">
               <div className="flex items-center">
@@ -138,13 +143,15 @@ export default function GenericTable({
                   {toSentenceCase(fieldName)}
                 </label>
 
-                <InputSwitch checked={product[fieldName]} onChange={(e) => onSaveValueChange(fieldName, e.target.value)} className="ml-2" />
+                <InputSwitch
+                  checked={product[fieldName]}
+                  onChange={(e) => onSaveValueChange(fieldName, e.target.value)}
+                  className="ml-2"
+                />
               </div>
             </div>
           );
-        }
-
-        else if (dropDownObject.Type === "Text") {
+        } else if (dropDownObject.Type === "Text") {
           // Render a text input component
           return (
             <div key={fieldName} className="field">
@@ -159,7 +166,6 @@ export default function GenericTable({
             </div>
           );
         }
-
       }
       return null;
     });
@@ -175,7 +181,9 @@ export default function GenericTable({
     setSubmitted(false);
     setProductDialog(false);
   };
-
+  const handleCheck = (e) => {
+    console.log(e);
+  };
   const hideDeleteProductDialog = () => {
     setDeleteProductDialog(false);
   };
@@ -204,8 +212,7 @@ export default function GenericTable({
         life: 3000,
       });
       setProductDialog(false);
-    }
-    else {
+    } else {
       status = editFunc(product);
       toast.current.show({
         severity: "success",
@@ -428,6 +435,19 @@ export default function GenericTable({
         ) : (
           <></>
         )}
+        {
+          showAddPages ? (
+            <Button
+              label="Start Form"
+              icon="pi pi-arrow-up-right"
+              className="btn btn-outline-primary me-2"
+              onClick={() => {
+                const url = Constant.BASE_URL + `/admin/manageform/newform`;
+                window.open(url);
+              }}
+            />
+          ) : (<></>)
+        }
       </div>
     );
   };
@@ -440,7 +460,6 @@ export default function GenericTable({
     if (showOnlyDeleteButton) {
       return (
         <React.Fragment>
-
           <Button
             icon="pi pi-trash"
             rounded
@@ -469,8 +488,11 @@ export default function GenericTable({
             outlined
             severity="outline-primary"
             onClick={() => {
-              const url = Constant.BASE_URL + `/admin/programme/manageprogramme/` + rowData?.Id;
-              window.open(url, '_blank');
+              const url =
+                Constant.BASE_URL +
+                `/admin/programme/manageprogramme/` +
+                rowData?.Id;
+              window.open(url, "_blank");
             }}
           />
           <Button
@@ -539,29 +561,13 @@ export default function GenericTable({
     }
 
     if (fillApplicationForm && rowData?.Status > 1) {
-      console.log(rowData, "Row data aaa")
       return (
         <React.Fragment>
-          <Button
-            label="Print Receipt"
-            rounded
-            outlined
-            severity="outline-success"
-            onClick={() => {
-              const url = Constant.BASE_URL + `/common/receipt/` + Encrypt(rowData?.InvoiceNumber);
-              window.open(url, '_blank');
-            }}
-          />
           <Button
             label="Fill Form"
             rounded
             outlined
-            severity="outline-primary"
-            onClick={() => {
-              const url = Constant.BASE_URL + `/applicant/fillform/` + rowData?.InvoiceNumber;
-              window.open(url, '_blank');
-            }}
-
+            severity="outline-success"
           />
         </React.Fragment>
       );
@@ -597,7 +603,7 @@ export default function GenericTable({
           ref={dt}
           value={content}
           selection={selectedProducts}
-          onSelectionChange={(e) => setSelectedProducts(e.value)}
+          onSelectionChange={(e) => testHand(e.value)}
           dataKey="Id"
           paginator
           rows={10}
@@ -613,7 +619,8 @@ export default function GenericTable({
             selectionMode="multiple"
             exportable={false}
             style={showCheckBox ? null : { display: "none" }}
-          />
+          ></Column>
+
           <Column field="Id" header="Id" style={{ display: "none" }} />
           <Column exportable={false} style={dataTableStyle}></Column>
           {generateColumnTemplates(headers)}

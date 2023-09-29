@@ -46,7 +46,7 @@ export default function FillForm() {
             const grades = await OlevelGrade();
             setolevelGrades(grades?.data?.gellAllOLevelGrade);
             console.log(grades?.data, subjects?.data, "loaded data aaaa")
-           
+
             setisLoadingData(false)
         }
 
@@ -1190,7 +1190,7 @@ export default function FillForm() {
     return (
         <>
             {isLoadingData ? <Spinner /> :
-                <Form data={formResponse} olevelSubjectsData={olevelSubjects} olevelGradesData={olevelGrades} />}
+                <Form data={formResponse} olevelSubjectsData={olevelSubjects} olevelGradesData={olevelGrades} isPreview={false} />}
         </>
     )
 }
