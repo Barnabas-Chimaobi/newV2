@@ -1,12 +1,12 @@
-'use client'
+"use client";
 import React, { useEffect, useState } from "react";
 import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
 import { Constant } from "../constant";
 import { ALL_LEVEL } from "../pages/api/queries/admin";
 import { MENUS } from "../pages/api/queries/admin";
-import { Spinner } from "@/components/spinner"
+import { Spinner } from "@/components/spinner";
 import dynamic from "next/dynamic";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 import Link from "next/link";
 
 const AdminLayout = ({ children }) => {
@@ -37,7 +37,7 @@ const AdminLayout = ({ children }) => {
   useEffect(() => {
     menuFunc();
     pageLoad();
-    setisLoading(true)
+    setisLoading(true);
   }, []);
 
   const [openSubmenu, setOpenSubmenu] = useState(null);
@@ -52,9 +52,8 @@ const AdminLayout = ({ children }) => {
     }
   };
 
-
   const submenuStyle = {
-    display: 'none',
+    display: "none",
   };
   const [activeSubMenu, setActiveSubMenu] = useState(null);
 
@@ -69,15 +68,12 @@ const AdminLayout = ({ children }) => {
 
 
   const renderfunction = () => {
-
     return (
       <>
         <ul>
           <li class="menu-title">
             <span>Admin Menu</span>
           </li>
-
-
 
           {showMenu?.menu?.map((item) => (
             <li className="submenu" key={item?.name}>
@@ -94,28 +90,19 @@ const AdminLayout = ({ children }) => {
               </ul>
             </li>
           ))}
-
         </ul>
-
-
 
 
       </>
     );
   };
 
-
   return (
     <div className="main-wrapper">
       <div className="header" id="navothercolor">
         <div className="header-left">
           <a href="index.html" className="logo">
-            <img
-              src={Constant.SCHOOL_LOGO}
-              alt="Logo"
-              width={90}
-              height={90}
-            />
+            <img src={Constant.SCHOOL_LOGO} alt="Logo" width={90} height={90} />
           </a>
           <a href="index.html" className="logo logo-small">
             <img
@@ -173,7 +160,10 @@ const AdminLayout = ({ children }) => {
                 My Profile
               </a>
 
-              <Link className="dropdown-item" href={Constant.BASE_URL + `/login`}>
+              <Link
+                className="dropdown-item"
+                href={Constant.BASE_URL + `/login`}
+              >
                 Logout
               </Link>
             </div>
@@ -188,14 +178,12 @@ const AdminLayout = ({ children }) => {
 
                 renderfunction() : <></>
             }
-
           </div>
         </div>
       </div>
       {children}
     </div>
   );
-}
+};
 
-
-export default dynamic(() => Promise.resolve(AdminLayout), { ssr: false })
+export default dynamic(() => Promise.resolve(AdminLayout), { ssr: false });
