@@ -65,6 +65,8 @@ const AdminLayout = ({ children }) => {
     }
   };
 
+
+
   const renderfunction = () => {
     return (
       <>
@@ -90,58 +92,7 @@ const AdminLayout = ({ children }) => {
           ))}
         </ul>
 
-        <ul>
-          {showMenu?.menu?.map((item, index) => (
-            <li
-              className="submenu"
-              key={index}
-              style={{
-                position: "relative", // To handle hover
-              }}
-              onMouseEnter={() => {
-                submenuStyle.display = "block";
-              }}
-              onMouseLeave={() => {
-                submenuStyle.display = "none";
-              }}
-            >
-              <a href="#" className="parent-link">
-                <i className="feather-grid"></i> <span>{item?.name}</span>{" "}
-                <span className="menu-arrow"></span>
-              </a>
-              <ul className="child-menu" style={submenuStyle}>
-                {item?.dropdowns?.map((drops, dropIndex) => (
-                  <li key={dropIndex}>
-                    <a href={drops?.path}>{drops?.name}</a>
-                  </li>
-                ))}
-              </ul>
-            </li>
-          ))}
-        </ul>
 
-        <ul>
-          {showMenu?.menu?.map((item, index) => (
-            <li
-              className={`submenu ${activeSubMenu === index ? "active" : ""}`}
-              key={index}
-              onMouseEnter={() => handleSubMenuToggle(index)}
-              onMouseLeave={() => handleSubMenuToggle(index)}
-            >
-              <a href="#" className="parent-link">
-                <i className="feather-grid"></i> <span>{item?.name}</span>{" "}
-                <span className="menu-arrow"></span>
-              </a>
-              <ul className="child-menu">
-                {item?.dropdowns?.map((drops, dropIndex) => (
-                  <li key={dropIndex}>
-                    <a href={drops?.path}>{drops?.name}</a>
-                  </li>
-                ))}
-              </ul>
-            </li>
-          ))}
-        </ul>
       </>
     );
   };
@@ -222,7 +173,11 @@ const AdminLayout = ({ children }) => {
       <div className="sidebar" id="sidebar">
         <div className="sidebar-inner slimscroll">
           <div id="sidebar-menu" className="sidebar-menu">
-            {isLoading ? renderfunction() : <></>}
+            {
+              isLoading ?
+
+                renderfunction() : <></>
+            }
           </div>
         </div>
       </div>

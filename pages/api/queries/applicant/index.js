@@ -15,38 +15,51 @@ export const GET_ALL_Forms = gql`
 		}
 	}
 `;
-export const ACKNOWLEDGEMENTPAGE = gql`
-	query AcknowledgementPage($applicationformid: Long!) {
-		acknowledgementPage(applicationformid: $applicationformid) {
-			applicationFormId
-			applicationFormNumber
-			contactAddress
-			departmentName
-			email
-			examNumber
-			fullName
-			lGA
-			phone
-			programmeName
-			nextOfKinfullname
-			nextOfKinRelationship
-			nextOfKinPhoneNumber
-			nextOfKinContactAddress
-			relationship
-			stateOfOrigin
-			olevelResultCombination {
-				olevelResultCombinationDetails {
-					subject
-					grade
-				}
-				examNumber
-				olevelType
-			}
-			person {
-				passportUrl
-			}
-		}
-	}
+export const ACKNOWLEDGEMENTPAGE = gql`query AcknowledgementPage($applicationformid: Long!) {
+  acknowledgementPage(applicationformid: $applicationformid) {
+    fieldGroupForPages {
+      pageName
+      fields {
+        key
+        response
+      }
+    }
+    olevelResultCombination {
+      examNumber
+      examYear
+      olevelType
+      sitting
+      olevelResultCombinationDetails {
+        grade
+        subject
+      }
+    }
+    applicationFormNumber
+    applicationFormId
+    person {
+      email
+      firstName
+      lastName
+      nationality
+      otherName
+      passportUrl
+      phoneNumber
+      state
+    }
+    examNumber
+    fullName
+    phone
+    email
+    stateOfOrigin
+    lGA
+    programmeName
+    departmentName
+
+    contactAddress
+    facultyName
+    sessionName
+  }
+}
 `;
 export const APPLICANT_FORM_BY_PERSONID = gql`
 	query applicantForm($invoicenumber: String!) {
@@ -330,7 +343,6 @@ export const OLEVEL_TYPE = gql`
 	query GellAllOLevelType {
 		gellAllOLevelType {
 			name
-			id
 		}
 	}
 `;
@@ -351,39 +363,47 @@ export const ADMISSION_LETTER = gql`
 `;
 
 export const EXPECTED_FEES = gql`
-	query AllStudentExpectedFees($applicationformnumber: String!) {
-		allStudentExpectedFees(applicationformnumber: $applicationformnumber) {
-			payment {
+	query AllStudentExpectedFees {
+		allStudentExpectedFees {
+			level {
 				id
-				personId
-				personTypeId
-				feeDetailId
-				paymentSerial
-				invoiceNumber
-				sessionId
-				dateGenerated
-				isPaid
-				datePaid
-				paymentGatewayId
+				name
 			}
 			session {
 				id
 				name
-				startDate
-				endDate
-				activated
-				activeForResult
-				activeForAllocation
-				activeForApplication
-				activeForHostel
-				activeForFees
-				slug
 			}
-			fees {
-				id
-				name
-				amount
-				description
+			listOfFees {
+				payment {
+					id
+					personId
+					paymentTypeId
+					paymentModeId
+					personTypeId
+					feeDetailId
+					feeDetail {
+						id
+						programmeId
+						levelId
+						paymentModeId
+						departmentId
+						sessionId
+						fees {
+							id
+							name
+							amount
+							description
+						}
+						active
+					}
+					paymentSerial
+					invoiceNumber
+				}
+				feeType {
+					name
+					description
+					id
+				}
 			}
 		}
 	}

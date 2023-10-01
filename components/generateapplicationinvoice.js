@@ -293,8 +293,12 @@ export default function Generateapplicationinvoice() {
 
     const openApplyPage = () => {
         clearActiveTabsAndPages();
+        setTabThree('');
+        setpageThree('');
         setTabFour('Active');
         setpageFour('Active Show');
+
+        //console.log(tabThree, pageThree, tabFour, pageFour, "Page buttonssss")
     }
     const openSpecificPage = (no) => {
 
@@ -333,9 +337,9 @@ export default function Generateapplicationinvoice() {
                                     <div className="card-body">
                                         <ul className="nav nav-tabs nav-tabs-solid nav-tabs-rounded">
                                             <li className="nav-item"><a className={`nav-link ${tabOne !== '' ? 'active' : ''}`} href="#solid-rounded-tab1" data-bs-toggle="tab"  {...(email === '' ? { disabled: 'disabled' } : {})} >Email Verification</a></li>
-                                            <li className="nav-item"><a className={`nav-link ${tabTwo !== '' ? 'active' : ''}`} href="#solid-rounded-tab2" data-bs-toggle="tab"  {...(email === '' ? { disabled: 'disabled' } : {})} >Save Profile</a></li>
-                                            <li className="nav-item"><a className={`nav-link ${tabThree !== '' ? 'active' : ''}`} href="#solid-rounded-tab3" data-bs-toggle="tab"  {...(email === '' ? { disabled: 'disabled' } : {})}  >Previous Applications</a></li>
-                                            <li className="nav-item"><a className={`nav-link ${tabFour !== '' ? 'active' : ''}`} href="#solid-rounded-tab4" data-bs-toggle="tab"  {...(email === '' ? { disabled: 'disabled' } : {})}  >Apply</a></li>
+                                            <li className="nav-item"><a className={`nav-link ${tabTwo !== '' ? 'active' : ''}`} href="#solid-rounded-tab2" data-bs-toggle="tab"  {...(email === '' ? { disabled: 'disabled' } : { disabled: 'disabled' })} >Save Profile</a></li>
+                                            <li className="nav-item"><a className={`nav-link ${tabThree !== '' ? 'active' : ''}`} href="#solid-rounded-tab3" data-bs-toggle="tab"  {...(email === '' ? { disabled: 'disabled' } : { disabled: 'disabled' })}  >Previous Applications</a></li>
+                                            <li className="nav-item"><a className={`nav-link ${tabFour !== '' ? 'active' : ''}`} href="#solid-rounded-tab4" data-bs-toggle="tab"  {...(email === '' ? { disabled: 'disabled' } : { disabled: 'disabled' })}  >Apply</a></li>
                                             <li className="nav-item"><a className={`nav-link ${tabFive !== '' ? 'active' : ''}`} href="#solid-rounded-tab5" data-bs-toggle="tab" disabled >Print Invoice</a></li>
                                         </ul>
                                         <div className="tab-content">
