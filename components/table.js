@@ -568,6 +568,13 @@ export default function GenericTable({
             rounded
             outlined
             severity="outline-success"
+            onClick={() => {
+              const url =
+                Constant.BASE_URL +
+                `/applicant/fillform/` +
+                rowData?.InvoiceNumber;
+              window.open(url, "_blank");
+            }}
           />
         </React.Fragment>
       );

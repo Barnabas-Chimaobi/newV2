@@ -15,38 +15,51 @@ export const GET_ALL_Forms = gql`
 		}
 	}
 `;
-export const ACKNOWLEDGEMENTPAGE = gql`
-	query AcknowledgementPage($applicationformid: Long!) {
-		acknowledgementPage(applicationformid: $applicationformid) {
-			applicationFormId
-			applicationFormNumber
-			contactAddress
-			departmentName
-			email
-			examNumber
-			fullName
-			lGA
-			phone
-			programmeName
-			nextOfKinfullname
-			nextOfKinRelationship
-			nextOfKinPhoneNumber
-			nextOfKinContactAddress
-			relationship
-			stateOfOrigin
-			olevelResultCombination {
-				olevelResultCombinationDetails {
-					subject
-					grade
-				}
-				examNumber
-				olevelType
-			}
-			person {
-				passportUrl
-			}
-		}
-	}
+export const ACKNOWLEDGEMENTPAGE = gql`query AcknowledgementPage($applicationformid: Long!) {
+  acknowledgementPage(applicationformid: $applicationformid) {
+    fieldGroupForPages {
+      pageName
+      fields {
+        key
+        response
+      }
+    }
+    olevelResultCombination {
+      examNumber
+      examYear
+      olevelType
+      sitting
+      olevelResultCombinationDetails {
+        grade
+        subject
+      }
+    }
+    applicationFormNumber
+    applicationFormId
+    person {
+      email
+      firstName
+      lastName
+      nationality
+      otherName
+      passportUrl
+      phoneNumber
+      state
+    }
+    examNumber
+    fullName
+    phone
+    email
+    stateOfOrigin
+    lGA
+    programmeName
+    departmentName
+
+    contactAddress
+    facultyName
+    sessionName
+  }
+}
 `;
 export const APPLICANT_FORM_BY_PERSONID = gql`
 	query applicantForm($invoicenumber: String!) {
@@ -330,7 +343,6 @@ export const OLEVEL_TYPE = gql`
 	query GellAllOLevelType {
 		gellAllOLevelType {
 			name
-			id
 		}
 	}
 `;
