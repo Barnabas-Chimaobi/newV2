@@ -22,14 +22,20 @@ import { ProgressBar } from 'primereact/progressbar';
 import { Tooltip } from 'primereact/tooltip';
 import { Tag } from 'primereact/tag';
 import Spinner from './spinner'
+import { Constant } from "@/constant";
+
+import { useRouter } from "next/router";
 
 
 export default function GenericForm({
     data,
     olevelSubjectsData,
     olevelGradesData,
-    isPreview
+    isPreview,
+    olevelTypes
 }) {
+    const router = useRouter();
+    const [submittedResponse, setsubmittedResponse] = useState("");
     const [isLoading, setisLoading] = useState(false);
     const [visible, setVisible] = useState(false);
     const [isSaving, setisSaving] = useState(false);
@@ -49,6 +55,8 @@ export default function GenericForm({
         SUBMIT_APPLICANT_FORM
     );
 
+    const [olevelTypesList, setolevelTypesList] = useState("");
+    const [yearsList, setyears] = useState("")
     const [pictureUrl, setPictureUrl] = useState("");
 
     const [firstexamNumber, setfirstexamNumber] = useState("");
@@ -104,7 +112,9 @@ export default function GenericForm({
             const stateList = data?.applicantForm?.mainPages.flatMap((item, index) =>
                 item?.sections?.flatMap((item2, index2) =>
                     item2.fieldDetails.map((item3, index3) => {
-                        fieldDetails.push({ id: item3.id, response: item3.response });
+                        fieldDetails.push({
+                            id: item3.id, response: item3.response, required: item3.required
+                        });
                         return item3;
                     })
                 )
@@ -174,12 +184,31 @@ export default function GenericForm({
         setolevelSubjects(olevelSubjectsData);
         setolevelGrades(olevelGradesData);
         setisLoading(false)
+        console.log(olevelTypes, "Olevele tyoess")
+        setolevelTypesList(olevelTypes)
+        GetYears();
     }
 
     useEffect(() => {
         dropdowns();
     }, []);
 
+
+    const GetYears = () => {
+        // Get the current year
+        const currentYear = new Date().getFullYear();
+
+        // Create an array to store the years
+        const years = [];
+
+        // Generate years from 1999 to the current year
+        for (let year = 1999; year <= currentYear; year++) {
+            years.push(year);
+        }
+        console.log(years)
+        console.log(olevelTypesList)
+        setyears(years);
+    }
 
 
 
@@ -299,7 +328,7 @@ export default function GenericForm({
             return (
                 <div key={field.id} className="field">
                     <label className="font-bold">
-                        {field.label}
+                        {field.label} {field.required === "true" ? <span className="login-danger">*</span> : <></>}
                     </label>
 
                     <select class="form-control select"
@@ -320,7 +349,7 @@ export default function GenericForm({
             return (
                 <div key={field.id} className="field">
                     <label className="font-bold">
-                        {field.label}
+                        {field.label} {field.required === "true" ? <span className="login-danger">*</span> : <></>}
                     </label>
 
                     <input
@@ -460,7 +489,7 @@ export default function GenericForm({
         });
 
         // Make an HTTP POST request to the API endpoint
-        const response = await fetch("http://backendvirtualschoolv2.lloydant.com/api/Passport", {
+        const response = await fetch(`${Constant?.BACK_END_URL}/api/Passport`, {
             method: "POST",
             body: formData,
         });
@@ -540,7 +569,7 @@ export default function GenericForm({
                     <span style={{ fontSize: '1.2em', color: 'var(--text-color-secondary)' }} className="my-5">
                         Drag and Drop Image Here
                     </span></> :
-                    <img alt="Pictures" role="presentation" src={`${pictureUrl}`} width={200} />
+                    <img alt="Pictures" role="presentation" src={`${Constant?.BACK_END_URL}/${pictureUrl}`} width={200} />
                 }
             </div>
         );
@@ -556,7 +585,8 @@ export default function GenericForm({
     const NullChecker = () => {
         var check = 1;
         var formsDto = fields.map((item) => {
-            if (item.response === null || item.response === "") {
+
+            if ((item.response === null || item.response === "") && item?.required == true) {
                 setVisible(true)
                 check = 0;
             }
@@ -575,7 +605,7 @@ export default function GenericForm({
 
     const submitForm = async () => {
         setisSaving(true);
-        saveAndContinue();
+        saveAndContinue(0);
         var checkNull = NullChecker();
         console.log(checkNull, "null check")
         if (checkNull === 1) {
@@ -588,21 +618,16 @@ export default function GenericForm({
 
         if (checkNull === 1) {
 
-            await saveAndContinue();
+            await saveAndContinue(1);
+
 
         }
     };
-    const saveAndContinue = async () => {
+    const saveAndContinue = async (sub) => {
         if (isPreview === false) {
             setisSaving(true)
             setTimeout(async () => {
 
-                // console.log({
-                //     personId: data?.applicantForm?.personId,
-                //     formDetails: formsDto,
-                //     submitOlevelResult: [submitFirstOlevelResult, submitSecondOlevelResult],
-                //     pictureUrl: pictureUrl,
-                // }, "Submit datatankjim")
                 try {
                     var formsDto = fields.map((item) => {
                         return {
@@ -610,7 +635,6 @@ export default function GenericForm({
                             response: item.response,
                         };
                     });
-                    //console.log(formsDto, "feilds sskkskslsl")
                     const formsApplicant = await formSubmit({
                         variables: {
                             model: {
@@ -622,6 +646,12 @@ export default function GenericForm({
                             },
                         },
                     });
+
+                    setsubmittedResponse(formsApplicant?.data?.submitApplicationFormNewDto?.id)
+                    if (sub === 1) {
+                        router.push(Constant.BASE_URL + `/common/acknowledgementslip/` + formsApplicant?.data?.submitApplicationFormNewDto?.id);
+                    }
+                    console.log(submittedResponse, "submitted response ....")
                     setisSaving(false)
 
                 } catch (err) {
@@ -676,15 +706,23 @@ export default function GenericForm({
                                                                                                 <form action="#">
                                                                                                     <div className="form-group">
                                                                                                         <label>Exam Number</label>
-                                                                                                        <input type="text" className="form-control" onChange={(e) => setfirstexamNumber(e.target.value)} />
+                                                                                                        <input value={firstexamNumber} type="text" className="form-control" onChange={(e) => setfirstexamNumber(e.target.value)} />
                                                                                                     </div>
                                                                                                     <div className="form-group">
                                                                                                         <label>Olevel Type</label>
-                                                                                                        <input type="text" className="form-control" onChange={(e) => setfirstexamType(e.target.value)} />
+                                                                                                        <Dropdown value={firstexamType} onChange={(e) => setfirstexamType(e.value)}
+                                                                                                            options={olevelTypesList}
+
+                                                                                                            placeholder="Select Your Subject" className="w-full md:w-21.5rem" />
+
                                                                                                     </div>
                                                                                                     <div className="form-group">
                                                                                                         <label>Exam Year</label>
-                                                                                                        <input type="text" className="form-control" onChange={(e) => setfirstexamYear(e.target.value)} />
+                                                                                                        <Dropdown value={firstexamYear} onChange={(e) => setfirstexamYear(e.value)}
+                                                                                                            options={yearsList}
+
+                                                                                                            placeholder="Select Year" className="w-full md:w-21.5rem" />
+
                                                                                                     </div>
 
 
@@ -855,15 +893,22 @@ export default function GenericForm({
                                                                                                 <form action="#">
                                                                                                     <div className="form-group">
                                                                                                         <label>Exam Number</label>
-                                                                                                        <input type="text" className="form-control" onChange={(e) => setsecondexamNumber(e.target.value)} y />
+                                                                                                        <input value={secondexamNumber} type="text" className="form-control" onChange={(e) => setsecondexamNumber(e.target.value)} y />
                                                                                                     </div>
                                                                                                     <div className="form-group">
                                                                                                         <label>Olevel Type</label>
-                                                                                                        <input type="text" className="form-control" onChange={(e) => setsecondexamType(e.target.value)} />
+                                                                                                        <Dropdown value={secondexamType} onChange={(e) => setsecondexamType(e.value)}
+                                                                                                            options={olevelTypesList}
+
+                                                                                                            placeholder="Select Your Subject" className="w-full md:w-21.5rem" />
                                                                                                     </div>
                                                                                                     <div className="form-group">
                                                                                                         <label>Exam Year</label>
-                                                                                                        <input type="text" className="form-control" onChange={(e) => setsecondexamYear(e.target.value)} />
+                                                                                                        <Dropdown value={secondexamYear} onChange={(e) => setsecondexamYear(e.value)}
+                                                                                                            options={yearsList}
+
+                                                                                                            placeholder="Select Year" className="w-full md:w-21.5rem" />
+
                                                                                                     </div>
                                                                                                     {olevelSubjects === null && olevelGrades === null ? <></> :
                                                                                                         <div className="table-responsive">
@@ -1043,7 +1088,8 @@ export default function GenericForm({
                                                                         <Tooltip target=".custom-upload-btn" content="Upload" position="bottom" />
                                                                         <Tooltip target=".custom-cancel-btn" content="Clear" position="bottom" />
 
-                                                                        <FileUpload ref={fileUploadRef} name="file" url="/api/Passport" multiple accept="image/*" maxFileSize={1000000}
+                                                                        <FileUpload ref={fileUploadRef} name="file" url={Constant?.BACK_END_URL + "/api/Passport"}
+                                                                            multiple accept="image/*" maxFileSize={1000000}
                                                                             onUpload={onTemplateUpload} onSelect={onTemplateSelect} onError={onTemplateClear} onClear={onTemplateClear}
                                                                             headerTemplate={headerTemplate} itemTemplate={itemTemplate} emptyTemplate={emptyTemplate}
                                                                             chooseOptions={chooseOptions} uploadOptions={uploadOptions} cancelOptions={cancelOptions} />
@@ -1151,15 +1197,24 @@ export default function GenericForm({
                                                                     <form action="#">
                                                                         <div className="form-group">
                                                                             <label>Exam Number</label>
-                                                                            <input type="text" className="form-control" onChange={(e) => setfirstexamNumber(e.target.value)} />
+                                                                            <input value={firstexamNumber} type="text" className="form-control"
+                                                                                onChange={(e) => setfirstexamNumber(e.target.value)} disabled />
                                                                         </div>
                                                                         <div className="form-group">
                                                                             <label>Olevel Type</label>
-                                                                            <input type="text" className="form-control" onChange={(e) => setfirstexamType(e.target.value)} />
+                                                                            <Dropdown value={firstexamType} onChange={(e) => setfirstexamType(e.value)}
+                                                                                options={olevelTypesList}
+
+                                                                                placeholder="Select Your Subject" className="w-full md:w-21.5rem" disabled />
+
                                                                         </div>
                                                                         <div className="form-group">
                                                                             <label>Exam Year</label>
-                                                                            <input type="text" className="form-control" onChange={(e) => setfirstexamYear(e.target.value)} />
+                                                                            <Dropdown value={firstexamYear} onChange={(e) => setfirstexamYear(e.value)}
+                                                                                options={yearsList}
+
+                                                                                placeholder="Select Year" className="w-full md:w-21.5rem" disabled />
+
                                                                         </div>
 
 
@@ -1179,14 +1234,14 @@ export default function GenericForm({
                                                                                             <td>   <Dropdown value={firstSub1} onChange={(e) => setfirstSub1(e.value)}
                                                                                                 options={olevelSubjects}
                                                                                                 optionLabel="name"
-                                                                                                placeholder="Select Your Subject" className="w-full md:w-21.5rem" />
+                                                                                                placeholder="Select Your Subject" className="w-full md:w-21.5rem" disabled />
                                                                                             </td>
 
                                                                                             <td>
                                                                                                 <Dropdown value={firstGrade1} onChange={(e) => setfirstGrade1(e.value)}
                                                                                                     options={olevelGrades}
                                                                                                     optionLabel="name"
-                                                                                                    placeholder="Select Your Grade" className="w-full md:w-21.5rem" />
+                                                                                                    placeholder="Select Your Grade" className="w-full md:w-21.5rem" disabled />
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr>
@@ -1194,14 +1249,14 @@ export default function GenericForm({
                                                                                             <td>   <Dropdown value={firstSub2} onChange={(e) => setfirstSub2(e.value)}
                                                                                                 options={olevelSubjects}
                                                                                                 optionLabel="name"
-                                                                                                placeholder="Select Your Subject" className="w-full md:w-21.5rem" />
+                                                                                                placeholder="Select Your Subject" className="w-full md:w-21.5rem" disabled />
                                                                                             </td>
 
                                                                                             <td>
                                                                                                 <Dropdown value={firstGrade2} onChange={(e) => setfirstGrade2(e.value)}
                                                                                                     options={olevelGrades}
                                                                                                     optionLabel="name"
-                                                                                                    placeholder="Select Your Grade" className="w-full md:w-21.5rem" />
+                                                                                                    placeholder="Select Your Grade" className="w-full md:w-21.5rem" disabled />
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr>
@@ -1209,14 +1264,14 @@ export default function GenericForm({
                                                                                             <td>   <Dropdown value={firstSub3} onChange={(e) => setfirstSub3(e.value)}
                                                                                                 options={olevelSubjects}
                                                                                                 optionLabel="name"
-                                                                                                placeholder="Select Your Subject" className="w-full md:w-21.5rem" />
+                                                                                                placeholder="Select Your Subject" className="w-full md:w-21.5rem" disabled />
                                                                                             </td>
 
                                                                                             <td>
                                                                                                 <Dropdown value={firstGrade3} onChange={(e) => setfirstGrade3(e.value)}
                                                                                                     options={olevelGrades}
                                                                                                     optionLabel="name"
-                                                                                                    placeholder="Select Your Grade" className="w-full md:w-21.5rem" />
+                                                                                                    placeholder="Select Your Grade" className="w-full md:w-21.5rem" disabled />
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr>
@@ -1224,14 +1279,14 @@ export default function GenericForm({
                                                                                             <td>   <Dropdown value={firstSub4} onChange={(e) => setfirstSub4(e.value)}
                                                                                                 options={olevelSubjects}
                                                                                                 optionLabel="name"
-                                                                                                placeholder="Select Your Subject" className="w-full md:w-21.5rem" />
+                                                                                                placeholder="Select Your Subject" className="w-full md:w-21.5rem" disabled />
                                                                                             </td>
 
                                                                                             <td>
                                                                                                 <Dropdown value={firstGrade4} onChange={(e) => setfirstGrade4(e.value)}
                                                                                                     options={olevelGrades}
                                                                                                     optionLabel="name"
-                                                                                                    placeholder="Select Your Grade" className="w-full md:w-21.5rem" />
+                                                                                                    placeholder="Select Your Grade" className="w-full md:w-21.5rem" disabled />
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr>
@@ -1239,14 +1294,14 @@ export default function GenericForm({
                                                                                             <td>   <Dropdown value={firstSub5} onChange={(e) => setfirstSub5(e.value)}
                                                                                                 options={olevelSubjects}
                                                                                                 optionLabel="name"
-                                                                                                placeholder="Select Your Subject" className="w-full md:w-21.5rem" />
+                                                                                                placeholder="Select Your Subject" className="w-full md:w-21.5rem" disabled />
                                                                                             </td>
 
                                                                                             <td>
                                                                                                 <Dropdown value={firstGrade5} onChange={(e) => setfirstGrade5(e.value)}
                                                                                                     options={olevelGrades}
                                                                                                     optionLabel="name"
-                                                                                                    placeholder="Select Your Grade" className="w-full md:w-21.5rem" />
+                                                                                                    placeholder="Select Your Grade" className="w-full md:w-21.5rem" disabled />
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr>
@@ -1254,14 +1309,14 @@ export default function GenericForm({
                                                                                             <td>   <Dropdown value={firstSub6} onChange={(e) => setfirstSub6(e.value)}
                                                                                                 options={olevelSubjects}
                                                                                                 optionLabel="name"
-                                                                                                placeholder="Select Your Subject" className="w-full md:w-21.5rem" />
+                                                                                                placeholder="Select Your Subject" className="w-full md:w-21.5rem" disabled />
                                                                                             </td>
 
                                                                                             <td>
                                                                                                 <Dropdown value={firstGrade6} onChange={(e) => setfirstGrade6(e.value)}
                                                                                                     options={olevelGrades}
                                                                                                     optionLabel="name"
-                                                                                                    placeholder="Select Your Grade" className="w-full md:w-21.5rem" />
+                                                                                                    placeholder="Select Your Grade" className="w-full md:w-21.5rem" disabled />
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr>
@@ -1269,14 +1324,14 @@ export default function GenericForm({
                                                                                             <td>   <Dropdown value={firstSub7} onChange={(e) => setfirstSub7(e.value)}
                                                                                                 options={olevelSubjects}
                                                                                                 optionLabel="name"
-                                                                                                placeholder="Select Your Subject" className="w-full md:w-21.5rem" />
+                                                                                                placeholder="Select Your Subject" className="w-full md:w-21.5rem" disabled />
                                                                                             </td>
 
                                                                                             <td>
                                                                                                 <Dropdown value={firstGrade7} onChange={(e) => setfirstGrade7(e.value)}
                                                                                                     options={olevelGrades}
                                                                                                     optionLabel="name"
-                                                                                                    placeholder="Select Your Grade" className="w-full md:w-21.5rem" />
+                                                                                                    placeholder="Select Your Grade" className="w-full md:w-21.5rem" disabled />
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr>
@@ -1284,14 +1339,14 @@ export default function GenericForm({
                                                                                             <td>   <Dropdown value={firstSub8} onChange={(e) => setfirstSub8(e.value)}
                                                                                                 options={olevelSubjects}
                                                                                                 optionLabel="name"
-                                                                                                placeholder="Select Your Subject" className="w-full md:w-21.5rem" />
+                                                                                                placeholder="Select Your Subject" className="w-full md:w-21.5rem" disabled />
                                                                                             </td>
 
                                                                                             <td>
                                                                                                 <Dropdown value={firstGrade8} onChange={(e) => setfirstGrade8(e.value)}
                                                                                                     options={olevelGrades}
                                                                                                     optionLabel="name"
-                                                                                                    placeholder="Select Your Grade" className="w-full md:w-21.5rem" />
+                                                                                                    placeholder="Select Your Grade" className="w-full md:w-21.5rem" disabled />
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr>
@@ -1299,14 +1354,14 @@ export default function GenericForm({
                                                                                             <td>   <Dropdown value={firstSub9} onChange={(e) => setfirstSub9(e.value)}
                                                                                                 options={olevelSubjects}
                                                                                                 optionLabel="name"
-                                                                                                placeholder="Select Your Subject" className="w-full md:w-21.5rem" />
+                                                                                                placeholder="Select Your Subject" className="w-full md:w-21.5rem" disabled />
                                                                                             </td>
 
                                                                                             <td>
                                                                                                 <Dropdown value={firstGrade9} onChange={(e) => setfirstGrade9(e.value)}
                                                                                                     options={olevelGrades}
                                                                                                     optionLabel="name"
-                                                                                                    placeholder="Select Your Grade" className="w-full md:w-21.5rem" />
+                                                                                                    placeholder="Select Your Grade" className="w-full md:w-21.5rem" disabled />
                                                                                             </td>
                                                                                         </tr>
                                                                                     </tbody>
@@ -1330,15 +1385,23 @@ export default function GenericForm({
                                                                     <form action="#">
                                                                         <div className="form-group">
                                                                             <label>Exam Number</label>
-                                                                            <input type="text" className="form-control" onChange={(e) => setsecondexamNumber(e.target.value)} y />
+                                                                            <input value={secondexamNumber} type="text" className="form-control"
+                                                                                onChange={(e) => setsecondexamNumber(e.target.value)} disabled />
                                                                         </div>
                                                                         <div className="form-group">
                                                                             <label>Olevel Type</label>
-                                                                            <input type="text" className="form-control" onChange={(e) => setsecondexamType(e.target.value)} />
+                                                                            <Dropdown value={secondexamType} onChange={(e) => setsecondexamType(e.value)}
+                                                                                options={olevelTypesList}
+
+                                                                                placeholder="Select Your Subject" className="w-full md:w-21.5rem" disabled />
                                                                         </div>
                                                                         <div className="form-group">
                                                                             <label>Exam Year</label>
-                                                                            <input type="text" className="form-control" onChange={(e) => setsecondexamYear(e.target.value)} />
+                                                                            <Dropdown value={secondexamYear} onChange={(e) => setsecondexamYear(e.value)}
+                                                                                options={yearsList}
+
+                                                                                placeholder="Select Year" className="w-full md:w-21.5rem" disabled />
+
                                                                         </div>
                                                                         {olevelSubjects === null && olevelGrades === null ? <></> :
                                                                             <div className="table-responsive">
@@ -1356,14 +1419,14 @@ export default function GenericForm({
                                                                                             <td>   <Dropdown value={secondSub1} onChange={(e) => setsecondSub1(e.value)}
                                                                                                 options={olevelSubjects}
                                                                                                 optionLabel="name"
-                                                                                                placeholder="Select Your Subject" className="w-full md:w-21.5rem" />
+                                                                                                placeholder="Select Your Subject" className="w-full md:w-21.5rem" disabled />
                                                                                             </td>
 
                                                                                             <td>
                                                                                                 <Dropdown value={secondGrade1} onChange={(e) => setsecondGrade1(e.value)}
                                                                                                     options={olevelGrades}
                                                                                                     optionLabel="name"
-                                                                                                    placeholder="Select Your Grade" className="w-full md:w-21.5rem" />
+                                                                                                    placeholder="Select Your Grade" className="w-full md:w-21.5rem" disabled />
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr>
@@ -1371,14 +1434,14 @@ export default function GenericForm({
                                                                                             <td>   <Dropdown value={secondSub2} onChange={(e) => setsecondSub2(e.value)}
                                                                                                 options={olevelSubjects}
                                                                                                 optionLabel="name"
-                                                                                                placeholder="Select Your Subject" className="w-full md:w-21.5rem" />
+                                                                                                placeholder="Select Your Subject" className="w-full md:w-21.5rem" disabled />
                                                                                             </td>
 
                                                                                             <td>
                                                                                                 <Dropdown value={secondGrade2} onChange={(e) => setsecondGrade2(e.value)}
                                                                                                     options={olevelGrades}
                                                                                                     optionLabel="name"
-                                                                                                    placeholder="Select Your Grade" className="w-full md:w-21.5rem" />
+                                                                                                    placeholder="Select Your Grade" className="w-full md:w-21.5rem" disabled />
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr>
@@ -1386,14 +1449,14 @@ export default function GenericForm({
                                                                                             <td>   <Dropdown value={secondSub3} onChange={(e) => setsecondSub3(e.value)}
                                                                                                 options={olevelSubjects}
                                                                                                 optionLabel="name"
-                                                                                                placeholder="Select Your Subject" className="w-full md:w-21.5rem" />
+                                                                                                placeholder="Select Your Subject" className="w-full md:w-21.5rem" disabled />
                                                                                             </td>
 
                                                                                             <td>
                                                                                                 <Dropdown value={secondGrade3} onChange={(e) => setsecondGrade3(e.value)}
                                                                                                     options={olevelGrades}
                                                                                                     optionLabel="name"
-                                                                                                    placeholder="Select Your Grade" className="w-full md:w-21.5rem" />
+                                                                                                    placeholder="Select Your Grade" className="w-full md:w-21.5rem" disabled />
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr>
@@ -1401,14 +1464,14 @@ export default function GenericForm({
                                                                                             <td>   <Dropdown value={secondSub4} onChange={(e) => setsecondSub4(e.value)}
                                                                                                 options={olevelSubjects}
                                                                                                 optionLabel="name"
-                                                                                                placeholder="Select Your Subject" className="w-full md:w-21.5rem" />
+                                                                                                placeholder="Select Your Subject" className="w-full md:w-21.5rem" disabled />
                                                                                             </td>
 
                                                                                             <td>
                                                                                                 <Dropdown value={secondGrade4} onChange={(e) => setsecondGrade4(e.value)}
                                                                                                     options={olevelGrades}
                                                                                                     optionLabel="name"
-                                                                                                    placeholder="Select Your Grade" className="w-full md:w-21.5rem" />
+                                                                                                    placeholder="Select Your Grade" className="w-full md:w-21.5rem" disabled />
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr>
@@ -1416,14 +1479,14 @@ export default function GenericForm({
                                                                                             <td>   <Dropdown value={secondSub5} onChange={(e) => setsecondSub5(e.value)}
                                                                                                 options={olevelSubjects}
                                                                                                 optionLabel="name"
-                                                                                                placeholder="Select Your Subject" className="w-full md:w-21.5rem" />
+                                                                                                placeholder="Select Your Subject" className="w-full md:w-21.5rem" disabled />
                                                                                             </td>
 
                                                                                             <td>
                                                                                                 <Dropdown value={secondGrade5} onChange={(e) => setsecondGrade5(e.value)}
                                                                                                     options={olevelGrades}
                                                                                                     optionLabel="name"
-                                                                                                    placeholder="Select Your Grade" className="w-full md:w-21.5rem" />
+                                                                                                    placeholder="Select Your Grade" className="w-full md:w-21.5rem" disabled />
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr>
@@ -1431,14 +1494,14 @@ export default function GenericForm({
                                                                                             <td>   <Dropdown value={secondSub6} onChange={(e) => setsecondSub6(e.value)}
                                                                                                 options={olevelSubjects}
                                                                                                 optionLabel="name"
-                                                                                                placeholder="Select Your Subject" className="w-full md:w-21.5rem" />
+                                                                                                placeholder="Select Your Subject" className="w-full md:w-21.5rem" disabled />
                                                                                             </td>
 
                                                                                             <td>
                                                                                                 <Dropdown value={secondGrade6} onChange={(e) => setsecondGrade6(e.value)}
                                                                                                     options={olevelGrades}
                                                                                                     optionLabel="name"
-                                                                                                    placeholder="Select Your Grade" className="w-full md:w-21.5rem" />
+                                                                                                    placeholder="Select Your Grade" className="w-full md:w-21.5rem" disabled />
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr>
@@ -1446,14 +1509,14 @@ export default function GenericForm({
                                                                                             <td>   <Dropdown value={secondSub7} onChange={(e) => setsecondSub7(e.value)}
                                                                                                 options={olevelSubjects}
                                                                                                 optionLabel="name"
-                                                                                                placeholder="Select Your Subject" className="w-full md:w-21.5rem" />
+                                                                                                placeholder="Select Your Subject" className="w-full md:w-21.5rem" disabled />
                                                                                             </td>
 
                                                                                             <td>
                                                                                                 <Dropdown value={secondGrade7} onChange={(e) => setsecondGrade7(e.value)}
                                                                                                     options={olevelGrades}
                                                                                                     optionLabel="name"
-                                                                                                    placeholder="Select Your Grade" className="w-full md:w-21.5rem" />
+                                                                                                    placeholder="Select Your Grade" className="w-full md:w-21.5rem" disabled />
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr>
@@ -1461,14 +1524,14 @@ export default function GenericForm({
                                                                                             <td>   <Dropdown value={secondSub8} onChange={(e) => setsecondSub8(e.value)}
                                                                                                 options={olevelSubjects}
                                                                                                 optionLabel="name"
-                                                                                                placeholder="Select Your Subject" className="w-full md:w-21.5rem" />
+                                                                                                placeholder="Select Your Subject" className="w-full md:w-21.5rem" disabled />
                                                                                             </td>
 
                                                                                             <td>
                                                                                                 <Dropdown value={secondGrade8} onChange={(e) => setsecondGrade8(e.value)}
                                                                                                     options={olevelGrades}
                                                                                                     optionLabel="name"
-                                                                                                    placeholder="Select Your Grade" className="w-full md:w-21.5rem" />
+                                                                                                    placeholder="Select Your Grade" className="w-full md:w-21.5rem" disabled />
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr>
@@ -1476,14 +1539,14 @@ export default function GenericForm({
                                                                                             <td>   <Dropdown value={secondSub9} onChange={(e) => setsecondSub9(e.value)}
                                                                                                 options={olevelSubjects}
                                                                                                 optionLabel="name"
-                                                                                                placeholder="Select Your Subject" className="w-full md:w-21.5rem" />
+                                                                                                placeholder="Select Your Subject" className="w-full md:w-21.5rem" disabled />
                                                                                             </td>
 
                                                                                             <td>
                                                                                                 <Dropdown value={secondGrade9} onChange={(e) => setsecondGrade9(e.value)}
                                                                                                     options={olevelGrades}
                                                                                                     optionLabel="name"
-                                                                                                    placeholder="Select Your Grade" className="w-full md:w-21.5rem" />
+                                                                                                    placeholder="Select Your Grade" className="w-full md:w-21.5rem" disabled />
                                                                                             </td>
                                                                                         </tr>
                                                                                     </tbody>
@@ -1514,11 +1577,8 @@ export default function GenericForm({
                                         <div className="col-10">
                                             <Toast ref={toast}></Toast>
 
-                                            {/* <Tooltip target=".custom-choose-btn" content="Choose" position="bottom" />
-                                            <Tooltip target=".custom-upload-btn" content="Upload" position="bottom" />
-                                            <Tooltip target=".custom-cancel-btn" content="Clear" position="bottom" /> */}
 
-                                            <FileUpload ref={fileUploadRef} name="file" url="/api/Passport" multiple accept="image/*"
+                                            <FileUpload ref={fileUploadRef} name="file" url={Constant?.BACK_END_URL + "/api/Passport"} multiple accept="image/*"
                                                 maxFileSize={1000000}
                                                 onUpload={onTemplateUpload} onSelect={onTemplateSelect} onError={onTemplateClear} onClear={onTemplateClear}
                                                 headerTemplate={previewheaderTemplate} itemTemplate={itemTemplate} emptyTemplate={emptyTemplate}
