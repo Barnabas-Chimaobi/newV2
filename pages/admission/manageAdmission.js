@@ -51,7 +51,7 @@ export default function manageAdmission() {
     },
     {
       field: "FormNumber",
-      header: "FormNumber",
+      header: "Form Number",
       sortable: true,
       style: { minWidth: "12rem", backgroundColor: "white" },
     },

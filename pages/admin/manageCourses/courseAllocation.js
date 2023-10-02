@@ -11,6 +11,7 @@ import {
   ALL_PROGRAMME,
   ALL_LEVEL,
   ALL_USER,
+  ALL_SEMESTER,
   COURSE_ASSIGNMENT_BY_PROGRAMME_AND_DEPARTMENT,
 } from "@/pages/api/queries/admin";
 import { SAVE_COURSE_ALLOCATION } from "@/pages/api/mutations/admin";
@@ -21,6 +22,8 @@ export default function courseAllocation() {
   const [department, setDepartment] = useState("");
   const [level, setLevel] = useState("");
   const [showTable, setShowTable] = useState(false);
+  const [semester, setSemester] = useState("");
+  const [courseAssignObj, setCourseAssignObj] = useState({});
 
   const [
     saveCourseAllocation,
@@ -39,6 +42,8 @@ export default function courseAllocation() {
       data: courseAllocationData,
     },
   ] = useLazyQuery(COURSE_ALLOCATION_BY_PROGRAMME_AND_DEPARTMENT);
+
+  console.log(courseAllocationData, "allocationnn");
 
   const [
     getDepartment,
@@ -73,25 +78,49 @@ export default function courseAllocation() {
     { loading: courseLoad, error: courseError, data: courseData },
   ] = useLazyQuery(COURSE_ASSIGNMENT_BY_PROGRAMME_AND_DEPARTMENT);
 
+  const [
+    allSemester,
+    { loading: semesterLoad, error: semesterError, data: semesterData },
+  ] = useLazyQuery(ALL_SEMESTER);
+
+  // console.log(courseData, "coursedataa");
+
   useEffect(() => {
     allProgramme();
     getDepartment();
     allLevel();
-    courseAssignByParams();
+    allSemester();
   }, []);
 
-  const saveCourseAllocationFunc = async () => {
+  const saveCourseAllocationFunc = async (data) => {
+    console.log(data, "dataaaa");
     const saveResponse = await saveCourseAllocation({
       variables: {
-        courseassignmentid: parseInt(courseAssignment),
-        assigneeId: parseInt(user),
-        sessionid: parseInt(session),
+        courseassignmentid: data?.CourseName?.Id,
+        assigneeId: data?.User?.Id,
+        sessionid: data?.Session?.Id,
       },
     });
     console.log(saveResponse, "responseeee!!");
     if (saveResponse?.data?.saveCourseAllocation?.id > 0) {
       toast.success("Course Successfully Allocated");
     }
+  };
+
+  const courseAssignFunc = async () => {
+    const courseAssignResponse = await courseAssignByParams({
+      variables: {
+        departmentid: department?.Id,
+        programmeid: programme?.Id,
+        levelid: level?.Id,
+        semesterid: semester?.Id,
+      },
+    });
+    // console.log(department, "dept");
+    console.log(
+      courseAssignResponse?.data?.courseAssignmentByProgrammeAndDepartment,
+      "plssss==="
+    );
   };
 
   const courseAllocationQuery = async () => {
@@ -102,11 +131,19 @@ export default function courseAllocation() {
         levelid: level?.Id,
       },
     });
-    setShowTable(true);
+    courseAssignFunc().then(() => {
+      setShowTable(true);
+    });
     console.log(queryResponse, "queryResponse===");
   };
 
   const headers = [
+    {
+      field: "Session",
+      header: "Session",
+      sortable: true,
+      style: { minWidth: "12rem", backgroundColor: "white" },
+    },
     {
       field: "User",
       header: "User",
@@ -154,6 +191,7 @@ export default function courseAllocation() {
           CourseName: item?.courseAssignment?.course?.name,
           AllocatedBy: item?.assignedBy?.fullName,
           DateAllocated: item?.dateAssigned.substring(0, 10),
+          Session: item?.session?.name,
         };
       }
     );
@@ -181,8 +219,9 @@ export default function courseAllocation() {
 
   const courseList = courseData?.courseAssignmentByProgrammeAndDepartment?.map(
     (item) => {
+      // console.log(item, "courseItem");
       return {
-        Name: item.course.name,
+        Name: item?.course?.name,
         Id: item.id,
       };
     }
@@ -195,13 +234,29 @@ export default function courseAllocation() {
     };
   });
 
+  const selectSemester = semesterData?.allSemeter?.map((item) => {
+    return {
+      Name: item.name,
+      Id: item.id,
+    };
+  });
+
+  const sessionList = sessionData?.allSession?.map((item) => {
+    return {
+      Name: item.name,
+      Id: item.id,
+    };
+  });
+
   const TableObj = {
     AllocatedBy: "",
     CourseName: "",
     User: "",
     Id: "",
     DateAssigned: "",
+    Session: "",
   };
+
   const DropDownObjects = [
     {
       Name: "CourseName",
@@ -220,8 +275,8 @@ export default function courseAllocation() {
     },
     {
       Name: "Session",
-      Type: "Text",
-      List: isNullableType,
+      Type: "Dropdown",
+      List: sessionList,
       Description: "",
       Id: "",
     },
@@ -273,6 +328,22 @@ export default function courseAllocation() {
                 options={levelList}
                 placeholder="select Level"
                 onChange={(e) => setLevel(e.target.value)}
+                className="w-full md:w-21.5rem"
+                optionLabel="Name"
+              />
+            </div>
+          </div>
+          <div className="col-lg-4 col-sm-12">
+            <div className="local-forms form-group">
+              <label>
+                Semester
+                <span className="login-danger">*</span>
+              </label>
+              <Dropdown
+                value={semester}
+                options={selectSemester}
+                placeholder="select Semester"
+                onChange={(e) => setSemester(e.target.value)}
                 className="w-full md:w-21.5rem"
                 optionLabel="Name"
               />
