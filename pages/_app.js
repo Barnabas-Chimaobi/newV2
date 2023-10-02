@@ -15,10 +15,10 @@ import "../public/assets/plugins/fontawesome/css/all.min.css";
 import "../public/assets/plugins/select2/css/select2.min.css";
 import "../public/assets/css/style.css";
 import {
-  ApolloClient,
-  InMemoryCache,
-  ApolloProvider,
-  gql,
+	ApolloClient,
+	InMemoryCache,
+	ApolloProvider,
+	gql,
 } from "@apollo/client";
 import { client } from "../pages/api";
 import { useApolloClient } from "@apollo/client";
@@ -36,168 +36,160 @@ import store from "../redux/stores";
 import { Provider } from "react-redux";
 
 export default function Home({ Component, pageProps }) {
-  const router = useRouter();
-  const rootPath = router.pathname.split("/");
-  //console.log(pathname, "router====sss");
-  //console.log(pageProps, Component, "Page propssss")
-  // const rootPath = pathname?.split("/");
-  //console.log(rootPath, router.pathname, "Root pathjhh")
+	const router = useRouter();
+	const rootPath = router.pathname.split("/");
+	//console.log(pathname, "router====sss");
+	//console.log(pageProps, Component, "Page propssss")
+	// const rootPath = pathname?.split("/");
+	//console.log(rootPath, router.pathname, "Root pathjhh")
 
-  if (rootPath && rootPath[1] == "admin") {
-    return (
-      <>
-        <Script
-          src="/js/jquery-3.6.0.min.js"
-          strategy="beforeInteractive"
-        ></Script>
-        <Script
-          src="/plugins/bootstrap/js/bootstrap.bundle.min.js"
-          strategy="beforeInteractive"
-        ></Script>
-        <Script src="/js/feather.min.js" strategy="beforeInteractive"></Script>
-        <Script
-          src="/plugins/slimscroll/jquery.slimscroll.min.js"
-          strategy="beforeInteractive"
-        ></Script>
-        <Script
-          src="/plugins/select2/js/select2.min.js"
-          strategy="beforeInteractive"
-        ></Script>
+	if (rootPath && rootPath[1] == "admin") {
+		return (
+			<>
+				<Script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></Script>
+				<Script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></Script>
+				<Script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></Script>
+				<Script
+					src="/js/jquery-3.6.0.min.js"
+					strategy="beforeInteractive"></Script>
+				<Script
+					src="/plugins/bootstrap/js/bootstrap.bundle.min.js"
+					strategy="beforeInteractive"></Script>
+				<Script src="/js/feather.min.js" strategy="beforeInteractive"></Script>
+				<Script
+					src="/plugins/slimscroll/jquery.slimscroll.min.js"
+					strategy="beforeInteractive"></Script>
+				<Script
+					src="/plugins/select2/js/select2.min.js"
+					strategy="beforeInteractive"></Script>
 
-        <Script src="/js/script.js"></Script>
-        <Provider store={store}>
-          <ApolloProvider client={client}>
-            <AdminLayout>
-              <ErrorBoundary>
-                <Component {...pageProps} />
-              </ErrorBoundary>
-            </AdminLayout>
-          </ApolloProvider>
-        </Provider>
-      </>
-    );
-  }
+				<Script src="/js/script.js"></Script>
+				<Provider store={store}>
+					<ApolloProvider client={client}>
+						<AdminLayout>
+							<ErrorBoundary>
+								<Component {...pageProps} />
+							</ErrorBoundary>
+						</AdminLayout>
+					</ApolloProvider>
+				</Provider>
+			</>
+		);
+	}
 
-  if (rootPath && rootPath[1] === "student") {
-    return (
-      <>
-        {/* <Provider store={store}> */}
-        <Script
-          src="/js/jquery-3.6.0.min.js"
-          strategy="beforeInteractive"
-        ></Script>
-        <Script
-          src="/plugins/bootstrap/js/bootstrap.bundle.min.js"
-          strategy="beforeInteractive"
-        ></Script>
-        <Script src="/js/feather.min.js" strategy="beforeInteractive"></Script>
-        <Script
-          src="/plugins/slimscroll/jquery.slimscroll.min.js"
-          strategy="beforeInteractive"
-        ></Script>
-        <Script
-          src="/plugins/select2/js/select2.min.js"
-          strategy="beforeInteractive"
-        ></Script>
+	if (rootPath && rootPath[1] === "student") {
+		return (
+			<>
+				{/* <Provider store={store}> */}
+				<Script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></Script>
+				<Script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></Script>
+				<Script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></Script>
+				<Script
+					src="/js/jquery-3.6.0.min.js"
+					strategy="beforeInteractive"></Script>
+				<Script
+					src="/plugins/bootstrap/js/bootstrap.bundle.min.js"
+					strategy="beforeInteractive"></Script>
+				<Script src="/js/feather.min.js" strategy="beforeInteractive"></Script>
+				<Script
+					src="/plugins/slimscroll/jquery.slimscroll.min.js"
+					strategy="beforeInteractive"></Script>
+				<Script
+					src="/plugins/select2/js/select2.min.js"
+					strategy="beforeInteractive"></Script>
 
-        <Script src="/js/script.js" strategy="beforeInteractive"></Script>
-        <Script
-          src="/plugins/apexchart/apexcharts.min.js"
-          strategy="beforeInteractive"
-        ></Script>
-        <Script
-          src="/plugins/apexchart/chart-data.js"
-          strategy="beforeInteractive"
-        ></Script>
+				<Script src="/js/script.js" strategy="beforeInteractive"></Script>
+				<Script
+					src="/plugins/apexchart/apexcharts.min.js"
+					strategy="beforeInteractive"></Script>
+				<Script
+					src="/plugins/apexchart/chart-data.js"
+					strategy="beforeInteractive"></Script>
 
-        <Script
-          src="/plugins/simple-calendar/jquery.simple-calendar.js"
-          strategy="beforeInteractive"
-        ></Script>
-        <Script src="/js/calander.js" strategy="beforeInteractive"></Script>
+				<Script
+					src="/plugins/simple-calendar/jquery.simple-calendar.js"
+					strategy="beforeInteractive"></Script>
+				<Script src="/js/calander.js" strategy="beforeInteractive"></Script>
 
-        <Script
-          src="/js/circle-progress.min.js"
-          strategy="beforeInteractive"
-        ></Script>
-        <Provider store={store}>
-          <ApolloProvider client={client}>
-            <StudentLayout>
-              <ErrorBoundary>
-                <Component {...pageProps} />
-              </ErrorBoundary>
-            </StudentLayout>
-          </ApolloProvider>
-        </Provider>
-      </>
-    );
-  }
+				<Script
+					src="/js/circle-progress.min.js"
+					strategy="beforeInteractive"></Script>
+				<Provider store={store}>
+					<ApolloProvider client={client}>
+						<StudentLayout>
+							<ErrorBoundary>
+								<Component {...pageProps} />
+							</ErrorBoundary>
+						</StudentLayout>
+					</ApolloProvider>
+				</Provider>
+			</>
+		);
+	}
 
-  if (rootPath && rootPath[1] === "admission") {
-    return (
-      <>
-        <Script
-          src="/js/jquery-3.6.0.min.js"
-          strategy="beforeInteractive"
-        ></Script>
-        <Script
-          src="/plugins/bootstrap/js/bootstrap.bundle.min.js"
-          strategy="beforeInteractive"
-        ></Script>
-        <Script src="/js/feather.min.js" strategy="beforeInteractive"></Script>
-        <Script
-          src="/plugins/slimscroll/jquery.slimscroll.min.js"
-          strategy="beforeInteractive"
-        ></Script>
-        <Script
-          src="/plugins/select2/js/select2.min.js"
-          strategy="beforeInteractive"
-        ></Script>
+	if (rootPath && rootPath[1] === "admission") {
+		return (
+			<>
+				<Script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></Script>
+				<Script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></Script>
+				<Script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></Script>
+				<Script
+					src="/js/jquery-3.6.0.min.js"
+					strategy="beforeInteractive"></Script>
+				<Script
+					src="/plugins/bootstrap/js/bootstrap.bundle.min.js"
+					strategy="beforeInteractive"></Script>
+				<Script src="/js/feather.min.js" strategy="beforeInteractive"></Script>
+				<Script
+					src="/plugins/slimscroll/jquery.slimscroll.min.js"
+					strategy="beforeInteractive"></Script>
+				<Script
+					src="/plugins/select2/js/select2.min.js"
+					strategy="beforeInteractive"></Script>
 
-        <Script src="/js/script.js" strategy="beforeInteractive"></Script>
-        <Provider store={store}>
-          <ApolloProvider client={client}>
-            {/* <ThemeProvider> */}
-            <AdminLayout>
-              <ErrorBoundary>
-                <Component {...pageProps} />
-              </ErrorBoundary>
-            </AdminLayout>
-            {/* </ThemeProvider> */}
-          </ApolloProvider>
-        </Provider>
-      </>
-    );
-  }
+				<Script src="/js/script.js" strategy="beforeInteractive"></Script>
+				<Provider store={store}>
+					<ApolloProvider client={client}>
+						{/* <ThemeProvider> */}
+						<AdminLayout>
+							<ErrorBoundary>
+								<Component {...pageProps} />
+							</ErrorBoundary>
+						</AdminLayout>
+						{/* </ThemeProvider> */}
+					</ApolloProvider>
+				</Provider>
+			</>
+		);
+	}
 
-  return (
-    <>
-      <Script
-        src="/js/jquery-3.6.0.min.js"
-        strategy="beforeInteractive"
-      ></Script>
-      <Script
-        src="/plugins/bootstrap/js/bootstrap.bundle.min.js"
-        strategy="beforeInteractive"
-      ></Script>
-      <Script src="/js/feather.min.js" strategy="beforeInteractive"></Script>
-      <Script
-        src="/plugins/slimscroll/jquery.slimscroll.min.js"
-        strategy="beforeInteractive"
-      ></Script>
-      <Script
-        src="/plugins/select2/js/select2.min.js"
-        strategy="beforeInteractive"
-      ></Script>
+	return (
+		<>
+			<Script
+				src="/js/jquery-3.6.0.min.js"
+				strategy="beforeInteractive"></Script>
+			<Script
+				src="/plugins/bootstrap/js/bootstrap.bundle.min.js"
+				strategy="beforeInteractive"></Script>
+			<Script src="/js/feather.min.js" strategy="beforeInteractive"></Script>
+			<Script
+				src="/plugins/slimscroll/jquery.slimscroll.min.js"
+				strategy="beforeInteractive"></Script>
+			<Script
+				src="/plugins/select2/js/select2.min.js"
+				strategy="beforeInteractive"></Script>
 
-      <Script src="/js/script.js" strategy="beforeInteractive"></Script>
-      <Provider store={store}>
-        <ApolloProvider client={client}>
-          <ErrorBoundary>
-            <Component {...pageProps} />
-          </ErrorBoundary>
-        </ApolloProvider>
-      </Provider>
-    </>
-  );
+			<Script src="/js/script.js" strategy="beforeInteractive"></Script>
+			<Script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></Script>
+			<Script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></Script>
+			<Script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></Script>
+			<Provider store={store}>
+				<ApolloProvider client={client}>
+					<ErrorBoundary>
+						<Component {...pageProps} />
+					</ErrorBoundary>
+				</ApolloProvider>
+			</Provider>
+		</>
+	);
 }
