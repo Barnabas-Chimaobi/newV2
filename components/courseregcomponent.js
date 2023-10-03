@@ -13,8 +13,11 @@ import { Button } from 'primereact/button';
 import { Tag } from 'primereact/tag';
 import { Dialog } from 'primereact/dialog';
 import { SAVE_STUDENT_COURSE_REGISTER } from '@/pages/api/mutations/adminMutation';
+import { useRouter } from "next/router";
+import { Constant } from '../constant';
 
 export default function Courseregcomponent() {
+    const router = useRouter();
     const [carryOvers, setcarryOvers] = useState([]);
     const [courses, setcourses] = useState(null);
     const [isLoading, setisLoading] = useState(true);
@@ -32,6 +35,12 @@ export default function Courseregcomponent() {
         <div>
             <Button label="Cancel" icon="pi pi-times" onClick={() => setVisible(false)} className="p-button-text" />
             <Button label="Register" icon="pi pi-check" onClick={() => SaveRegisterCourses()} autoFocus />
+        </div>
+    );
+    const footerPrintContent = (
+        <div>
+            <Button label="Print" icon="pi pi-print" onClick={() => setVisible(false)} className="p-button-text" />
+
         </div>
     );
 
@@ -58,11 +67,15 @@ export default function Courseregcomponent() {
             variables: {
                 sessionid: sessionId,
                 semesterid: semesterId,
-                coursereg: item
+                coursereg: Item
             }
+        }).then((ex) => {
+            console.log(ex, "ex......")
+            setVisible(false)
+            router.push(Constant.BASE_URL + `/common/courseregistration/` + ex?.data?.saveStudentCourseReg?.id);
         })
 
-        setVisible(false)
+
 
     }
 
@@ -82,7 +95,7 @@ export default function Courseregcomponent() {
     }
     const PullData = async () => {
         const regDetails = await CourseRegDetails();
-        console.log(regDetails?.data)
+        console.log(regDetails?.data, "dataaa aaaaaaaaaa")
         setcourses(regDetails?.data?.courseRegisterForAll);
         console.log(courses, "coursesss  sss")
         setisLoading(false);
@@ -301,6 +314,7 @@ export default function Courseregcomponent() {
 
                 </Dialog>
             </Card>
+
 
 
         </>
