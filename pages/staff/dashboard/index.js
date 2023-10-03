@@ -5,7 +5,7 @@ import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
 import { Calendar } from "primereact/calendar";
 import { Chart } from "primereact/chart";
 
-export default function DashboardAdmin() {
+export default function index() {
   const [date, setDate] = useState(null);
   const [chartData, setChartData] = useState({});
   const [chartOptions, setChartOptions] = useState({});
