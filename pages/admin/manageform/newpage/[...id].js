@@ -10,13 +10,13 @@ import { Card } from "primereact/card";
 import {
     SAVE_DYNAMIC_FORM_SETUP,
     SAVE_DYNAMIC_PROGRAMME_AND_SESSION,
-} from "../../../../pages/api/mutations/adminMutation";
+} from "../../../api/mutations/adminMutation";
 import {
     ALL_PROGRAMME,
     GET_ALL_SESSION,
     GET_ALL_PAGES,
     GET_ALL_SET_UP_DONE
-} from "../../../../pages/api/queries/basicQueries";
+} from "../../../api/queries/basicQueries";
 import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 import { Column } from "primereact/column";
@@ -51,7 +51,7 @@ export default function CreateNewForm() {
         setupForm,
         { loading: setupLoading, error: setupError, data: setupData },
     ] = useMutation(SAVE_DYNAMIC_PROGRAMME_AND_SESSION);
-    console.log(router.query.newform, "Query  paramsss")
+    console.log(router.query.id, "Query  paramsss")
     let [formDesign, setformDesign] = useState({
 
         "applicantForm": {
