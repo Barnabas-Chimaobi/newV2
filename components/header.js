@@ -33,31 +33,35 @@ export default function header({ children }) {
 						<i className="fas fa-bars" />
 					</a>
 
-					<ul className="nav user-menu">
-						<li className="nav-item dropdown has-arrow new-user-menus">
-							<a
-								href="#"
-								className="dropdown-toggle nav-link"
-								data-bs-toggle="dropdown">
-								<span className="user-img">
-									<div className="user-text">
-										<p className="text-muted mb-0 text-md">Applicant</p>
-									</div>
-								</span>
-							</a>
-							<div className="dropdown-menu">
-								<a className="dropdown-item" href="profile.html">
-									Application Guide
-								</a>
+          <ul className="nav user-menu">
+            <li className="nav-item dropdown has-arrow new-user-menus">
+              <a
+                href="#"
+                className="dropdown-toggle nav-link"
+                data-bs-toggle="dropdown"
+              >
+                <span className="user-img">
+                  <div className="user-text">
+                    <p className="text-muted mb-0 text-md">Applicant</p>
+                  </div>
+                </span>
+              </a>
+              <div className="dropdown-menu">
+                <a className="dropdown-item" href="profile.html">
+                  Application Guide
+                </a>
 
-								<a className="dropdown-item" href="login.html">
-									Course Finder
-								</a>
-								<a className="dropdown-item" href="/applicant/applicationform">
-									Manage Application
-								</a>
-							</div>
-						</li>
+                <a className="dropdown-item" href="login.html">
+                  Course Finder
+                </a>
+                <a
+                  className="dropdown-item"
+                  href="/applicant/applicationform"
+                >
+                  Manage Application
+                </a>
+              </div>
+            </li>
 
 						<a href="./login" className="dropdown-toggle nav-link">
 							<span className="user-img">
