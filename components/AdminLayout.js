@@ -133,7 +133,7 @@ const AdminLayout = ({ children }) => {
                   className="rounded-circle"
                   src={Constant?.BACK_END_URL + "/" + passport}
                   width={31}
-                  alt="Ryan Taylor"
+                  alt={fullName}
                 />
                 <div className="user-text">
                   <h6>{fullName}</h6>
