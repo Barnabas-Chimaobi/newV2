@@ -117,6 +117,7 @@ const AdminLayout = ({ children }) => {
           </a>
         </div>
 
+
         <a className="mobile_btn" id="mobile_btn">
           <i className="fas fa-bars" />
         </a>
@@ -130,7 +131,7 @@ const AdminLayout = ({ children }) => {
               <span className="user-img">
                 <img
                   className="rounded-circle"
-                  src={passport}
+                  src={Constant?.BACK_END_URL + "/" + passport}
                   width={31}
                   alt="Ryan Taylor"
                 />
@@ -144,7 +145,8 @@ const AdminLayout = ({ children }) => {
               <div className="user-header">
                 <div className="avatar avatar-sm">
                   <img
-                    src={passport}
+
+                    src={Constant?.BACK_END_URL + "/" + passport}
                     alt="User Image"
                     className="avatar-img rounded-circle"
                   />
@@ -157,6 +159,7 @@ const AdminLayout = ({ children }) => {
               <a className="dropdown-item" href="profile.html">
                 My Profile
               </a>
+
 
               <Link
                 className="dropdown-item"
@@ -171,6 +174,7 @@ const AdminLayout = ({ children }) => {
       <div className="sidebar" id="sidebar">
         {isLoading ? renderfunction() : <></>}
         {/* <div className="sidebar-inner slimscroll">
+
 					<div id="sidebar-menu" className="sidebar-menu">
 						{isLoading ? renderfunction() : <></>}
 					</div>
