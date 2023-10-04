@@ -145,7 +145,7 @@ const AdminLayout = ({ children }) => {
               <span className="user-img">
                 <img
                   className="rounded-circle"
-                  src={passport}
+                  src={Constant?.BACK_END_URL + "/" + passport}
                   width={31}
                   alt="Ryan Taylor"
                 />
@@ -159,7 +159,7 @@ const AdminLayout = ({ children }) => {
               <div className="user-header">
                 <div className="avatar avatar-sm">
                   <img
-                    src={passport}
+                    src={Constant?.BACK_END_URL + "/" + passport}
                     alt="User Image"
                     className="avatar-img rounded-circle"
                   />

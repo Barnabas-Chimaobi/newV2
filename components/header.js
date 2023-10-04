@@ -47,19 +47,19 @@ export default function header({ children }) {
                 </span>
               </a>
               <div className="dropdown-menu">
-                <Link className="dropdown-item" href="profile.html">
+                <a className="dropdown-item" href="profile.html">
                   Application Guide
-                </Link>
+                </a>
 
-                <Link className="dropdown-item" href="login.html">
+                <a className="dropdown-item" href="login.html">
                   Course Finder
-                </Link>
-                <Link
+                </a>
+                <a
                   className="dropdown-item"
                   href="/applicant/applicationform"
                 >
                   Manage Application
-                </Link>
+                </a>
               </div>
             </li>
 
