@@ -3821,6 +3821,9 @@ table.table-inbox tbody tr.checked {
   -webkit-justify-content: center;
   -ms-flex-pack: center;
 }
+.backGroundImg {
+  background-image: url('/public/assets/img/ilaroGate.png'),
+}
 .profile-user-img {
   margin-right: 20px;
   position: relative;
