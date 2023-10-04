@@ -70,19 +70,102 @@ export default function CreateSections() {
                 "pageId": 31,
                 "pageName": item?.pageName,
                 "programmeId": 1,
-                "programmeName": "",
-                "sessionId": "",
-                "sessionName": "",
-                "sections": []
+                "programmeName": "Regular",
+                "sessionId": 32,
+                "sessionName": "2022/2023",
+                "sections": [
+                    {
+                        "sectionId": 102,
+                        "sectionName": "",
+                        "fieldDetails": [{
+                            "id": 122,
+                            "input_type": "text",
+                            "label": "Test Input",
+                            "list": null,
+                            "required": null,
+                            "response": "",
+                            "errorMessage": null,
+                            "dynamicFormPageSectionSetupId": 37,
+                            "isReadonly": false
+                        }]
+                    }
+                ]
             };
         });
 
         console.log(PagesData, "page data aaaaaa")
+        // var data = {
+        //     "data": {
+        //         "applicantForm": {
+        //             "mainPages": [
+        //                 PagesData.map((item) => {
+        //                     return item;
+        //                 })
+        //             ],
+        //             "submitOlevelResult": [],
+        //             "personId": 33,
+        //             "personUrl": null
+        //         }
+        //     }
+        // };
         var data = {
             "data": {
                 "applicantForm": {
                     "mainPages": [
-                        PagesData
+                        // {
+                        //     "pageId": 31,
+                        //     "pageName": "Page 1",
+                        //     "programmeId": 1,
+                        //     "programmeName": "Regular",
+                        //     "sessionId": 32,
+                        //     "sessionName": "2022/2023",
+                        //     "sections": [
+                        //         {
+                        //             "sectionId": 102,
+                        //             "sectionName": "",
+                        //             "fieldDetails": [{
+                        //                 "id": 122,
+                        //                 "input_type": "text",
+                        //                 "label": "Test Input",
+                        //                 "list": null,
+                        //                 "required": null,
+                        //                 "response": "",
+                        //                 "errorMessage": null,
+                        //                 "dynamicFormPageSectionSetupId": 37,
+                        //                 "isReadonly": false
+                        //             }]
+                        //         }
+                        //     ]
+                        // },
+                        // {
+                        //     "pageId": 34,
+                        //     "pageName": "Page 4",
+                        //     "programmeId": 1,
+                        //     "programmeName": "Regular",
+                        //     "sessionId": 32,
+                        //     "sessionName": "2022/2023",
+                        //     "sections": [
+                        //         {
+                        //             "sectionId": 122,
+                        //             "sectionName": "",
+                        //             "fieldDetails": [
+                        //                 {
+                        //                     "id": 122,
+                        //                     "input_type": "text",
+                        //                     "label": "Test Input",
+                        //                     "list": null,
+                        //                     "required": null,
+                        //                     "response": "",
+                        //                     "errorMessage": null,
+                        //                     "dynamicFormPageSectionSetupId": 37,
+                        //                     "isReadonly": false
+                        //                 }
+                        //             ]
+                        //         }
+                        //     ]
+                        // },
+
+
                     ],
                     "submitOlevelResult": [],
                     "personId": 33,
@@ -90,8 +173,10 @@ export default function CreateSections() {
                 }
             }
         };
+        var newdata = [data.data.applicantForm.mainPages, ...PagesData];
+        data.data.applicantForm.mainPages = newdata;
         console.log(data, "test data formed")
-        setformDesign(data);
+        setformDesign(data.data);
     }
 
     return (
