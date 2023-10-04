@@ -12,11 +12,12 @@ export default function FillForm() {
     const [formResponse, setformResponse] = useState({})
     const [olevelSubjects, setolevelSubjects] = useState("");
     const [olevelGrades, setolevelGrades] = useState("");
+    const [olevelTypes, setolevelTypes] = useState("");
     const [fillFormData, { loading: fillFormDataLoad, error: fillFormDataError, data: fillFormDataData }] = useLazyQuery(APPLICANT_FORM_BY_PERSONID);
 
     const [OlevelGrade, { loading: OlevelGradeLoad, error: OlevelGradeError, data: OlevelGradeData }] = useLazyQuery(OLEVEL_GRADE);
     const [OlevelSubject, { loading: OlevelSubjectLoad, error: OlevelSubjectError, data: OlevelSubjectData }] = useLazyQuery(OLEVEL_SUBJECT);
-
+    const [OlevelType, { loading: OlevelTypeLoad, error: OlevelTypeError, data: OlevelTypeData }] = useLazyQuery(OLEVEL_TYPE);
     const router = useRouter();
     const [invoice, setinvoice] = useState('')
     // setinvoice(router.query.formid);
@@ -46,7 +47,19 @@ export default function FillForm() {
             const grades = await OlevelGrade();
             setolevelGrades(grades?.data?.gellAllOLevelGrade);
             console.log(grades?.data, subjects?.data, "loaded data aaaa")
+            const olevelTypesList = await OlevelType();
+            console.log(olevelTypesList, "olevelTypesList .....")
+            const types = [];
 
+            // Generate years from 1999 to the current year
+            for (let year = 0; year <= olevelTypesList?.data?.gellAllOLevelType.length - 1; year++) {
+                console.log(olevelTypesList?.data?.gellAllOLevelType[year]?.name, year, "loop")
+                if (olevelTypesList?.data?.gellAllOLevelType[year]?.name !== null && olevelTypesList?.data?.gellAllOLevelType[year]?.name !== 'undefined') {
+                    types.push(olevelTypesList?.data?.gellAllOLevelType[year]?.name);
+                }
+            }
+            console.log(types, "yearss s sjbcjd olevele")
+            setolevelTypes(types)
             setisLoadingData(false)
         }
 
@@ -1190,7 +1203,7 @@ export default function FillForm() {
     return (
         <>
             {isLoadingData ? <Spinner /> :
-                <Form data={formResponse} olevelSubjectsData={olevelSubjects} olevelGradesData={olevelGrades} isPreview={false} />}
+                <Form data={formResponse} olevelSubjectsData={olevelSubjects} olevelGradesData={olevelGrades} isPreview={false} olevelTypes={olevelTypes} />}
         </>
     )
 }
