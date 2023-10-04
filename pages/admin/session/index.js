@@ -10,8 +10,11 @@ import {
 } from "@/pages/api/mutations/admin";
 import { Column } from "primereact/column";
 import { isNullableType } from "graphql";
+import Spinner from "@/components/spinner";
 
 export default function index() {
+  const [Startdate, setStartdate] = useState("");
+  const [Enddate, setEnddate] = useState("");
   const headers = [
     {
       field: "Name",
@@ -34,28 +37,28 @@ export default function index() {
     ));
   };
 
-  const TableObj = { Name: "", Startdate: "", Enddate: "", id: "" };
+  const TableObj = { Name: "", Startdate: "", Enddate: "", Id: "" };
   const DropDownObjects = [
     {
       Name: "Name",
       Type: "Text",
       List: isNullableType,
       Description: "",
-      id: "",
+      Id: "",
     },
     {
       Name: "Startdate",
       Type: "Date",
       List: isNullableType,
       Description: "",
-      id: "",
+      Id: "",
     },
     {
       Name: "Enddate",
       Type: "Date",
       List: isNullableType,
       Description: "",
-      id: "",
+      Id: "",
     },
   ];
 
@@ -138,34 +141,38 @@ export default function index() {
   }, []);
   return (
     <div>
-      <div className="page-wrapper">
-        <div className="content container-fluid">
-          <div class="row">
-            <div class="col-sm-12">
-              <div class="card card-table">
-                <div class="card-body">
-                  <Table
-                    saveFunc={saveSessionFunc}
-                    headers={headers}
-                    generateColumnTemplates={generateColumnTemplates}
-                    tableName={"Session"}
-                    allowEdit={true}
-                    allowApply={false}
-                    tableObjectBody={TableObj}
-                    showExport={true}
-                    showAddButton={true}
-                    variablesForQuery={{}}
-                    tableContent={tableRow}
-                    dropDownObjects={DropDownObjects}
-                    editFunc={updateSessionFunc}
-                    deleteFunc={deleteSessionFunc}
-                  />
+      {sessinLoading ? (
+        <Spinner />
+      ) : (
+        <div className="page-wrapper">
+          <div className="content container-fluid">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="card card-table">
+                  <div class="card-body">
+                    <Table
+                      saveFunc={saveSessionFunc}
+                      headers={headers}
+                      generateColumnTemplates={generateColumnTemplates}
+                      tableName={"Session"}
+                      allowEdit={true}
+                      allowApply={false}
+                      tableObjectBody={TableObj}
+                      showExport={true}
+                      showAddButton={true}
+                      variablesForQuery={{}}
+                      tableContent={tableRow}
+                      dropDownObjects={DropDownObjects}
+                      editFunc={updateSessionFunc}
+                      deleteFunc={deleteSessionFunc}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

@@ -1263,3 +1263,114 @@ export const PROGRAMME_NAME = gql`
     }
   }
 `;
+
+export const VIEWALLTIMETABLESTUDENTS = gql`
+  query ViewAllTimeTableStudents {
+    viewAllTimeTableStudents {
+      id
+      userId
+      startTime
+      endTime
+      isReOccuring
+      dayOfTheWeek
+
+      courseAssignment {
+        id
+        course {
+          id
+          name
+        }
+
+        courseType {
+          id
+          courseTypeName
+        }
+      }
+      classDescription
+      classRequirement
+      venue
+      assignments
+    }
+  }
+`;
+
+export const VIEW_ALL_TIMETABLE_USERS = gql`
+  query ViewAllTimeTableUsers {
+    viewAllTimeTableUsers {
+      id
+      user {
+        userId
+        userName
+        fullName
+      }
+      startTime
+      endTime
+      isReOccuring
+      dayOfTheWeek
+
+      classDescription
+      classRequirement
+      venue
+      courseAssignment {
+        course {
+          name
+        }
+      }
+    }
+  }
+`;
+
+export const VIEW_ALL_TIMETABLE = gql`
+  query ViewAllTimeTable {
+    viewAllTimeTable {
+      id
+      user {
+        userId
+        userName
+        fullName
+      }
+      startTime
+      endTime
+      isReOccuring
+      dayOfTheWeek
+      programme {
+        id
+        name
+      }
+      courseAssignment {
+        id
+        course {
+          id
+          name
+        }
+        semester {
+          id
+          name
+        }
+        courseType {
+          id
+          courseTypeName
+        }
+      }
+      classDescription
+      classRequirement
+      venue
+      assignments
+    }
+  }
+`;
+
+export const COURSE_ALLOCATION_BY_USER = gql`
+  query CourseAllocationByUser {
+    courseAllocationByUser {
+      id
+      courseAssignmentId
+      courseAssignment {
+        course {
+          name
+          id
+        }
+      }
+    }
+  }
+`;

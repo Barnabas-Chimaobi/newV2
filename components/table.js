@@ -9,7 +9,7 @@ import { InputText } from "primereact/inputtext";
 import { classNames } from "primereact/utils";
 import { FileUpload } from "primereact/fileupload";
 import { Rating } from "primereact/rating";
-import { InputTextarea } from "primereact/inputtextarea";
+// import { InputTextarea } from "primereact/inputtextarea";
 import { RadioButton } from "primereact/radiobutton";
 import { InputNumber } from "primereact/inputnumber";
 import { Dialog } from "primereact/dialog";
@@ -18,9 +18,9 @@ import { SAVE_FACULTY } from "../pages/api/mutations/admin";
 import { useRouter } from "next/router";
 import { Dropdown } from "primereact/dropdown";
 import { InputSwitch } from "primereact/inputswitch";
-
+import { InputTextarea } from "primereact/inputtextarea";
+import { Calendar } from "primereact/calendar";
 import { Constant } from "../constant";
-
 import Decrypt from "./decrypt";
 import Encrypt from "./encrypt";
 
@@ -46,7 +46,7 @@ export default function GenericTable({
   showManageButton,
   showOnlyDeleteButton,
   checkFunction,
-  showAddPages
+  showAddPages,
 }) {
   const router = useRouter();
 
@@ -162,6 +162,71 @@ export default function GenericTable({
                 id={fieldName}
                 value={product[fieldName]}
                 onChange={(e) => onSaveValueChange(fieldName, e.target.value)}
+              />
+            </div>
+          );
+        } else if (dropDownObject.Type === "TextArea") {
+          // Render a text input component
+          return (
+            <div key={fieldName} className="field">
+              <label htmlFor={fieldName} className="font-bold">
+                {toSentenceCase(fieldName)}
+              </label>
+              <InputTextarea
+                id={fieldName}
+                value={product[fieldName]}
+                onChange={(e) => onSaveValueChange(fieldName, e.target.value)}
+                rows={5}
+                cols={30}
+              />
+            </div>
+          );
+        } else if (dropDownObject.Type === "Date") {
+          // Render a text input component
+          return (
+            <div key={fieldName} className="field">
+              <label htmlFor={fieldName} className="font-bold">
+                {toSentenceCase(fieldName)}
+              </label>
+              <Calendar
+                value={product[fieldName]}
+                onChange={(e) => onSaveValueChange(fieldName, e.value)}
+              />
+            </div>
+          );
+        } else if (dropDownObject.Type === "Time") {
+          // Render a text input component
+          return (
+            <div key={fieldName} className="field">
+              <label htmlFor={fieldName} className="font-bold">
+                {toSentenceCase(fieldName)}
+              </label>
+              <Calendar
+                value={product[fieldName]}
+                onChange={(e) => onSaveValueChange(fieldName, e.value)}
+                showTime
+                hourFormat="12"
+              />
+            </div>
+          );
+        } else if (dropDownObject.Type === "Day") {
+          const today = new Date();
+          const minDay = new Date(today);
+          minDay.setDate(today.getDate() - today.getDay()); // Sunday
+          const maxDay = new Date(today);
+          maxDay.setDate(today.getDate() + (6 - today.getDay())); // Saturday
+
+          // Render a text input component
+          return (
+            <div key={fieldName} className="field">
+              <label htmlFor={fieldName} className="font-bold">
+                {toSentenceCase(fieldName)}
+              </label>
+              <Calendar
+                value={product[fieldName]}
+                onChange={(e) => onSaveValueChange(fieldName, e.value)}
+                minDate={minDay}
+                maxDate={maxDay}
               />
             </div>
           );
@@ -435,19 +500,19 @@ export default function GenericTable({
         ) : (
           <></>
         )}
-        {
-          showAddPages ? (
-            <Button
-              label="Start Form"
-              icon="pi pi-arrow-up-right"
-              className="btn btn-outline-primary me-2"
-              onClick={() => {
-                const url = Constant.BASE_URL + `/admin/manageform/newform`;
-                window.open(url);
-              }}
-            />
-          ) : (<></>)
-        }
+        {showAddPages ? (
+          <Button
+            label="Start Form"
+            icon="pi pi-arrow-up-right"
+            className="btn btn-outline-primary me-2"
+            onClick={() => {
+              const url = Constant.BASE_URL + `/admin/manageform/newform`;
+              window.open(url);
+            }}
+          />
+        ) : (
+          <></>
+        )}
       </div>
     );
   };
