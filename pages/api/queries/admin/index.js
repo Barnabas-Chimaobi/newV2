@@ -1261,12 +1261,6 @@ export const PROGRAMME_NAME = gql`
       id
       name
     }
-}`;
-export const PROGRAMME_NAME = gql`query Programme($programmeid: Int!) {
-  programme(programmeid: $programmeid) {
-    id
-    name
-  }
   }
 `;
 
@@ -1381,22 +1375,24 @@ export const COURSE_ALLOCATION_BY_USER = gql`
   }
 `;
 
-export const PRINT_COURSE_REG = gql`query PrintCourseForm($printCourseFormId: Long!) {
-  printCourseForm(id: $printCourseFormId) {
-    fullName
-    matricNo
-    level
-    semester
-    programme
-    department
-    faculty
-    session
-    courseRegData {
-      courseName
-      courseCode
-      courseUnit
-      courseType
-      isRegistered
+export const PRINT_COURSE_REG = gql`
+  query PrintCourseForm($printCourseFormId: Long!) {
+    printCourseForm(id: $printCourseFormId) {
+      fullName
+      matricNo
+      level
+      semester
+      programme
+      department
+      faculty
+      session
+      courseRegData {
+        courseName
+        courseCode
+        courseUnit
+        courseType
+        isRegistered
+      }
     }
   }
-}`;
+`;

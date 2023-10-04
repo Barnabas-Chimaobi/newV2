@@ -153,6 +153,7 @@ export default function index() {
     Icon: "",
     Id: "",
   };
+
   const DropDownObjects = [
     {
       Name: "Name",
@@ -231,7 +232,7 @@ export default function index() {
       ) : (
         <div className="page-wrapper">
           <div className="content container-fluid">
-            <div className="row">
+            <div className=" row">
               <div className="text-right mb-3">
                 <Link href="./menu/menuGroup">
                   <button className="btn btn-success">Menu-Group</button>

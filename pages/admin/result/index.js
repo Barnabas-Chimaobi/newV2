@@ -17,6 +17,7 @@ import { read, utils, writeFile } from "xlsx";
 export default function index() {
   const [sessionName, setSession] = useState("");
   const [programmeName, setProgramme] = useState("");
+  const [showTable, setShowTable] = useState(false);
 
   const {
     loading: loadingProgramme,
@@ -56,6 +57,7 @@ export default function index() {
           programmeid: programmeName?.Id,
         },
       });
+      setShowTable(true);
       // console.log(sessionName, "sessionn");
     } catch (err) {
       toast.error(err.message);
@@ -279,8 +281,11 @@ export default function index() {
       <ToastContainer />
       <div className="page-wrapper">
         <div className="content container-fluid">
-          <div class="row">
-            <div className="row">
+          <div className="card p-5">
+            <h2>Manage Result</h2>
+          </div>
+          <div class=" card row p-5">
+            <div className="row mt-3">
               <div className="col-lg-4 col-sm-12">
                 <div className="form-group local-forms">
                   <label>
@@ -326,14 +331,19 @@ export default function index() {
             </div>
 
             <div class="col-sm-12">
-              <div class="card card-table">
-                <DataTable value={tableRow} tableStyle={{ minWidth: "60rem" }}>
-                  <Column field="Code" header="Code"></Column>
-                  <Column field="Title" header="Title"></Column>
-                  <Column body={renderDownloadButton} />
-                  <Column body={renderUploadButton} />
-                </DataTable>
-              </div>
+              {showTable ? (
+                <div class="card card-table">
+                  <DataTable
+                    value={tableRow}
+                    tableStyle={{ minWidth: "60rem" }}
+                  >
+                    <Column field="Code" header="Code"></Column>
+                    <Column field="Title" header="Title"></Column>
+                    <Column body={renderDownloadButton} />
+                    <Column body={renderUploadButton} />
+                  </DataTable>
+                </div>
+              ) : null}
             </div>
           </div>
         </div>
