@@ -4,6 +4,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
 import { Calendar } from "primereact/calendar";
 import { Chart } from "primereact/chart";
+import { VIEWALLTIMETABLESTUDENTS } from "@/pages/api/queries/admin";
 
 export default function index() {
   const [date, setDate] = useState(null);
@@ -23,7 +24,13 @@ export default function index() {
     }
   };
 
+  const [
+    viewTimetable,
+    { loading: timetableLoad, error: timetableError, data: timetableData },
+  ] = useLazyQuery(VIEWALLTIMETABLESTUDENTS);
+
   useEffect(() => {
+    viewTimetable();
     pageLoad();
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue("--text-color");
@@ -117,8 +124,8 @@ export default function index() {
                 <div className="card-body">
                   <div className="db-widgets d-flex justify-content-between align-items-center">
                     <div className="db-info">
-                      <h6>All Courses</h6>
-                      <h3>04/06</h3>
+                      <h6>Number Of Courses</h6>
+                      <h3>7</h3>
                     </div>
                     <div className="db-icon">
                       <img
@@ -135,8 +142,8 @@ export default function index() {
                 <div className="card-body">
                   <div className="db-widgets d-flex justify-content-between align-items-center">
                     <div className="db-info">
-                      <h6>All Projects</h6>
-                      <h3>40/60</h3>
+                      <h6>Number Of Classes For the week</h6>
+                      <h3>15</h3>
                     </div>
                     <div className="db-icon">
                       <img
@@ -153,8 +160,8 @@ export default function index() {
                 <div className="card-body">
                   <div className="db-widgets d-flex justify-content-between align-items-center">
                     <div className="db-info">
-                      <h6>Test Attended</h6>
-                      <h3>30/50</h3>
+                      <h6>Number Of Classes For the week</h6>
+                      <h3>5</h3>
                     </div>
                     <div className="db-icon">
                       <img
@@ -171,8 +178,8 @@ export default function index() {
                 <div className="card-body">
                   <div className="db-widgets d-flex justify-content-between align-items-center">
                     <div className="db-info">
-                      <h6>Test Passed</h6>
-                      <h3>15/20</h3>
+                      <h6>Number Of Credit Units</h6>
+                      <h3>18</h3>
                     </div>
                     <div className="db-icon">
                       <img
@@ -526,7 +533,7 @@ export default function index() {
 
                   <div className="calendar-info calendar-info1">
                     <div className="up-come-header">
-                      <h2>Upcoming Events</h2>
+                      <h2>Notifications</h2>
                       <span>
                         <a href="javascript:;">
                           <i className="feather-plus" />
