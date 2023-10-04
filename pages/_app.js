@@ -14,6 +14,7 @@ import "../public/assets/plugins/fontawesome/css/fontawesome.min.css";
 import "../public/assets/plugins/fontawesome/css/all.min.css";
 import "../public/assets/plugins/select2/css/select2.min.css";
 import "../public/assets/css/style.css";
+
 import {
 	ApolloClient,
 	InMemoryCache,
@@ -41,7 +42,7 @@ export default function Home({ Component, pageProps }) {
 	//console.log(pathname, "router====sss");
 	//console.log(pageProps, Component, "Page propssss")
 	// const rootPath = pathname?.split("/");
-	//console.log(rootPath, router.pathname, "Root pathjhh")
+	//console.log(rootPath, router.pathname, "Root pathjhh");
 
 	if (rootPath && rootPath[1] == "admin") {
 		return (
@@ -162,9 +163,38 @@ export default function Home({ Component, pageProps }) {
 			</>
 		);
 	}
+	if (rootPath && rootPath[1] === "") {
+		return (
+			<>
+				{/* <Script src="/js/jquery.js" strategy="beforeInteractive"></Script> */}
+
+				{/* <Script
+					src="/js/bootstrap.min.js"
+					strategy="beforeInteractive"></Script> */}
+				<Script
+					src="/plugins/bootstrap/js/bootstrap.bundle.min.js"
+					strategy="beforeInteractive"></Script>
+				{/* <Script
+					src="/js/owl.carousel.min.js"
+					strategy="beforeInteractive"></Script> */}
+				{/* <Script src="/js/smoothscroll.js" strategy="beforeInteractive"></Script> */}
+				{/* <Script src="/js/custom.js"></Script> */}
+				<Provider store={store}>
+					<ApolloProvider client={client}>
+						<ErrorBoundary>
+							<Component {...pageProps} />
+						</ErrorBoundary>
+					</ApolloProvider>
+				</Provider>
+			</>
+		);
+	}
 
 	return (
 		<>
+			<Script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></Script>
+			<Script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></Script>
+			<Script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></Script>
 			<Script
 				src="/js/jquery-3.6.0.min.js"
 				strategy="beforeInteractive"></Script>
@@ -180,9 +210,41 @@ export default function Home({ Component, pageProps }) {
 				strategy="beforeInteractive"></Script>
 
 			<Script src="/js/script.js" strategy="beforeInteractive"></Script>
-			<Script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></Script>
-			<Script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></Script>
-			<Script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></Script>
+			{/* <Script src="/js/jquery.js"></Script> */}
+			{/* <Script
+				src="https://code.jquery.com/jquery-1.9.1.min.js"
+				integrity="sha256-wS9gmOZBqsqWxgIVgA8Y9WcQOa7PgSIX+rPA0VL2rbQ="
+				strategy="beforeInteractive"
+				crossorigin="anonymous"></Script> */}
+			{/* <Script
+				type="text/javascript"
+				src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></Script> */}
+
+			{/* <Script src="/js/feather.min.js" strategy="beforeInteractive"></Script> */}
+			{/* <Script
+				src="/plugins/slimscroll/jquery.slimscroll.min.js"
+				strategy="beforeInteractive"></Script> */}
+			{/* <Script
+				src="/plugins/select2/js/select2.min.js"
+				strategy="beforeInteractive"></Script>
+			<Script src="/js/script.js" strategy="beforeInteractive"></Script>
+			<Script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></Script> */}
+			{/* <Script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></Script> */}
+			{/* <Script
+				src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+				strategy="beforeInteractive"></Script> */}
+			{/* <Script
+				src="/plugins/bootstrap/js/bootstrap.bundle.min.js"
+				strategy="beforeInteractive"></Script> */}
+			{/* <Script
+				src="/js/jquery-3.6.0.min.js"
+				strategy="beforeInteractive"></Script> */}
+			{/* <Script src="/js/bootstrap.min.js" strategy="beforeInteractive"></Script> */}
+			{/* <Script
+				src="/js/owl.carousel.min.js"
+				strategy="beforeInteractive"></Script>
+			<Script src="/js/smoothscroll.js" strategy="beforeInteractive"></Script>
+			<Script src="/js/custom.js"></Script> */}
 			<Provider store={store}>
 				<ApolloProvider client={client}>
 					<ErrorBoundary>
