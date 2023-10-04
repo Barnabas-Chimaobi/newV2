@@ -1234,5 +1234,6 @@ export const STUDENT_COURSE_REG = gql`query CourseRegisterForAll {
     activeIndex
 	 departmentId
     programmeId
+	matricNo
   }
 }`;

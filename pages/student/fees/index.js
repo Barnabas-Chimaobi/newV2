@@ -35,11 +35,11 @@ function index() {
 			},
 		});
 		if (generate.data) {
-			router.push(
-				`../../common/invoice/  ${Encrypt(
-					generate?.data?.generateInvoice?.invoiceNumber
-				)}`
-			);
+			let newUrl = `../../common/invoice/ ${Encrypt(
+				generate?.data?.generateInvoice?.invoiceNumber
+			)}`;
+
+			window.open(newUrl, "_blank");
 		}
 		// console.log(generate.data, "jhgfxfghjkl;=====");
 	};
@@ -57,10 +57,10 @@ function index() {
 						<div class="col-sm-12">
 							<div class="card card-table">
 								<div class="card-body">
-									{feeList?.allStudentExpectedFees?.map((item) => {
-										console.log(item);
-										return (
-											<Accordion activeIndex={0}>
+									<Accordion activeIndex={0}>
+										{feeList?.allStudentExpectedFees?.map((item, index) => {
+											console.log(item);
+											return (
 												<AccordionTab
 													className="invoice-details invoice-details-two"
 													headerStyle={{}}
@@ -85,9 +85,9 @@ function index() {
 														);
 													})}
 												</AccordionTab>
-											</Accordion>
-										);
-									})}
+											);
+										})}
+									</Accordion>
 								</div>
 							</div>
 						</div>
