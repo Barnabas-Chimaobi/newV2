@@ -907,55 +907,113 @@ export const DELETE_FORM = gql`
   }
 `;
 
-export const CREATE_PROGRAMME_SESSION = gql`mutation CreateProgrammeSession($sessionId: Int!, $programmeid: Int!, $activeforhostel: Boolean!, $activated: Boolean!, $activeforfees: Boolean!, $activeforallocation: Boolean!, $activeforapplication: Boolean!, $activeforresult: Boolean!) {
-  createProgrammeSession(sessionId: $sessionId, programmeid: $programmeid, activeforhostel: $activeforhostel, activated: $activated, activeforfees: $activeforfees, activeforallocation: $activeforallocation, activeforapplication: $activeforapplication, activeforresult: $activeforresult) {
-    activated
-    activeForAllocation
-    activeForApplication
-    activeForFees
-    activeForHostel
-    activeForResult
-    id
-    programmeId
-    sessionId
-    programme {
-      name
+export const CREATE_PROGRAMME_SESSION = gql`
+  mutation CreateProgrammeSession(
+    $sessionId: Int!
+    $programmeid: Int!
+    $activeforhostel: Boolean!
+    $activated: Boolean!
+    $activeforfees: Boolean!
+    $activeforallocation: Boolean!
+    $activeforapplication: Boolean!
+    $activeforresult: Boolean!
+  ) {
+    createProgrammeSession(
+      sessionId: $sessionId
+      programmeid: $programmeid
+      activeforhostel: $activeforhostel
+      activated: $activated
+      activeforfees: $activeforfees
+      activeforallocation: $activeforallocation
+      activeforapplication: $activeforapplication
+      activeforresult: $activeforresult
+    ) {
+      activated
+      activeForAllocation
+      activeForApplication
+      activeForFees
+      activeForHostel
+      activeForResult
       id
+      programmeId
+      sessionId
+      programme {
+        name
+        id
+      }
+      session {
+        id
+        name
+      }
     }
-    session {
+  }
+`;
+export const UPDATE_PROGRAMME_SESSION_NEW = gql`
+  mutation UpdateAllProgrammeSession(
+    $updateAllProgrammeSessionId: Int!
+    $activeforhostel: Boolean!
+    $activated: Boolean!
+    $activeforfees: Boolean!
+    $activeforallocation: Boolean!
+    $activeforapplication: Boolean!
+    $activeforresult: Boolean!
+  ) {
+    updateAllProgrammeSession(
+      id: $updateAllProgrammeSessionId
+      activeforhostel: $activeforhostel
+      activated: $activated
+      activeforfees: $activeforfees
+      activeforallocation: $activeforallocation
+      activeforapplication: $activeforapplication
+      activeforresult: $activeforresult
+    ) {
+      activated
+      activeForAllocation
+      activeForApplication
+      activeForFees
+      activeForHostel
+      activeForResult
       id
-      name
+      programmeId
+      sessionId
     }
   }
-}`;
-export const UPDATE_PROGRAMME_SESSION_NEW = gql`mutation UpdateAllProgrammeSession($updateAllProgrammeSessionId: Int!, $activeforhostel: Boolean!, $activated: Boolean!, $activeforfees: Boolean!, $activeforallocation: Boolean!, $activeforapplication: Boolean!, $activeforresult: Boolean!) {
-  updateAllProgrammeSession(id: $updateAllProgrammeSessionId, activeforhostel: $activeforhostel, activated: $activated, activeforfees: $activeforfees, activeforallocation: $activeforallocation, activeforapplication: $activeforapplication, activeforresult: $activeforresult) {
-    activated
-    activeForAllocation
-    activeForApplication
-    activeForFees
-    activeForHostel
-    activeForResult
-    id
-    programmeId
-    sessionId
-  }
-}`;
+`;
 
-export const DELETE_PROGRAMME_SESSION = gql`mutation DeleteProgrammeSession($deleteProgrammeSessionId: Int!) {
-  deleteProgrammeSession(id: $deleteProgrammeSessionId)
-}`;
-
-export const SAVE_PROGRAMME_DEPARTMENT_NEW = gql`mutation SaveProgrammeDepartment($programmeid: Int!, $departmentid: Int!, $sessionduration: Int!) {
-  saveProgrammeDepartment(programmeid: $programmeid, departmentid: $departmentid, sessionduration: $sessionduration) {
-    active
-    id
-    departmentId
-    activeForApplication
-    programmeId
-    totalSessions
+export const DELETE_PROGRAMME_SESSION = gql`
+  mutation DeleteProgrammeSession($deleteProgrammeSessionId: Int!) {
+    deleteProgrammeSession(id: $deleteProgrammeSessionId)
   }
-}`;
-export const DELETE_PROGRAMME_DEPARTMENT_NEW = gql`mutation DeleteProgrammeDepartment($programmedepartmentid: Int!) {
-  deleteProgrammeDepartment(programmedepartmentid: $programmedepartmentid)
-}`;
+`;
+
+export const SAVE_PROGRAMME_DEPARTMENT_NEW = gql`
+  mutation SaveProgrammeDepartment(
+    $programmeid: Int!
+    $departmentid: Int!
+    $sessionduration: Int!
+  ) {
+    saveProgrammeDepartment(
+      programmeid: $programmeid
+      departmentid: $departmentid
+      sessionduration: $sessionduration
+    ) {
+      active
+      id
+      departmentId
+      activeForApplication
+      programmeId
+      totalSessions
+    }
+  }
+`;
+export const DELETE_PROGRAMME_DEPARTMENT_NEW = gql`
+  mutation DeleteProgrammeDepartment($programmedepartmentid: Int!) {
+    deleteProgrammeDepartment(programmedepartmentid: $programmedepartmentid)
+  }
+`;
+
+export const CREATE_TIMETABLE = gql`
+  mutation CreateTimeTable($timetable: TimeTableDTOInput!) {
+    createTimeTable(timetable: $timetable)
+  }
+`;

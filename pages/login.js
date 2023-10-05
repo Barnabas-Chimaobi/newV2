@@ -18,42 +18,42 @@ export default function Login() {
 	const [login, { loading: loginLoad, error: loginError, data: loginData }] =
 		useMutation(STAFF_LOGIN);
 
-	const loginFunc = async () => {
-		if (username == "" || password == "") {
-			toast.error("Please provide username and password");
-		} else {
-			setIsLoading(true);
-			try {
-				const payLoad = await login({
-					variables: {
-						username: username,
-						password: password,
-					},
-				});
-				localStorage.clear();
-				localStorage.setItem("authToken", payLoad?.data?.staffLogin?.authToken);
-				localStorage.setItem(
-					"passport",
-					payLoad?.data?.staffLogin?.passportUrl
-				);
-				localStorage.setItem("fullName", payLoad?.data?.staffLogin?.fullName);
-				localStorage.setItem(
-					"matricNumber",
-					payLoad?.data?.staffLogin?.username
-				);
-				toast.success("Login Successful");
-				setIsLoading(false);
-				console.log(payLoad, "payLoad");
-				if (payLoad?.data?.staffLogin?.role === "Administrator") {
-					router.push("./admin/dashboard");
-				} else {
-					router.push("./student");
-				}
-			} catch (err) {
-				toast.error(err.message);
-			}
-		}
-	};
+  const loginFunc = async () => {
+    if (username == "" || password == "") {
+      toast.error("Please provide username and password");
+    } else {
+      setIsLoading(true);
+      try {
+        const payLoad = await login({
+          variables: {
+            username: username,
+            password: password,
+          },
+        });
+        localStorage.clear();
+        localStorage.setItem("authToken", payLoad?.data?.staffLogin?.authToken);
+        localStorage.setItem(
+          "passport",
+          payLoad?.data?.staffLogin?.passportUrl
+        );
+        localStorage.setItem("fullName", payLoad?.data?.staffLogin?.fullName);
+        localStorage.setItem(
+          "matricNumber",
+          payLoad?.data?.staffLogin?.username
+        );
+        toast.success("Login Successful");
+        setIsLoading(false);
+        console.log(payLoad, "payLoad");
+        if (payLoad?.data?.staffLogin?.role === "Administrator") {
+          router.push("./admin/dashboard");
+        } else if (payLoad?.data?.staffLogin?.role === "Student") {
+          router.push("./student/dashboard");
+        }
+      } catch (err) {
+        toast.error(err.message);
+      }
+    }
+  };
 
 	return (
 		<div>

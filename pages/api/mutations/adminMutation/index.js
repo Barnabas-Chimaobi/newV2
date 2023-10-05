@@ -411,6 +411,7 @@ export const SAVE_STUDENT_COURSE_REGISTER = gql`
 			semesterid: $semesterid
 			coursereg: $coursereg
 		) {
+			 id
 			courseAssignments {
 				courseId
 				courseName

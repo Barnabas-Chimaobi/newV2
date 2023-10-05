@@ -93,7 +93,7 @@ export default function courseAllocation() {
   }, []);
 
   const saveCourseAllocationFunc = async (data) => {
-    console.log(data, "dataaaa");
+    // console.log(data, "dataaaa");
     const saveResponse = await saveCourseAllocation({
       variables: {
         courseassignmentid: data?.CourseName?.Id,
@@ -117,10 +117,10 @@ export default function courseAllocation() {
       },
     });
     // console.log(department, "dept");
-    console.log(
-      courseAssignResponse?.data?.courseAssignmentByProgrammeAndDepartment,
-      "plssss==="
-    );
+    // console.log(
+    //   courseAssignResponse?.data?.courseAssignmentByProgrammeAndDepartment,
+    //   "plssss==="
+    // );
   };
 
   const courseAllocationQuery = async () => {
@@ -134,7 +134,7 @@ export default function courseAllocation() {
     courseAssignFunc().then(() => {
       setShowTable(true);
     });
-    console.log(queryResponse, "queryResponse===");
+    // console.log(queryResponse, "queryResponse===");
   };
 
   const headers = [

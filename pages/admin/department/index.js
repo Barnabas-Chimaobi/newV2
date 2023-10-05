@@ -101,11 +101,11 @@ export default function index() {
         variables: {
           updateDepartmentId: data?.Id,
           name: data?.Name,
-          facultyId: data?.Faculty?.id,
+          facultyId: data?.Faculty?.Id,
         },
       });
       //console.log(editResponse, "responseedit");
-      await allDepartment();
+      allDepartment();
     } catch (err) {
       toast.error(err.message);
     }
@@ -159,7 +159,6 @@ export default function index() {
       id: "",
     },
   ];
-
 
   const tableRow = departmentData?.allDepartment?.map((item) => {
     return {
