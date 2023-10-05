@@ -62,9 +62,11 @@ export default function Generateapplicationinvoice() {
         { field: 'Session', header: 'Session', sortable: true, style: { minWidth: '16rem', backgroundColor: 'white' } },
         { field: 'Status', header: 'Status', sortable: true, style: { minWidth: '16rem', backgroundColor: 'white', display: "none" } },
         { field: 'InvoiceNumber', header: 'InvoiceNumber', sortable: true, style: { minWidth: '16rem', backgroundColor: 'white', display: "none" } },
+        { field: 'IsAdmitted', header: 'Admitted', sortable: true, style: { minWidth: '16rem', backgroundColor: 'white', display: "none" } },
+        { field: 'Id', header: 'id', sortable: true, style: { minWidth: '16rem', backgroundColor: 'white', display: "none" } },
         // Add more headers as needed
     ];
-    const TableObj = { Programme: '', Department: '', Session: '', Status: '', InvoiceNumber: '' };
+    const TableObj = { Programme: '', Department: '', Session: '', Status: '', InvoiceNumber: '', IsAdmitted: '', Id: '' };
 
 
     const generateColumnTemplates = (headers) => {
@@ -159,7 +161,7 @@ export default function Generateapplicationinvoice() {
                     if (data != null) {
                         var remappeddata = data.map((item) => ({
                             Programme: item?.programmeName, Department: item?.departmentName, Session: item?.sessionName,
-                            Status: item?.status, InvoiceNumber: item?.invoiceNumber
+                            Status: item?.status, InvoiceNumber: item?.invoiceNumber, Id: item?.id, IsAdmitted: item?.IsAdmitted
                         }))
                         console.log(remappeddata, "Daataaa for Table");
                         settableData(remappeddata);

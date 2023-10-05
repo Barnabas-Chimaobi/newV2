@@ -44,6 +44,12 @@ export default function manageAdmission() {
 
   const headers = [
     {
+      field: "Id",
+      header: "Id",
+      sortable: true,
+      style: { minWidth: "12rem", backgroundColor: "white", display: "none" },
+    },
+    {
       field: "Name",
       header: "Name",
       sortable: true,
@@ -145,6 +151,7 @@ export default function manageAdmission() {
     if (previewList?.length > 0) {
       previewAdmissionList();
     } else {
+      setshowcheckbox(true)
       unadmittedCandidates();
     }
   };
@@ -156,7 +163,7 @@ export default function manageAdmission() {
           variables: {
             programmeid: programmeName?.Id,
             departmentid: departmentName?.Id,
-            sessionid: sessionName?.Id,
+            sessionid: sessionName?.Id
           },
         });
         console.log(
@@ -168,7 +175,7 @@ export default function manageAdmission() {
             return {
               Name: item?.personName,
               FormNumber: item?.applicantionFormNumber,
-              Id: item?.admissionListId,
+              Id: item?.applicantionFormNumber,
               Programme: item?.programmeName,
               Department: item?.departmentName,
             };
@@ -214,6 +221,7 @@ export default function manageAdmission() {
 
   const handlePrepApplicants = async (e) => {
     try {
+      console.log(e, "admitt studenbtsss")
       if (posttArr?.length !== 0) {
         posttArr.forEach((x) => {
           const payload = {
@@ -227,7 +235,26 @@ export default function manageAdmission() {
           console.log(payload, "payload");
           saveAdmittedFunc(payload);
         });
-      } else {
+      }
+
+      else if (e.length > 0) {
+        var appno = [];
+        e.forEach((x) => {
+          appno.push(x.FormNumber);
+        });
+
+        const payload = {
+          admissionBatchId: admissionBatch?.Id,
+          applcationFormNumber: appno,
+          departmentId: departmentName?.Id,
+          departmentOptionId: null,
+          programmeId: programmeName?.Id,
+          sessionId: sessionName?.Id,
+        };
+        console.log(payload, "payload");
+        saveAdmittedFunc(payload);
+      }
+      else {
         toast.warn("Please Select an applicant");
       }
     } catch (err) {
@@ -243,6 +270,9 @@ export default function manageAdmission() {
     });
     toast.success("Admission succesful");
   };
+
+
+
 
   const ProcessExcel = (data) => {
     console.log(tempList, "templistt");
@@ -479,6 +509,7 @@ export default function manageAdmission() {
                       showCheckBox={showcheckbox}
                       showAdmitButton={true}
                     />
+
                   ) : null}
                 </div>
               </div>
