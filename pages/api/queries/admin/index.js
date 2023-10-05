@@ -1396,3 +1396,4 @@ export const PRINT_COURSE_REG = gql`
     }
   }
 `;
+
