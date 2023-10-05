@@ -9,9 +9,11 @@ const Constant = {
 	SMALL_SCHOOL_LOGO: "/assets/img/logo-small.png",
 	ILARO1: "/assets/img/ilaro/.png",
 	BASE_URL: "http://localhost:3000",
+	//BASE_URL: "https://www.portalv2.lloydant.com",
 	ILAROGATE: "/assets/img/ilaroGate.png",
 	ILARO11: "/assets/img/ilaro1.png",
 	ILARO2: "/assets/img/ilaro2.png",
+	BACK_END_URL: "https://backendvirtualschoolv2.lloydant.com",
 };
 
 export { Constant };

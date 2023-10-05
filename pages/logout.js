@@ -6,7 +6,7 @@ export default function logout() {
     const Logout = () => {
         if (typeof window !== "undefined") {
             localStorage.clear();
-            router.push(Constant.BASE_URL + `/login`);
+            router.push(Constant.BASE_URL + `/index`);
         }
 
     }

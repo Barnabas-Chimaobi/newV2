@@ -218,6 +218,7 @@ export const PREVIOUS_APPLICATIONS = gql`
 			programmeName
 			status
 			invoiceNumber
+			isAdmitted
 		}
 	}
 `;
