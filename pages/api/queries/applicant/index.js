@@ -219,6 +219,7 @@ export const PREVIOUS_APPLICATIONS = gql`
 			status
 			invoiceNumber
 			isAdmitted
+			id
 		}
 	}
 `;
