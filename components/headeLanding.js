@@ -51,9 +51,9 @@ export default function headerLanding({ children }) {
 							<Link className="dropdown-item" href="login.html">
 								Course Finder
 							</Link>
-							<Link className="dropdown-item" href="/applicant/applicationform">
+							<a className="dropdown-item" href="/applicant/applicationform">
 								Manage Application
-							</Link>
+							</a>
 						</div>
 					</li>
 
