@@ -59,7 +59,7 @@ export default function Admittedstudent({ formnumber }) {
     const [secondGrade2, setsecondGrade2] = useState("");
     const [secondGrade3, setsecondGrade3] = useState("");
     const [secondGrade4, setsecondGrade4] = useState("");
-    const [secondGrade5, setsecondGrade5] = useState("");
+    const [secondGrade5, setsecondGrade5] = useState("")
     const [secondGrade6, setsecondGrade6] = useState("");
     const [secondGrade7, setsecondGrade7] = useState("");
     const [secondGrade8, setsecondGrade8] = useState("");
@@ -415,7 +415,7 @@ export default function Admittedstudent({ formnumber }) {
                                                                                                 <strong>Print Admission Slip by clicking 'Print Admission Slip' Button </strong>
                                                                                             </div>
                                                                                             <div class="col-md-4 mt-3">
-                                                                                                <a href={Constant.BASE_URL + `/common/admissionslip/` + admittedApplicatData?.applicationFormNumber.replace(/\//g, '-')} class="btn btn-outline-primary me-2 mb-2 "><i class="fas fa-download"></i> Print Admission Slip</a>
+                                                                                                <a href={Constant.BASE_URL + `/common/admissionslip/` + admittedApplicatData?.applicationFormNumber?.replace(/\//g, '-')} class="btn btn-outline-primary me-2 mb-2 "><i class="fas fa-download"></i> Print Admission Slip</a>
                                                                                             </div>
                                                                                         </div>
 
