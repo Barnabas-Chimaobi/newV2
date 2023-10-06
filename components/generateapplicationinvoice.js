@@ -161,9 +161,9 @@ export default function Generateapplicationinvoice() {
                     if (data != null) {
                         var remappeddata = data.map((item) => ({
                             Programme: item?.programmeName, Department: item?.departmentName, Session: item?.sessionName,
-                            Status: item?.status, InvoiceNumber: item?.invoiceNumber, Id: item?.id, IsAdmitted: item?.IsAdmitted
+                            Status: item?.status, InvoiceNumber: item?.invoiceNumber, Id: item?.id, IsAdmitted: item?.isAdmitted
                         }))
-                        console.log(remappeddata, "Daataaa for Table");
+                        console.log(remappeddata, data, "Daataaa for Table");
                         settableData(remappeddata);
                     }
                     const ProgrammeData = await getProgrammes();

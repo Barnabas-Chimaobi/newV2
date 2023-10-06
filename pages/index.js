@@ -56,7 +56,7 @@ const Home = () => {
 				if (payLoad?.data?.staffLogin?.role === "Administrator") {
 					router.push("./admin/dashboard");
 				} else {
-					router.push("./student");
+					router.push("./student/dashboard");
 				}
 			} catch (err) {
 				toast.error(err.message);

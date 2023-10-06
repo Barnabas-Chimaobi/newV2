@@ -70,15 +70,17 @@ export default function Admittedstudent({ formnumber }) {
 
     const admissionStatusFunc = async (formNo) => {
         try {
+            const inputId = parseInt(formNo);
             const admissionStatusData = await admissionStatus({
                 variables: {
-                    applicationformnumber: formNo
+                    checkAdmissionStatusByIdId: inputId
                 }
             });
-            setadmittedApplicatData(admissionStatusData?.data?.checkAdmissionStatus);
+            console.log(admissionStatusData, inputId, "fix nowwwww")
+            setadmittedApplicatData(admissionStatusData?.data?.checkAdmissionStatusById);
 
-            setfirstSitting(admissionStatusData?.data?.checkAdmissionStatus?.applicationForm?.applicationFormFullResponse?.submitOlevelResult[0]);
-            setsecondSitting(admissionStatusData?.data?.checkAdmissionStatus?.applicationForm?.applicationFormFullResponse?.submitOlevelResult[1]);
+            setfirstSitting(admissionStatusData?.data?.checkAdmissionStatusById?.applicationForm?.applicationFormFullResponse?.submitOlevelResult[0]);
+            setsecondSitting(admissionStatusData?.data?.checkAdmissionStatusById?.applicationForm?.applicationFormFullResponse?.submitOlevelResult[1]);
             if (firstSitting?.olevelResultsDto?.length > 0) {
                 setfirstSub1({ name: firstSitting?.olevelResultsDto[0]?.subject })
                 setfirstGrade1({ name: firstSitting?.olevelResultsDto[0]?.grade })
@@ -167,7 +169,7 @@ export default function Admittedstudent({ formnumber }) {
                 setChartOptions(options);
                 setloadedData(true);
             });
-    }, []);
+    }, [formnumber]);
 
 
 
