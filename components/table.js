@@ -45,7 +45,7 @@ export default function GenericTable({
   showAdmitButton,
   showManageButton,
   showOnlyDeleteButton,
-  checkFunction,
+
   showAddPages,
 }) {
   const router = useRouter();
@@ -92,7 +92,7 @@ export default function GenericTable({
   };
   const testHand = (e) => {
     setSelectedProducts(e);
-    checkFunction();
+    // checkFunction();
   };
   const handleReloadPage = () => {
     router.reload(); // This reloads the current page
@@ -269,7 +269,7 @@ export default function GenericTable({
     var status = false;
     if (product.Id === null || product.Id === "") {
       status = saveFunc(product);
-      console.log(status, "tableeeeeeee save");
+      // console.log(status, "tableeeeeeee save");
       toast.current.show({
         severity: "success",
         summary: "Successful",

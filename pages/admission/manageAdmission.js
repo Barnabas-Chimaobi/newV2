@@ -18,6 +18,8 @@ import {
   ALL_ADMISSION_BATCH,
   UNADMITTED_APPLICANTS,
 } from "../api/queries/admin";
+import Link from "next/link";
+// import UploadAdmissionexcel from "../../public/uploadAdmissionexcel.xlsx "
 
 export default function manageAdmission() {
   const [showAddModal, setShowAddModal] = useState(false);
@@ -415,7 +417,24 @@ export default function manageAdmission() {
                         </div>
                         <div className="col-lg-4 col-sm-12">
                           <div className="local-forms form-group">
+                            {/* <label>Download Excel Format</label> */}
+
+                            <Link
+                              href="../../public/uploadAdmissionexcel.xlsx"
+                              download="uploadAdmissionexcel.xlsx"
+                            >
+                              <button className="btn btn-primary">
+                                Download Excel Format
+                              </button>
+                            </Link>
+                          </div>
+                        </div>
+
+                        <div className="col-lg-4 col-sm-12">
+                          <div className="local-forms form-group">
                             <label>Upload Excel (Optional) </label>
+                            <label>Please upload an Excel file(Optional)</label>
+
                             <input
                               type="file"
                               name="file"

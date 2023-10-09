@@ -118,7 +118,7 @@ const Layout = ({ children }) => {
                       <i className="feather-folder" />{" "}
                       <span>Manage Courses</span>{" "}
                     </Link>
-                    <Link href="#">
+                    <Link href="../../../student/timetable/">
                       <i className="feather-clock" /> <span>Timetable</span>{" "}
                     </Link>
                   </li>
