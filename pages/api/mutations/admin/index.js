@@ -1041,7 +1041,7 @@ mutation UpdateRole($updateRoleId: Int!, $name: String!) {
 export const DELETE_ROLE = gql`
 mutation Mutation($deleteRoleId: Int!) {
   deleteRole(id: $deleteRoleId)
-}
+}`;
 export const CREATE_NOTIFICATIONS = gql`
   mutation CreateNotification($notification: NotificationDtoInput!) {
     createNotification(notification: $notification)
