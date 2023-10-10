@@ -567,6 +567,16 @@ export const SAVE_PROGRAMME_DEPARTMENT = gql`
     }
   }
 `;
+
+export const SAVE_ROLE = gql`
+mutation SaveRole($name: String!) {
+  saveRole(name: $name) {
+    roleId
+    roleName
+  }
+}
+`;
+
 export const SAVE_STUDENT_RESULT = gql`
   mutation SaveStudentResult(
     $result: [ResultDetailsInput!]!
@@ -1016,4 +1026,19 @@ export const CREATE_TIMETABLE = gql`
   mutation CreateTimeTable($timetable: TimeTableDTOInput!) {
     createTimeTable(timetable: $timetable)
   }
+`;
+
+export const UPDATE_ROLE = gql`
+mutation UpdateRole($updateRoleId: Int!, $name: String!) {
+  updateRole(id: $updateRoleId, name: $name) {
+    roleId
+    roleName
+  }
+}
+`;
+
+export const DELETE_ROLE = gql`
+mutation Mutation($deleteRoleId: Int!) {
+  deleteRole(id: $deleteRoleId)
+}
 `;
