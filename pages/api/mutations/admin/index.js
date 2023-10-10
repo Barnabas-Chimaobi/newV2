@@ -1028,6 +1028,7 @@ export const CREATE_TIMETABLE = gql`
   }
 `;
 
+
 export const UPDATE_ROLE = gql`
 mutation UpdateRole($updateRoleId: Int!, $name: String!) {
   updateRole(id: $updateRoleId, name: $name) {
@@ -1041,4 +1042,22 @@ export const DELETE_ROLE = gql`
 mutation Mutation($deleteRoleId: Int!) {
   deleteRole(id: $deleteRoleId)
 }
+export const CREATE_NOTIFICATIONS = gql`
+  mutation CreateNotification($notification: NotificationDtoInput!) {
+    createNotification(notification: $notification)
+  }
+`;
+
+export const DISABLE_NOTIFICATION = gql`
+  mutation DisableNotification($disableNotificationId: Long!) {
+    disableNotification(id: $disableNotificationId)
+  }
+`;
+
+export const CREATE_PREFIX = gql`
+  mutation CreateApplicationFormPrefix(
+    $model: ApplicationFormNumberSetupDtoInput!
+  ) {
+    createApplicationFormPrefix(model: $model)
+  }
 `;

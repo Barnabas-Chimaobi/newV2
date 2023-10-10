@@ -2105,7 +2105,7 @@ div.dataTables_wrapper div.dataTables_length select {
 .header .header-left .logo {
 	/* display: inline-block;
 	line-height: 60px; */
-	margin-top: 20px;
+	/* margin-top: 20px; */
 }
 .header .header-left .logo img {
 	max-height: 40px;
@@ -2712,12 +2712,14 @@ footer p {
 	display: table;
 	height: 100vh;
 	min-height: 100vh;
+	align-self: center;
+	margin-left: 120px;
 }
 .login-wrapper {
-	/* width: 100%;
+	width: 100%;
 	height: 100%;
 	display: table-cell;
-	vertical-align: middle; */
+	vertical-align: middle;
 }
 .login-wrapper .loginbox {
 	background-color: var(--background-color);
@@ -2764,7 +2766,7 @@ footer p {
 	display: flex;
 	justify-content: center;
 	padding: 40px;
-	width: 400px;
+	/* width: 400px; */
 }
 .login-wrapper .loginbox .login-right .login-right-wrap {
 	max-width: 100%;
@@ -3826,7 +3828,7 @@ table.table-inbox tbody tr.checked {
 	-ms-flex-pack: center;
 }
 .backGroundImg {
-  background-image: url('/public/assets/img/ilaroGate.png'),
+	background-image: url("/public/assets/img/ilaroGate.png");
 }
 .profile-user-img {
 	margin-right: 20px;
@@ -8548,7 +8550,7 @@ body[data-layout-mode="dark"]
 .schoolAddress {
 	font-size: 12px;
 	padding-left: 5px;
-	padding-top: -50px;
+	padding-top: 5px;
 }
 .image .imagecontact {
 	background-image: url("../img/footerImg.png");
@@ -8557,7 +8559,8 @@ body[data-layout-mode="dark"]
 	background-size: cover;
 }
 .image {
-	margin-top: 600px;
+	margin-top: 200px;
+	margin-bottom: 200px;
 }
 .logins {
 	/* display: flex;
@@ -8662,9 +8665,18 @@ body[data-layout-mode="dark"]
 	/* height: 650px; */
 	/* align-items: center; */
 }
-	.footer p{
-		text-align: right;
-	}
+.footer p {
+	text-align: right;
+}
+
+.carousel-inner .carousel-item .carousel-caption a:hover {
+	color: #fff;
+	background-color: #0a58ca;
+}
+.carousel-inner .carousel-item .carousel-caption a {
+	color: #000;
+	background-color: #fff;
+}
 
 /*-----------------
 	29. Responsive
@@ -9609,7 +9621,20 @@ body[data-layout-mode="dark"]
 }
 
 @media (max-width: 575.98px) {
-	.footer p{
+	.login-body {
+	
+	margin-left: 0px;
+}
+	.carousel-inner .carousel-caption {
+		display: none;
+	}
+	.nav-center a {
+		font-size: x-small;
+	}
+	.nav-center {
+		margin-top: 30px;
+	}
+	.footer p {
 		text-align: center;
 	}
 	.login-wrapper .loginbox {

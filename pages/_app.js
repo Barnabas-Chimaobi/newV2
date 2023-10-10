@@ -47,15 +47,15 @@ export default function Home({ Component, pageProps }) {
 	if (rootPath && rootPath[1] == "admin") {
 		return (
 			<>
-				<Script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></Script>
-				<Script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></Script>
-				<Script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></Script>
-				<Script
+				<Script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js" strategy="beforeInteractive"></Script>
+				<Script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" strategy="beforeInteractive"></Script>
+				<Script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" strategy="beforeInteractive"></Script>
+				{/* <Script
 					src="/js/jquery-3.6.0.min.js"
 					strategy="beforeInteractive"></Script>
 				<Script
 					src="/plugins/bootstrap/js/bootstrap.bundle.min.js"
-					strategy="beforeInteractive"></Script>
+					strategy="beforeInteractive"></Script> */}
 				<Script src="/js/feather.min.js" strategy="beforeInteractive"></Script>
 				<Script
 					src="/plugins/slimscroll/jquery.slimscroll.min.js"
@@ -82,15 +82,15 @@ export default function Home({ Component, pageProps }) {
 		return (
 			<>
 				{/* <Provider store={store}> */}
-				<Script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></Script>
-				<Script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></Script>
-				<Script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></Script>
-				<Script
+				<Script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js" strategy="beforeInteractive"></Script>
+				<Script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" strategy="beforeInteractive"></Script>
+				<Script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" strategy="beforeInteractive"></Script>
+				{/* <Script
 					src="/js/jquery-3.6.0.min.js"
 					strategy="beforeInteractive"></Script>
 				<Script
 					src="/plugins/bootstrap/js/bootstrap.bundle.min.js"
-					strategy="beforeInteractive"></Script>
+					strategy="beforeInteractive"></Script> */}
 				<Script src="/js/feather.min.js" strategy="beforeInteractive"></Script>
 				<Script
 					src="/plugins/slimscroll/jquery.slimscroll.min.js"
@@ -131,15 +131,15 @@ export default function Home({ Component, pageProps }) {
 	if (rootPath && rootPath[1] === "admission") {
 		return (
 			<>
-				<Script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></Script>
-				<Script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></Script>
-				<Script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></Script>
-				<Script
+				<Script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js" strategy="beforeInteractive"></Script>
+				<Script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" strategy="beforeInteractive"></Script>
+				<Script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" strategy="beforeInteractive"></Script>
+				{/* <Script
 					src="/js/jquery-3.6.0.min.js"
-					strategy="beforeInteractive"></Script>
-				<Script
+					strategy="beforeInteractive"></Script> */}
+				{/* <Script
 					src="/plugins/bootstrap/js/bootstrap.bundle.min.js"
-					strategy="beforeInteractive"></Script>
+					strategy="beforeInteractive"></Script> */}
 				<Script src="/js/feather.min.js" strategy="beforeInteractive"></Script>
 				<Script
 					src="/plugins/slimscroll/jquery.slimscroll.min.js"
@@ -192,15 +192,15 @@ export default function Home({ Component, pageProps }) {
 
 	return (
 		<>
-			<Script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></Script>
-			<Script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></Script>
-			<Script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></Script>
-			<Script
+			<Script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js" strategy="beforeInteractive"></Script>
+			<Script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" strategy="beforeInteractive"></Script>
+			<Script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" strategy="beforeInteractive"></Script>
+			{/* <Script
 				src="/js/jquery-3.6.0.min.js"
 				strategy="beforeInteractive"></Script>
 			<Script
 				src="/plugins/bootstrap/js/bootstrap.bundle.min.js"
-				strategy="beforeInteractive"></Script>
+				strategy="beforeInteractive"></Script> */}
 			<Script src="/js/feather.min.js" strategy="beforeInteractive"></Script>
 			<Script
 				src="/plugins/slimscroll/jquery.slimscroll.min.js"

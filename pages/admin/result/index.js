@@ -212,7 +212,7 @@ export default function index() {
   };
 
   const handleFileUpload = (event) => {
-    const file = event.target.files[0];
+    const file = event?.target?.files[0];
     const reader = new FileReader();
 
     reader.onload = function (e) {

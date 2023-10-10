@@ -193,7 +193,7 @@ export default function paymentReport() {
   return (
     <div>
       <div className="page-wrapper">
-        <div className="content container-fluid">
+        <div>
           <div className="card">
             <div className="row p-5">
               <div className="col-lg-4 col-sm-12">
