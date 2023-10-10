@@ -101,11 +101,11 @@ export default function index() {
         variables: {
           updateDepartmentId: data?.Id,
           name: data?.Name,
-          facultyId: data?.Faculty?.Id,
+          facultyId: data?.Faculty?.id,
         },
       });
       //console.log(editResponse, "responseedit");
-      allDepartment();
+      await allDepartment();
     } catch (err) {
       toast.error(err.message);
     }

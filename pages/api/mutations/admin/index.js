@@ -1017,3 +1017,23 @@ export const CREATE_TIMETABLE = gql`
     createTimeTable(timetable: $timetable)
   }
 `;
+
+export const CREATE_NOTIFICATIONS = gql`
+  mutation CreateNotification($notification: NotificationDtoInput!) {
+    createNotification(notification: $notification)
+  }
+`;
+
+export const DISABLE_NOTIFICATION = gql`
+  mutation DisableNotification($disableNotificationId: Long!) {
+    disableNotification(id: $disableNotificationId)
+  }
+`;
+
+export const CREATE_PREFIX = gql`
+  mutation CreateApplicationFormPrefix(
+    $model: ApplicationFormNumberSetupDtoInput!
+  ) {
+    createApplicationFormPrefix(model: $model)
+  }
+`;

@@ -21,7 +21,7 @@ import { InputSwitch } from "primereact/inputswitch";
 import { InputTextarea } from "primereact/inputtextarea";
 import { Calendar } from "primereact/calendar";
 import { Constant } from "../constant";
-import { Chip } from 'primereact/chip';
+import { Chip } from "primereact/chip";
 
 import Decrypt from "./decrypt";
 import Encrypt from "./encrypt";
@@ -47,11 +47,11 @@ export default function GenericTable({
   showAdmitButton,
   showManageButton,
   showOnlyDeleteButton,
-  checkFunction,
+
   showAddPages,
   saveAdmission,
   admissionType,
-  isAdmission
+  isAdmission,
 }) {
   const router = useRouter();
 
@@ -97,7 +97,7 @@ export default function GenericTable({
   };
   const testHand = (e) => {
     setSelectedProducts(e);
-    //checkFunction();
+    // checkFunction();
   };
   const handleReloadPage = () => {
     router.reload(); // This reloads the current page
@@ -274,7 +274,7 @@ export default function GenericTable({
     var status = false;
     if (product.Id === null || product.Id === "") {
       status = saveFunc(product);
-      console.log(status, "tableeeeeeee save");
+      // console.log(status, "tableeeeeeee save");
       toast.current.show({
         severity: "success",
         summary: "Successful",
@@ -650,7 +650,7 @@ export default function GenericTable({
               window.open(url, "_blank");
             }}
           />
-          {rowData?.IsAdmitted ?
+          {rowData?.IsAdmitted ? (
             <Button
               label="Access Admission"
               rounded
@@ -663,16 +663,14 @@ export default function GenericTable({
                   rowData?.Id;
                 window.open(url, "_blank");
               }}
-            /> : <>
+            />
+          ) : (
+            <>
               <div className="ml-3">
-                <Chip
-                  label="No Admission Offered"
-
-                />
+                <Chip label="No Admission Offered" />
               </div>
             </>
-          }
-
+          )}
         </React.Fragment>
       );
     }
@@ -734,7 +732,6 @@ export default function GenericTable({
             style={{ minWidth: "12rem", backgroundColor: "white" }}
           ></Column>
         </DataTable>
-
       </div>
 
       <Dialog

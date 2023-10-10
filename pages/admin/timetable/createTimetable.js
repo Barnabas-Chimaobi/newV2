@@ -250,7 +250,6 @@ export default function createTimetable() {
                 variablesForQuery={{}}
                 tableContent={tableRow}
                 dropDownObjects={DropDownObjects}
-                editFunc={{}}
                 deleteFunc={{}}
               />
             </div>
