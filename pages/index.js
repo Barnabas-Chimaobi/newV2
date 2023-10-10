@@ -174,7 +174,7 @@ const Home = () => {
 							height="35"
 							alt="MDB Logo"
 							loading="lazy"
-							// style="margin-top: -1px;"
+						// style="margin-top: -1px;"
 						/>
 					</a>
 
@@ -244,12 +244,10 @@ const Home = () => {
 									</li>
 								</ul>
 							</div>
-							<button
-								onClick={() => router.push("./login")}
-								type="button"
-								class="btn btn-link px-3 me-2">
+
+							<a class="btn btn-link px-3 me-2" href="./login">
 								Login
-							</button>
+							</a>
 						</div>
 					</div>
 				</div>
