@@ -172,156 +172,16 @@ const Home = () => {
 
 	return (
 		<>
-			{/* <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
+			<link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
 			<link rel="stylesheet" href="/assets/css/font-awesome.min.css" />
 			<link rel="stylesheet" href="/assets/css/owl.carousel.css" />
 			<link rel="stylesheet" href="/assets/css/owl.theme.default.min.css" />
-			<link rel="stylesheet" href="/assets/css/templatemo-style.css" /> */}
-			<link
-				href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-				rel="stylesheet"
-			/>
-			<link
-				href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-				rel="stylesheet"
-			/>
-			<link
-				href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css"
-				rel="stylesheet"
-			/>
+			<link rel="stylesheet" href="/assets/css/templatemo-style.css" />
 
 			{isLoading && <Spinner />}
 			{/* <div class=""> */}
-			{/* <HeaderLanding /> */}
-
-			<nav class="navbar navbar-expand-lg navbar-light bg-light">
-				<div class="container">
-					<a class="navbar-brand me-2" href="https://mdbgo.com/">
-						<img
-							src="https://mdbcdn.b-cdn.net/img/logo/mdb-transaprent-noshadows.webp"
-							height="16"
-							alt="MDB Logo"
-							loading="lazy"
-							// style="margin-top: -1px;"
-						/>
-					</a>
-
-					<button
-						class="navbar-toggler"
-						type="button"
-						data-mdb-toggle="collapse"
-						data-mdb-target="#navbarButtonsExample"
-						aria-controls="navbarButtonsExample"
-						aria-expanded="false"
-						aria-label="Toggle navigation">
-						<i class="fas fa-bars"></i>
-					</button>
-
-					<div class="collapse navbar-collapse" id="navbarButtonsExample">
-						<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-							<li class="nav-item">
-								<a class="nav-link" href="#">
-									Dashboard
-								</a>
-							</li>
-						</ul>
-
-						<div class="d-flex align-items-center">
-							<button type="button" class="btn btn-link px-3 me-2">
-								Login
-							</button>
-							<button type="button" class="btn btn-primary me-3">
-								Sign up for free
-							</button>
-							<a
-								class="btn btn-dark px-3"
-								href="https://github.com/mdbootstrap/mdb-ui-kit"
-								role="button">
-								<i class="fab fa-github"></i>
-							</a>
-						</div>
-					</div>
-				</div>
-			</nav>
-
-			<div
-				id="carouselExampleCaptions"
-				class="carousel slide"
-				data-mdb-ride="carousel">
-				<div class="carousel-indicators">
-					<button
-						type="button"
-						data-mdb-target="#carouselExampleCaptions"
-						data-mdb-slide-to="0"
-						class="active"
-						aria-current="true"
-						aria-label="Slide 1"></button>
-					<button
-						type="button"
-						data-mdb-target="#carouselExampleCaptions"
-						data-mdb-slide-to="1"
-						aria-label="Slide 2"></button>
-					<button
-						type="button"
-						data-mdb-target="#carouselExampleCaptions"
-						data-mdb-slide-to="2"
-						aria-label="Slide 3"></button>
-				</div>
-				<div class="carousel-inner">
-					<div class="carousel-item active">
-						<img
-							src="https://mdbcdn.b-cdn.net/img/new/slides/041.webp"
-							class="d-block w-100"
-							alt="Wild Landscape"
-						/>
-						<div class="carousel-caption d-none d-md-block">
-							<h5>First slide label</h5>
-							<p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-						</div>
-					</div>
-					<div class="carousel-item">
-						<img
-							src="https://mdbcdn.b-cdn.net/img/new/slides/042.webp"
-							class="d-block w-100"
-							alt="Camera"
-						/>
-						<div class="carousel-caption d-none d-md-block">
-							<h5>Second slide label</h5>
-							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-						</div>
-					</div>
-					<div class="carousel-item">
-						<img
-							src="https://mdbcdn.b-cdn.net/img/new/slides/043.webp"
-							class="d-block w-100"
-							alt="Exotic Fruits"
-						/>
-						<div class="carousel-caption d-none d-md-block">
-							<h5>Third slide label</h5>
-							<p>
-								Praesent commodo cursus magna, vel scelerisque nisl consectetur.
-							</p>
-						</div>
-					</div>
-				</div>
-				<button
-					class="carousel-control-prev"
-					type="button"
-					data-mdb-target="#carouselExampleCaptions"
-					data-mdb-slide="prev">
-					<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-					<span class="visually-hidden">Previous</span>
-				</button>
-				<button
-					class="carousel-control-next"
-					type="button"
-					data-mdb-target="#carouselExampleCaptions"
-					data-mdb-slide="next">
-					<span class="carousel-control-next-icon" aria-hidden="true"></span>
-					<span class="visually-hidden">Next</span>
-				</button>
-			</div>
-			{/* <Carousel
+			<HeaderLanding />
+			<Carousel
 				value={product}
 				numVisible={1}
 				numScroll={1}
@@ -330,9 +190,9 @@ const Home = () => {
 				circular
 				autoplayInterval={5000}
 				itemTemplate={productTemplate}
-			/> */}
+			/>
 			<div
-				className=" container bg-green-700 p-5 col-lg-6 col-sm-6 mb-8 "
+				className=" bg-green-700 p-5 col-lg-6 col-sm-6 "
 				style={{
 					// marginTop: -50,
 					position: "relative",
@@ -360,52 +220,7 @@ const Home = () => {
 				</div>
 			</div>
 
-			<div class="d-flex justify-content-center col-md-6">
-				<div class="card mb-3 ">
-					<div class="row g-0">
-						<div class="col-md-4">
-							<img
-								src="https://mdbcdn.b-cdn.net/wp-content/uploads/2020/06/vertical.webp"
-								alt="Trendy Pants and Shoes"
-								class="img-fluid rounded-start"
-							/>
-						</div>
-						<div class="col-md-8">
-							<div class="card-body">
-								{/* <h5 class="card-title">Card title</h5> */}
-								<p class="card-text">
-									<p>
-										{" "}
-										Enter correct information only and ensure that you do not
-										spell your names wrongly.
-									</p>
-									<p>
-										Note that your information and personal details are linked
-										to your Confirmation Order Number, your invoice number and
-										the form you purchase.{" "}
-									</p>
-
-									<p>
-										You would not be able to correct or change the information
-										with which you obtain your Confirmation Order Number, your
-										invoice and or your Application form after submitting that
-										information or purchasing the form. If you make any mistake,
-										do not use the Confirmation Order Number or invoice so
-										generated to obtain a form. Rather, generate another number
-										and invoice with your correct information and proceed with
-										those details.
-									</p>
-								</p>
-								<p class="card-text">
-									<small class="text-muted">Last updated 3 mins ago</small>
-								</p>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			{/* <section>
+			<section>
 				<div id="feature" class="logins col-lg-10 col-md-6 ">
 					<h2 class="fpi">Start your journey to a better future with FPI</h2>
 					<div className="login-wrapper">
@@ -477,53 +292,8 @@ const Home = () => {
 						</div>
 					</div>
 				</div>
-			</section> */}
-
-			<footer class="bg-dark text-center text-white">
-				<div class="container p-4 pb-0">
-					<section class="">
-						<form action="">
-							<div class="row d-flex justify-content-center">
-								<div class="col-auto">
-									<p class="pt-2">
-										<strong>Sign up for our newsletter</strong>
-									</p>
-								</div>
-
-								<div class="col-md-5 col-12">
-									<div class="form-outline form-white mb-4">
-										<input
-											type="email"
-											id="form5Example29"
-											class="form-control"
-										/>
-										<label class="form-label" for="form5Example29">
-											Email address
-										</label>
-									</div>
-								</div>
-
-								<div class="col-auto">
-									<button type="submit" class="btn btn-outline-light mb-4">
-										Subscribe
-									</button>
-								</div>
-							</div>
-						</form>
-					</section>
-				</div>
-
-				<div
-					class="text-center p-3"
-					style={{ backgroundColor: "background-color: rgba(0, 0, 0, 0.2)" }}>
-					© 2023 Copyright:
-					<a class="text-white" href="https://mdbootstrap.com/">
-						Lloydant
-					</a>
-				</div>
-			</footer>
-
-			{/* <div>
+			</section>
+			<div>
 				<div className="image bg-white mb-5">
 					<div className="imagecontact p-5">
 						<h3
@@ -548,10 +318,7 @@ const Home = () => {
 						© 2023 Lloydant All rights reserved.
 					</p>
 				</div>
-			</div> */}
-			<Script
-				type="text/javascript"
-				src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"></Script>
+			</div>
 
 			{/* </div> */}
 		</>

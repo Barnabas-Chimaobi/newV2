@@ -15,7 +15,7 @@ import { Card } from 'primereact/card';
 import Spinner from './spinner';
 
 
-export default function Admittedstudent() {
+export default function Admittedstudent({ formnumber }) {
     const router = useRouter();
     const [loadedData, setloadedData] = useState(false);
     const [admittedApplicatData, setadmittedApplicatData] = useState("");
@@ -134,7 +134,7 @@ export default function Admittedstudent() {
     const [chartOptions, setChartOptions] = useState({});
 
     useEffect(() => {
-        admissionStatusFunc("ILARO/REG/30")
+        admissionStatusFunc(formnumber)
             .then((x) => {
                 const statusProgress = admittedApplicatData?.applicantStatusId * 10;
 
