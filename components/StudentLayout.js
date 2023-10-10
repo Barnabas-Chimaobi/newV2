@@ -64,9 +64,9 @@ const Layout = ({ children }) => {
                   <span className="user-img">
                     <img
                       className="rounded-circle"
-                      src={passport}
+                      src={Constant.BACK_END_URL + "/" + passport}
                       width={31}
-                      alt="Ryan Taylor"
+                      alt={fullName}
                     />
                     <div className="user-text">
                       <h6>{fullName}</h6>
@@ -78,7 +78,7 @@ const Layout = ({ children }) => {
                   <div className="user-header">
                     <div className="avatar avatar-sm">
                       <img
-                        src={passport}
+                        src={Constant.BACK_END_URL + "/" + passport}
                         alt="User Image"
                         className="avatar-img rounded-circle"
                       />
@@ -88,7 +88,7 @@ const Layout = ({ children }) => {
                       <p className="text-muted mb-0">Student</p>
                     </div>
                   </div>
-                  <a className="dropdown-item" href="profile.html">
+                  <a className="dropdown-item" href="../student/profile">
                     My Profile
                   </a>
 

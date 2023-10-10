@@ -218,6 +218,8 @@ export const PREVIOUS_APPLICATIONS = gql`
 			programmeName
 			status
 			invoiceNumber
+			isAdmitted
+			id
 		}
 	}
 `;
@@ -280,9 +282,9 @@ export const GENERATE_APPLICATION_FORM_INVOICE = gql`
 `;
 
 export const CHECK_ADMISSION_STATUS = gql`
-	query CheckAdmissionStatus($applicationformnumber: String!) {
-		checkAdmissionStatus(applicationformnumber: $applicationformnumber) {
-			applicantStatus
+query CheckAdmissionStatusById($checkAdmissionStatusByIdId: Long!) {
+  checkAdmissionStatusById(id: $checkAdmissionStatusByIdId) {
+    applicantStatus
 			applicantStatusId
 			applicationFormNumber
 			courseOfStudy
@@ -323,7 +325,7 @@ export const CHECK_ADMISSION_STATUS = gql`
 				}
 			}
 		}
-	}
+  }
 `;
 export const OLEVEL_GRADE = gql`
 	query GellAllOLevelGrade {

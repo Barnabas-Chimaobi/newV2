@@ -21,6 +21,8 @@ import { InputSwitch } from "primereact/inputswitch";
 import { InputTextarea } from "primereact/inputtextarea";
 import { Calendar } from "primereact/calendar";
 import { Constant } from "../constant";
+import { Chip } from "primereact/chip";
+
 import Decrypt from "./decrypt";
 import Encrypt from "./encrypt";
 
@@ -47,6 +49,9 @@ export default function GenericTable({
   showOnlyDeleteButton,
 
   showAddPages,
+  saveAdmission,
+  admissionType,
+  isAdmission,
 }) {
   const router = useRouter();
 
@@ -349,7 +354,11 @@ export default function GenericTable({
   };
   const admitSelectedProducts = () => {
     console.log(products);
-    saveFunc(products);
+    if (selectedProducts.length > 0) {
+      saveFunc(selectedProducts);
+    } else {
+      saveFunc(products);
+    }
     toast.current.show({
       severity: "success",
       summary: "Successful",
@@ -641,6 +650,27 @@ export default function GenericTable({
               window.open(url, "_blank");
             }}
           />
+          {rowData?.IsAdmitted ? (
+            <Button
+              label="Access Admission"
+              rounded
+              outlined
+              severity="outline-success"
+              onClick={() => {
+                const url =
+                  Constant.BASE_URL +
+                  `/applicant/admittedstudent/` +
+                  rowData?.Id;
+                window.open(url, "_blank");
+              }}
+            />
+          ) : (
+            <>
+              <div className="ml-3">
+                <Chip label="No Admission Offered" />
+              </div>
+            </>
+          )}
         </React.Fragment>
       );
     }
@@ -659,7 +689,7 @@ export default function GenericTable({
     <div className="p-3">
       <Toast ref={toast} />
       <div className="card" style={dataTableStyle}>
-        {allowApply || showExport || showAddButton ? (
+        {allowApply || showExport || showAddButton || showAdmitButton ? (
           <Toolbar
             className="p-1 mb-3"
             left={rightToolbarTemplate}

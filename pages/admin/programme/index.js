@@ -16,6 +16,8 @@ import Spinner from "@/components/spinner";
 export default function Programme() {
     const [tableData, setTableData] = useState([]);
     const [isLoading, setisLoading] = useState(true);
+
+
     const [
         programme,
         { loading: programmeloading, error: programmeerror, data: programmeList },
@@ -153,7 +155,7 @@ export default function Programme() {
                         <div class="col-sm-12">
                             <div class="card card-table">
                                 <div class="card-body">
-                                  
+
                                     <Table
                                         saveFunc={saveprogramme}
                                         headers={headers}
