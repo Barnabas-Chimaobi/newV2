@@ -99,9 +99,6 @@ export default function Programme() {
                 console.error("Error fetching programme data:", error);
                 setisLoading(false);
             });
-
-        var roles = role();
-
     }, []);
     const saveprogramme = async (data) => {
         console.log(data, "dataaaa");

@@ -5,6 +5,8 @@ import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
 import { Calendar } from "primereact/calendar";
 import { Chart } from "primereact/chart";
 import { VIEWALLTIMETABLESTUDENTS } from "@/pages/api/queries/admin";
+import { VIEW_NOTIFICATIONS_BY_STUDENTS } from "@/pages/api/queries/admin";
+import formatTimee from "../../../components/timeconverter";
 
 export default function index() {
   const [date, setDate] = useState(null);
@@ -14,6 +16,9 @@ export default function index() {
   const [showTodayEvent, setShowTodayEvent] = useState(false);
   const [fullName, setfullName] = useState("");
   const [passport, setpassport] = useState("");
+  const [formatTime, setFormatTime] = useState("");
+  const [timetableArr, setTimetableArr] = useState([]);
+  const [notificationArr, setNotificationArr] = useState([]);
 
   const pageLoad = () => {
     if (typeof window !== "undefined") {
@@ -29,8 +34,51 @@ export default function index() {
     { loading: timetableLoad, error: timetableError, data: timetableData },
   ] = useLazyQuery(VIEWALLTIMETABLESTUDENTS);
 
+  const [
+    viewNotifications,
+    {
+      loading: viewAllNotificationLoad,
+      error: viewAllNotificationError,
+      data: viewAllNotificationData,
+    },
+  ] = useLazyQuery(VIEW_NOTIFICATIONS_BY_STUDENTS);
+
+  // console.log(timetableData?.viewAllTimeTableStudents, "dataaa");
+
+  const timeObj = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  };
+
+  const tableData = async () => {
+    const payload = await viewTimetable();
+    // console.log(payload?.data?.viewAllTimeTableStudents, "payyyy");
+    setTimetableArr(payload?.data?.viewAllTimeTableStudents);
+    setFormatTime(
+      new Date(timetableArr[0]?.startTime).toLocaleString(undefined, timeObj)
+    );
+  };
+
+  // console.log(formatTimee("2023-10-27T12:20:44.875-07:00"));
+  // console.log(timetableArr[0]?.startTime, "REAL");
+
+  const notificationObj = async () => {
+    const objResponse = await viewNotifications();
+    // console.log(
+    //   objResponse?.data?.viewNotificationsByStudent,
+    //   "objjjjjjresponse"
+    // );
+    setNotificationArr(objResponse?.data?.viewNotificationsByStudent);
+  };
+
   useEffect(() => {
-    viewTimetable();
+    notificationObj();
+    tableData();
+    // setTimetableArr(tabledata?.viewAllTimeTableStudents);
     pageLoad();
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue("--text-color");
@@ -94,9 +142,9 @@ export default function index() {
   }, []);
 
   const showEvent = (e) => {
-    console.log(e.target.value, "valuee");
+    // console.log(e.target.value, "valuee");
     setDate(e.target.value);
-    console.log(date, "dateee");
+    // console.log(date, "dateee");
     setShowCalender(false);
     setShowTodayEvent(true);
   };
@@ -105,6 +153,32 @@ export default function index() {
     setShowCalender(true);
     setShowTodayEvent(false);
   };
+
+  const filterDataForToday = () => {
+    const currentDate = new Date();
+    const filteredData = timetableArr.filter((item) => {
+      const startTime = new Date(item.startTime);
+      const endTime = new Date(item.endTime);
+
+      return startTime <= currentDate && currentDate;
+    });
+
+    return filteredData;
+  };
+
+  const todayData = filterDataForToday(timetableArr);
+  console.log(todayData[1]?.courseAssignment?.course?.name, "todaydata");
+
+  const firstFormattedStartTime = formatTimee(todayData[0]?.startTime);
+  const firstAArrSubject = todayData[0]?.courseAssignment?.course?.name;
+  const secondArrSubject = todayData[1]?.courseAssignment?.course?.name;
+  const ThirdArrSubject = todayData[2]?.courseAssignment?.course?.name;
+  const firstFormattedEndTime = formatTimee(todayData[0]?.endTime);
+  const secondFormattedStartTime = formatTimee(todayData[1]?.startTime);
+  const secondFormattedEndTime = formatTimee(todayData[1]?.endTime);
+  const thirdFormattedStartTime = formatTimee(todayData[2]?.time);
+  const thirdFormattedEndTime = formatTimee(todayData[2]?.time);
+
   return (
     <div>
       <div className="page-wrapper">
@@ -194,131 +268,239 @@ export default function index() {
           </div>
           <div className="row">
             <div className=" col-lg-12 col-xl-8">
-              <div className="card flex-fill comman-shadow">
-                <div className="card-header">
-                  <div className="row align-items-center">
-                    <div className="col-6">
-                      <h5 className="card-title">Today’s Lesson</h5>
-                    </div>
-                    <div className="col-6">
-                      <ul className="chart-list-out">
-                        <li>
-                          <span className="circle-blue" />
-                          <span className="circle-gray" />
-                          <span className="circle-gray" />
-                        </li>
-                        <li className="lesson-view-all">
-                          <a href="#">View All</a>
-                        </li>
-                        <li className="star-menus">
-                          <a href="javascript:;">
-                            <i className="fas fa-ellipsis-v" />
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-                <div className="dash-circle">
-                  <div className="row p-5">
-                    <div className="col-lg-4 col-md-3">
-                      <div className="dash-details">
-                        <div className="lesson-activity">
-                          <div className="lesson-imgs">
-                            <img
-                              src="/assets/img/icons/lesson-icon-01.svg"
-                              alt=""
-                            />
-                          </div>
-                          <div className="views-lesson">
-                            <h5>Class</h5>
-                            <h4>Electrical Engg</h4>
-                          </div>
-                        </div>
-                        <div className="lesson-activity">
-                          <div className="lesson-imgs">
-                            <img
-                              src="/assets/img/icons/lesson-icon-02.svg"
-                              alt=""
-                            />
-                          </div>
-                          <div className="views-lesson">
-                            <h5>Lessons</h5>
-                            <h4>5 Lessons</h4>
-                          </div>
-                        </div>
-                        <div className="lesson-activity">
-                          <div className="lesson-imgs">
-                            <img
-                              src="/assets/img/icons/lesson-icon-03.svg"
-                              alt=""
-                            />
-                          </div>
-                          <div className="views-lesson">
-                            <h5>Time</h5>
-                            <h4>Lessons</h4>
-                          </div>
-                        </div>
+              {timetableArr?.length > 0 ? (
+                <div className="card flex-fill comman-shadow">
+                  <div className="card-header">
+                    <div className="row align-items-center">
+                      <div className="col-6">
+                        <h5 className="card-title">Today’s Lesson</h5>
                       </div>
-                    </div>
-                    <div className="col-lg-4 col-md-3">
-                      <div className="dash-details">
-                        <div className="lesson-activity">
-                          <div className="lesson-imgs">
-                            <img
-                              src="/assets/img/icons/lesson-icon-04.svg"
-                              alt=""
-                            />
-                          </div>
-                          <div className="views-lesson">
-                            <h5>Asignment</h5>
-                            <h4>5 Asignment</h4>
-                          </div>
-                        </div>
-                        <div className="lesson-activity">
-                          <div className="lesson-imgs">
-                            <img
-                              src="/assets/img/icons/lesson-icon-05.svg"
-                              alt=""
-                            />
-                          </div>
-                          <div className="views-lesson">
-                            <h5>Staff</h5>
-                            <h4>John Doe</h4>
-                          </div>
-                        </div>
-                        <div className="lesson-activity">
-                          <div className="lesson-imgs">
-                            <img
-                              src="/assets/img/icons/lesson-icon-06.svg"
-                              alt=""
-                            />
-                          </div>
-                          <div className="views-lesson">
-                            <h5>Lesson Learned</h5>
-                            <h4>10/50</h4>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-4 col-md-3 d-flex align-items-center justify-content-center">
-                      <div className="skip-group">
-                        <button type="submit" className="btn btn-info skip-btn">
-                          skip
-                        </button>
-                        <button
-                          type="submit"
-                          className="btn btn-info continue-btn"
-                        >
-                          Continue
-                        </button>
+                      <div className="col-6">
+                        <ul className="chart-list-out">
+                          <li className="lesson-view-all">
+                            <a href="#">View All</a>
+                          </li>
+                          <li className="star-menus"></li>
+                        </ul>
                       </div>
                     </div>
                   </div>
+                  <div className="dash-circle">
+                    <div className="row p-5">
+                      <div className="col-lg-6 col-md-3">
+                        <div className="dash-details">
+                          <div className="lesson-activity">
+                            <div className="lesson-imgs">
+                              <img
+                                src="/assets/img/icons/lesson-icon-01.svg"
+                                alt=""
+                              />
+                            </div>
+                            <div className="views-lesson">
+                              <h5>Class</h5>
+                              <h4>
+                                {
+                                  timetableArr[0]?.courseAssignment?.course
+                                    ?.name
+                                }
+                              </h4>
+                            </div>
+                          </div>
+                          <div className="lesson-activity">
+                            <div className="lesson-imgs">
+                              <img
+                                src="/assets/img/icons/lesson-icon-03.svg"
+                                alt=""
+                              />
+                            </div>
+                            <div className="views-lesson">
+                              <h5>Start Time</h5>
+
+                              <h4>{firstFormattedStartTime?.time}</h4>
+                            </div>
+                          </div>
+                          <div className="lesson-activity">
+                            <div className="lesson-imgs">
+                              <img
+                                src="/assets/img/icons/lesson-icon-03.svg"
+                                alt=""
+                              />
+                            </div>
+                            <div className="views-lesson">
+                              <h5> End Time</h5>
+                              <h4>{firstFormattedEndTime?.time}</h4>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-lg-6 col-md-3">
+                        <div className="dash-details">
+                          <div className="lesson-activity">
+                            <div className="lesson-imgs">
+                              <img
+                                src="/assets/img/icons/lesson-icon-04.svg"
+                                alt=""
+                              />
+                            </div>
+                            <div className="views-lesson">
+                              <h5>Asignment</h5>
+                              <h4>5 Asignment</h4>
+                            </div>
+                          </div>
+                          <div className="lesson-activity">
+                            <div className="lesson-imgs">
+                              <img
+                                src="/assets/img/icons/lesson-icon-05.svg"
+                                alt=""
+                              />
+                            </div>
+                            <div className="views-lesson">
+                              <h5>Staff</h5>
+                              <h4>{todayData[0]?.user?.fullName}</h4>
+                            </div>
+                          </div>
+                          <div className="lesson-activity">
+                            <div className="lesson-imgs">
+                              <img
+                                src="/assets/img/icons/lesson-icon-06.svg"
+                                alt=""
+                              />
+                            </div>
+                            <div className="views-lesson">
+                              <h5>Venue</h5>
+                              <h4>{todayData[0]?.venue}</h4>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      {/* <div className="col-lg-4 col-md-3 d-flex align-items-center justify-content-center">
+                        <div className="skip-group">
+                          <button
+                            type="submit"
+                            className="btn btn-info skip-btn"
+                          >
+                            skip
+                          </button>
+                          <button
+                            type="submit"
+                            className="btn btn-info continue-btn"
+                          >
+                            Continue
+                          </button>
+                        </div>
+                      </div> */}
+                    </div>
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className="card flex-fill comman-shadow">
+                  <div className="card-header">
+                    <div className="row align-items-center">
+                      <div className="col-6">
+                        <h5 className="card-title">Today’s Lesson </h5>
+                      </div>
+                      <div className="mt-5">
+                        <h6>None at the moment.....</h6>
+                      </div>
+
+                      {/* <div className="col-6">
+                        <ul className="chart-list-out">
+                          <li className="lesson-view-all">
+                            <a href="#">View All</a>
+                          </li>
+                          <li className="star-menus"></li>
+                        </ul>
+                      </div> */}
+                    </div>
+                  </div>
+                  {/* <div className="dash-circle">
+                    <div className="row p-5">
+                      <div className="col-lg-4 col-md-3">
+                        <div className="dash-details">
+                          <div className="lesson-activity">
+                            <div className="lesson-imgs">
+                              <img
+                                src="/assets/img/icons/lesson-icon-01.svg"
+                                alt=""
+                              />
+                            </div>
+                            <div className="views-lesson">
+                              <h5>Class</h5>
+                              <h4>Electrical Engg</h4>
+                            </div>
+                          </div>
+                          <div className="lesson-activity">
+                            <div className="lesson-imgs">
+                              <img
+                                src="/assets/img/icons/lesson-icon-02.svg"
+                                alt=""
+                              />
+                            </div>
+                            <div className="views-lesson">
+                              <h5>Lessons</h5>
+                              <h4>5 Lessons</h4>
+                            </div>
+                          </div>
+                          <div className="lesson-activity">
+                            <div className="lesson-imgs">
+                              <img
+                                src="/assets/img/icons/lesson-icon-03.svg"
+                                alt=""
+                              />
+                            </div>
+                            <div className="views-lesson">
+                              <h5>Time</h5>
+                              <h4>Lessons</h4>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-lg-4 col-md-3">
+                        <div className="dash-details">
+                          <div className="lesson-activity">
+                            <div className="lesson-imgs">
+                              <img
+                                src="/assets/img/icons/lesson-icon-04.svg"
+                                alt=""
+                              />
+                            </div>
+                            <div className="views-lesson">
+                              <h5>Asignment</h5>
+                              <h4>5 Asignment</h4>
+                            </div>
+                          </div>
+                          <div className="lesson-activity">
+                            <div className="lesson-imgs">
+                              <img
+                                src="/assets/img/icons/lesson-icon-05.svg"
+                                alt=""
+                              />
+                            </div>
+                            <div className="views-lesson">
+                              <h5>Staff</h5>
+                              <h4>John Doe</h4>
+                            </div>
+                          </div>
+                          <div className="lesson-activity">
+                            <div className="lesson-imgs">
+                              <img
+                                src="/assets/img/icons/lesson-icon-06.svg"
+                                alt=""
+                              />
+                            </div>
+                            <div className="views-lesson">
+                              <h5>Lesson Learned</h5>
+                              <h4>10/50</h4>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div> */}
+                </div>
+              )}
               <div className="row">
-                <div className="col-12 col-lg-12 col-xl-12 d-flex">
+                {/* <div className="col-12 col-lg-12 col-xl-12 d-flex">
                   <div className="card flex-fill comman-shadow">
                     <div className="card-header">
                       <div className="row align-items-center">
@@ -352,11 +534,11 @@ export default function index() {
                       />
                     </div>
                   </div>
-                </div>
+                </div> */}
                 <div className="col-12 col-lg-12 col-xl-12 d-flex">
                   <div className="card flex-fill comman-shadow">
                     <div className="card-header d-flex align-items-center">
-                      <h5 className="card-title">Teaching History</h5>
+                      <h5 className="card-title">Timetable</h5>
                       <ul className="chart-list-out student-ellips">
                         <li className="star-menus">
                           <a href="javascript:;">
@@ -367,79 +549,82 @@ export default function index() {
                     </div>
                     <div className="card-body">
                       <div className="teaching-card">
-                        <ul className="steps-history">
+                        {/* <ul className="steps-history">
                           <li>Sep22</li>
                           <li>Sep23</li>
                           <li>Sep24</li>
-                        </ul>
+                        </ul> */}
                         <ul className="activity-feed">
                           <li className="feed-item d-flex align-items-center">
                             <div className="dolor-activity">
                               <span className="feed-text1">
-                                <a>Mathematics</a>
+                                <a>{firstAArrSubject}</a>
                               </span>
                               <ul className="teacher-date-list">
                                 <li>
                                   <i className="fas fa-calendar-alt me-2" />
-                                  September 5, 2022
+                                  {firstFormattedStartTime?.dateonly}
                                 </li>
                                 <li>|</li>
                                 <li>
                                   <i className="fas fa-clock me-2" />
-                                  09:00 am - 10:00 am (60 Minutes)
+                                  {firstFormattedStartTime?.time} -{" "}
+                                  {firstFormattedEndTime?.time}
                                 </li>
                               </ul>
                             </div>
                             <div className="activity-btns ms-auto">
-                              <button type="submit" className="btn btn-info">
+                              {/* <button type="submit" className="btn btn-info">
                                 In Progress
-                              </button>
+                              </button> */}
                             </div>
                           </li>
                           <li className="feed-item d-flex align-items-center">
                             <div className="dolor-activity">
                               <span className="feed-text1">
-                                <a>Geography </a>
+                                <a>{secondArrSubject} </a>
                               </span>
                               <ul className="teacher-date-list">
                                 <li>
                                   <i className="fas fa-calendar-alt me-2" />
-                                  September 5, 2022
+                                  {secondFormattedStartTime?.dateonly}
                                 </li>
                                 <li>|</li>
                                 <li>
                                   <i className="fas fa-clock me-2" />
-                                  09:00 am - 10:00 am (60 Minutes)
+                                  {secondFormattedStartTime?.time} -{" "}
+                                  {secondFormattedEndTime?.time}
                                 </li>
                               </ul>
                             </div>
                             <div className="activity-btns complete ms-auto">
-                              <button type="submit" className="btn btn-info">
+                              {/* <button type="submit" className="btn btn-info">
                                 Completed
-                              </button>
+                              </button> */}
                             </div>
                           </li>
                           <li className="feed-item d-flex align-items-center">
                             <div className="dolor-activity">
                               <span className="feed-text1">
-                                <a>Botony</a>
+                                <a>{ThirdArrSubject}</a>
                               </span>
                               <ul className="teacher-date-list">
                                 <li>
                                   <i className="fas fa-calendar-alt me-2" />
-                                  September 5, 2022
+                                  {thirdFormattedStartTime?.dateonly}
                                 </li>
                                 <li>|</li>
                                 <li>
                                   <i className="fas fa-clock me-2" />
-                                  09:00 am - 10:00 am (60 Minutes)
+                                  {thirdFormattedStartTime?.time} -{" "}
+                                  {thirdFormattedEndTime?.time}
                                 </li>
                               </ul>
                             </div>
                             <div className="activity-btns ms-auto">
-                              <button type="submit" className="btn btn-info">
+                              {/* <button type="submit" className="btn btn-info">
                                 In Progress
-                              </button>
+                              </button> */}
                             </div>
                           </li>
                         </ul>
@@ -550,32 +735,12 @@ export default function index() {
                       <p>08:00 am</p>
                       <div className="calendar-box normal-bg">
                         <div className="calandar-event-name">
-                          <h4>Botony</h4>
-                          <h5>Lorem ipsum sit amet</h5>
+                          <h4>{notificationArr[0]?.title}</h4>
+                          <h5>{notificationArr[0]?.description}</h5>
                         </div>
-                        <span>08:00 - 09:00 am</span>
                       </div>
                     </div>
-                    <div className="calendar-details">
-                      <p>09:00 am</p>
-                      <div className="calendar-box normal-bg">
-                        <div className="calandar-event-name">
-                          <h4>Botony</h4>
-                          <h5>Lorem ipsum sit amet</h5>
-                        </div>
-                        <span>09:00 - 10:00 am</span>
-                      </div>
-                    </div>
-                    <div className="calendar-details">
-                      <p>10:00 am</p>
-                      <div className="calendar-box normal-bg">
-                        <div className="calandar-event-name">
-                          <h4>Botony</h4>
-                          <h5>Lorem ipsum sit amet</h5>
-                        </div>
-                        <span>10:00 - 11:00 am</span>
-                      </div>
-                    </div>
+
                     <div className="upcome-event-date">
                       <h3>10 Jan</h3>
                       <span>
@@ -586,50 +751,9 @@ export default function index() {
                       <p>08:00 am</p>
                       <div className="calendar-box normal-bg">
                         <div className="calandar-event-name">
-                          <h4>English</h4>
-                          <h5>Lorem ipsum sit amet</h5>
+                          <h4>{notificationArr[1]?.title}</h4>
+                          <h5>{notificationArr[1]?.description}</h5>
                         </div>
-                        <span>08:00 - 09:00 am</span>
-                      </div>
-                    </div>
-                    <div className="calendar-details">
-                      <p>09:00 am</p>
-                      <div className="calendar-box normal-bg">
-                        <div className="calandar-event-name">
-                          <h4>Mathematics </h4>
-                          <h5>Lorem ipsum sit amet</h5>
-                        </div>
-                        <span>09:00 - 10:00 am</span>
-                      </div>
-                    </div>
-                    <div className="calendar-details">
-                      <p>10:00 am</p>
-                      <div className="calendar-box normal-bg">
-                        <div className="calandar-event-name">
-                          <h4>History</h4>
-                          <h5>Lorem ipsum sit amet</h5>
-                        </div>
-                        <span>10:00 - 11:00 am</span>
-                      </div>
-                    </div>
-                    <div className="calendar-details">
-                      <p>11:00 am</p>
-                      <div className="calendar-box break-bg">
-                        <div className="calandar-event-name">
-                          <h4>Break</h4>
-                          <h5>Lorem ipsum sit amet</h5>
-                        </div>
-                        <span>11:00 - 12:00 am</span>
-                      </div>
-                    </div>
-                    <div className="calendar-details">
-                      <p>11:30 am</p>
-                      <div className="calendar-box normal-bg">
-                        <div className="calandar-event-name">
-                          <h4>History</h4>
-                          <h5>Lorem ipsum sit amet</h5>
-                        </div>
-                        <span>11:30 - 12:00 am</span>
                       </div>
                     </div>
                   </div>
@@ -639,7 +763,7 @@ export default function index() {
           </div>
         </div>
         <footer>
-          <p>Copyright © 2022 Dreamguys.</p>
+          <p>Copyright © 2023 LloydAnt.</p>
         </footer>
       </div>
     </div>

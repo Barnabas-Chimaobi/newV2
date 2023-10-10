@@ -11,13 +11,10 @@ import { STAFF_LOGIN } from "./api/mutations/authMutation";
 import { toast, ToastContainer } from "react-toastify";
 import Spinner from "@/components/spinner";
 
-// import "../public/assets/css/bootstrap.min.css";
-// import "../public/assets/css/font-awesome.min.css";
-// import "../public/assets/css/owl.carousel.css";
-// import "../public/assets/css/owl.theme.default.min.css";
-// import "../public/assets/css/templatemo-style.css";
+import formatTime from "@/components/timeconverter";
 
 const Home = () => {
+	console.log(formatTime("2023-10-27T12:20:44.875-07:00"))
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [isLoading, setIsLoading] = useState("");
@@ -56,7 +53,7 @@ const Home = () => {
 				if (payLoad?.data?.staffLogin?.role === "Administrator") {
 					router.push("./admin/dashboard");
 				} else {
-					router.push("./student");
+					router.push("./student/dashboard");
 				}
 			} catch (err) {
 				toast.error(err.message);

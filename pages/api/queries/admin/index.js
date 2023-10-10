@@ -1397,3 +1397,51 @@ export const PRINT_COURSE_REG = gql`
   }
 `;
 
+export const VIEW_NOTIFICATIONS_BY_STUDENTS = gql`
+  query ViewNotificationsByStudent {
+    viewNotificationsByStudent {
+      id
+      userId
+      title
+      description
+      dateCreated
+      isReOccuring
+      startTime
+      endTime
+      user {
+        fullName
+      }
+    }
+  }
+`;
+
+export const VIEW_ALL_NOTIFICATIONS = gql`
+  query ViewAllNotifications {
+    viewAllNotifications {
+      id
+      userId
+      title
+      description
+      dateCreated
+      isReOccuring
+      startTime
+      endTime
+      user {
+        fullName
+      }
+    }
+  }
+`;
+
+export const VIEW_ALL_PREFIX = gql`
+  query ViewAllApplicationFormNumberSetup {
+    viewAllApplicationFormNumberSetup {
+      id
+      applicationNumberPrefix
+      programmeId
+      programme {
+        name
+      }
+    }
+  }
+`;
