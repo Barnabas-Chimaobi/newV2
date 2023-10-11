@@ -477,14 +477,14 @@ export const ALL_SEMESTER = gql`
     }
   }
 `;
-export const ALL_USER = gql`
-  query AllUser {
-    allUser {
-      userId
-      fullName
-    }
-  }
-`;
+// export const ALL_USER = gql`
+//   query AllUser {
+//     allUser {
+//       userId
+//       fullName
+//     }
+//   }
+// `;
 export const CHECK_ADMISSION_STATUS = gql`
   query CheckAdmissionStatus($applicationformnumber: String!) {
     checkAdmissionStatus(applicationformnumber: $applicationformnumber) {
@@ -1442,6 +1442,27 @@ export const VIEW_ALL_PREFIX = gql`
       programme {
         name
       }
+    }
+  }
+`;
+
+export const ALL_USER = gql`
+  query AllUser {
+    allUser {
+      userId
+      userName
+      email
+      fullName
+      password
+      created
+      lastChangedPassword
+      lastLogin
+      role {
+        roleId
+        roleName
+      }
+      signatureUrl
+      passportUrl
     }
   }
 `;

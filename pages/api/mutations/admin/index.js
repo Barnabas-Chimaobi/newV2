@@ -1061,3 +1061,9 @@ export const CREATE_PREFIX = gql`
     createApplicationFormPrefix(model: $model)
   }
 `;
+
+export const SAVE_USER = gql`
+  mutation SaveUser($newUserDto: UserDtoInput!) {
+    saveUser(newUserDto: $newUserDto)
+  }
+`;

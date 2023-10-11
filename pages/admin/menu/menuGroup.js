@@ -12,6 +12,7 @@ import {
   SAVE_MENU_GROUP,
   DELETE_MENU_GROUP,
 } from "@/pages/api/mutations/admin";
+import { Button } from "primereact/button";
 
 export default function menuGroup() {
   const [
@@ -140,7 +141,17 @@ export default function menuGroup() {
         <div className="content container-fluid">
           <div class="row">
             <div class="col-sm-12">
+              <div></div>
               <div class="card card-table">
+                <div className="p-5">
+                  <Link href="./">
+                    <Button
+                      label="Back"
+                      // icon="pi-arrow-left"
+                      className="btn btn-outline-primary "
+                    />
+                  </Link>
+                </div>
                 <div class="card-body">
                   <Table
                     saveFunc={saveMenuGroupFunc}
@@ -163,6 +174,7 @@ export default function menuGroup() {
             </div>
           </div>
         </div>
-      </div></div>
+      </div>
+    </div>
   );
 }
