@@ -22,7 +22,6 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { Calendar } from "primereact/calendar";
 import { Constant } from "../constant";
 import { Chip } from "primereact/chip";
-
 import Decrypt from "./decrypt";
 import Encrypt from "./encrypt";
 

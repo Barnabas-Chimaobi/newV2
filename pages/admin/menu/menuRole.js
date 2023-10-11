@@ -21,6 +21,7 @@ import {
   MENUROLE_BY_ROLEID,
 } from "@/pages/api/queries/admin";
 import { Dropdown } from "primereact/dropdown";
+import { Button } from "primereact/button";
 
 export default function menuRole() {
   const [role, setRole] = useState("");
@@ -166,6 +167,17 @@ export default function menuRole() {
       <div className="page-wrapper">
         <div className="content container-fluid">
           <div className="row">
+            <div className="card">
+              <div className="p-5">
+                <Link href="./">
+                  <Button
+                    label="Back"
+                    // icon="pi-arrow-left"
+                    className="btn btn-outline-primary "
+                  />
+                </Link>
+              </div>
+            </div>
             <div className="card card-table">
               <div className="flex p-3">
                 <div>
