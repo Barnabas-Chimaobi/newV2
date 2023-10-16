@@ -127,7 +127,6 @@ function index() {
 			let newUrl = `../../common/invoice/ ${Encrypt(
 				generate?.data?.generateInvoice?.invoiceNumber
 			)}`;
-
 			window.open(newUrl, "_blank");
 		}
 	};
