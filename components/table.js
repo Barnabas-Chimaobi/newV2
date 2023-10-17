@@ -24,6 +24,7 @@ import { Constant } from "../constant";
 import { Chip } from "primereact/chip";
 import Decrypt from "./decrypt";
 import Encrypt from "./encrypt";
+import Link from "next/link";
 
 export default function GenericTable({
   headers,
@@ -33,6 +34,7 @@ export default function GenericTable({
   allowApply,
   tableObjectBody,
   showExport,
+  exportPdf,
   showAddButton,
   variablesForQuery,
   tableContent,
@@ -495,6 +497,17 @@ export default function GenericTable({
             className="btn btn-outline-primary me-2"
             onClick={exportCSV}
           />
+        ) : (
+          <></>
+        )}
+        {exportPdf ? (
+          <Link>
+            <Button
+              label="PDF"
+              icon="pi-file"
+              className="btn btn-outline-primary me-2"
+            />
+          </Link>
         ) : (
           <></>
         )}
