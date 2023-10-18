@@ -5,6 +5,7 @@ import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
 import FeeSetup from "./feeSetup";
 import FeeType from "./feeType";
 import Fee from "./fee";
+import ViewFeeSetup from "./viewFeeSetup";
 
 export default function manageFees() {
   return (
@@ -20,8 +21,11 @@ export default function manageFees() {
                 <TabPanel header="Fee">
                   <Fee />
                 </TabPanel>
-                <TabPanel header="Fee Setup">
+                <TabPanel header="Add Fee Setup">
                   <FeeSetup />
+                </TabPanel>
+                <TabPanel header="View Fee Setup">
+                  <ViewFeeSetup />
                 </TabPanel>
               </TabView>
             </div>

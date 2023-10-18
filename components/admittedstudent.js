@@ -289,6 +289,27 @@ export default function Admittedstudent({ formNo, status }) {
     setpageFour("");
     setpageFive("");
   };
+
+  const setActivePage = (pageNo) => {
+    clearActiveTabsAndPages();
+    if (pageNo === 1) {
+      setTabOne("active");
+      setpageOne("show active");
+    } else if (pageNo === 2) {
+      setTabTwo("active");
+      setpageTwo("show active");
+    } else if (pageNo === 3) {
+      setTabThree("active");
+      setpageThree("show active");
+    } else if (pageNo === 4) {
+      setTabFour("active");
+      setTabFour("show active");
+    } else if (pageNo === 5) {
+      setTabFive("active");
+      setpageFive("show active");
+    }
+  };
+
   const styles = {
     cardBody: {
       backgroundColor: "lightblue",
@@ -433,6 +454,7 @@ export default function Admittedstudent({ formNo, status }) {
                           }`}
                           href="#solid-rounded-tab1"
                           data-bs-toggle="tab"
+                          onClick={() => setActivePage(1)}
                         >
                           Offered Admission
                         </a>
@@ -444,6 +466,7 @@ export default function Admittedstudent({ formNo, status }) {
                           }`}
                           href="#solid-rounded-tab2"
                           data-bs-toggle="tab"
+                          onClick={() => setActivePage(2)}
                         >
                           Olevel Verification
                         </a>
@@ -455,6 +478,7 @@ export default function Admittedstudent({ formNo, status }) {
                           }`}
                           href="#solid-rounded-tab3"
                           data-bs-toggle="tab"
+                          onClick={() => setActivePage(3)}
                         >
                           Manage Fees
                         </a>
@@ -466,7 +490,7 @@ export default function Admittedstudent({ formNo, status }) {
                           }`}
                           href="#solid-rounded-tab4"
                           data-bs-toggle="tab"
-                          disabled
+                          onClick={() => setActivePage(4)}
                         >
                           Login As A Student
                         </a>
@@ -478,6 +502,7 @@ export default function Admittedstudent({ formNo, status }) {
                           }`}
                           href="#solid-rounded-tab5"
                           data-bs-toggle="tab"
+                          onClick={() => setActivePage(5)}
                         ></a>
                       </li>
                     </ul>
