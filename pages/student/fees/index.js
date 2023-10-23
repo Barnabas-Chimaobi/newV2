@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import { EXPECTED_FEES } from "@/pages/api/queries/applicant";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
@@ -15,8 +15,10 @@ import {
 	ALL_PAYMENT_MODE,
 	GET_ALL_SESSION,
 } from "@/pages/api/queries/basicQueries";
+// import { toast, ToastContainer } from "react-toastify";
 
 function index() {
+	const toast = useRef(null);
 	const router = useRouter();
 	const cities = [
 		{ name: "New York", code: "NY" },
@@ -114,20 +116,31 @@ function index() {
 	};
 
 	const generateOtherInvoice = async (item) => {
-		const generate = await invoice({
-			variables: {
-				personId: item.personId,
-				levelId: level.id,
-				sessionId: session.id,
-				feetypeId: feeType.id,
-				paymentMode: mode.code,
-			},
-		});
-		if (generate.data) {
-			let newUrl = `../../common/invoice/ ${Encrypt(
-				generate?.data?.generateInvoice?.invoiceNumber
-			)}`;
-			window.open(newUrl, "_blank");
+		try {
+			if (level.id && session.id && feeType.id && mode.code != undefined) {
+				const generate = await invoice({
+					variables: {
+						personId: item[0].payment.personId,
+						levelId: level.id,
+						sessionId: session.id,
+						feetypeId: feeType.id,
+						paymentMode: mode.code,
+					},
+				});
+				if (generate.data) {
+					let newUrl = `../../common/invoice/ ${Encrypt(
+						generate?.data?.generateInvoice?.invoiceNumber
+					)}`;
+					window.open(newUrl, "_blank");
+				}
+			}
+		} catch (err) {
+			toast.current.show({
+				severity: "error",
+				summary: "Error",
+				detail: err.message,
+			});
+			// alert(err.message);
 		}
 	};
 
@@ -137,6 +150,7 @@ function index() {
 
 	return (
 		<div>
+			<Toast ref={toast} />
 			<div className="page-wrapper">
 				<div className="content container-fluid">
 					<p className="customer-text-one">Student's Fees</p>
@@ -146,7 +160,6 @@ function index() {
 								<div class="card-body">
 									<Accordion activeIndex={0}>
 										{feeList?.allStudentExpectedFees?.map((item, index) => {
-											console.log(item);
 											return (
 												<AccordionTab
 													className="invoice-details invoice-details-two"
@@ -232,7 +245,9 @@ function index() {
 															/>
 															<div class="d-flex align-content-center mt-5">
 																<Button
-																	onClick={() => generateOtherInvoice()}
+																	onClick={() =>
+																		generateOtherInvoice(item.listOfFees)
+																	}
 																	type="submit"
 																	label="Submit"
 																/>

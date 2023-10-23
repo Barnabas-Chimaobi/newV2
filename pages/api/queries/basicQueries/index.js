@@ -128,67 +128,91 @@ export const ALL_MENU_ROLE = gql`
 `;
 
 export const ALL_PAID_INVOICE_REPORT_FILTER = gql`
-query AllPaidInvoiceReportFilter($sessionid: Int!, $feetypeid: Int!, $paymentmode: Int!, $programmeid: Int!, $departmentid: Int!) {
-	allPaidInvoiceReportFilter(sessionid: $sessionid, feetypeid: $feetypeid, paymentmode: $paymentmode, programmeid: $programmeid, departmentid: $departmentid) {
-	  fullName
-	  total
-	  session {
-		name
-	  }
-	  id
-	  invoiceNumber
-	  feeDetail {
-		feeType {
-		  name
+	query AllPaidInvoiceReportFilter(
+		$sessionid: Int!
+		$feetypeid: Int!
+		$paymentmode: Int!
+		$programmeid: Int!
+		$departmentid: Int!
+	) {
+		allPaidInvoiceReportFilter(
+			sessionid: $sessionid
+			feetypeid: $feetypeid
+			paymentmode: $paymentmode
+			programmeid: $programmeid
+			departmentid: $departmentid
+		) {
+			fullName
+			total
+			session {
+				name
+			}
+			id
+			invoiceNumber
+			feeDetail {
+				feeType {
+					name
+				}
+			}
+			matricNumber
 		}
-	  }
-	  matricNumber
 	}
-  }
 `;
 
 export const ALL_PAID_INVOICE = gql`
-query AllPaidInvoice {
-	allPaidInvoice {
-	  id
-	  feeDetail {
-		feeType {
-		  name
+	query AllPaidInvoice {
+		allPaidInvoice {
+			id
+			feeDetail {
+				feeType {
+					name
+				}
+			}
+			session {
+				name
+			}
+			total
+			matricNumber
+			person {
+				biodata {
+					name
+				}
+			}
+			invoiceNumber
 		}
-	  }
-	  session {
-		name
-	  }
-	  total
-	  matricNumber
-	  person {
-		biodata {
-		  name
-		}
-	  }
-	  invoiceNumber
 	}
-  }
 `;
 
 export const ALL_PAID_INVOICE_FILTER = gql`
-query AllPaidInvoiceReportFilter($sessionid: Int!, $feetypeid: Int!, $paymentmode: Int!, $programmeid: Int!, $departmentid: Int!) {
-	allPaidInvoiceReportFilter(sessionid: $sessionid, feetypeid: $feetypeid, paymentmode: $paymentmode, programmeid: $programmeid, departmentid: $departmentid) {
-	  fullName
-	  total
-	  session {
-		name
-	  }
-	  id
-	  invoiceNumber
-	  feeDetail {
-		feeType {
-		  name
+	query AllPaidInvoiceReportFilter(
+		$sessionid: Int!
+		$feetypeid: Int!
+		$paymentmode: Int!
+		$programmeid: Int!
+		$departmentid: Int!
+	) {
+		allPaidInvoiceReportFilter(
+			sessionid: $sessionid
+			feetypeid: $feetypeid
+			paymentmode: $paymentmode
+			programmeid: $programmeid
+			departmentid: $departmentid
+		) {
+			fullName
+			total
+			session {
+				name
+			}
+			id
+			invoiceNumber
+			feeDetail {
+				feeType {
+					name
+				}
+			}
+			matricNumber
 		}
-	  }
-	  matricNumber
 	}
-  }
 `;
 
 export const ALL_ROLE = gql`
@@ -665,15 +689,15 @@ export const GET_ALL_SESSION = gql`
 export const GET_ALL_SET_UP_DONE = gql`
 	query allSetUpDone {
 		allSetUpDone {
-			 programmeName
-    programmeId
-    sessionId
-    sessionName
-    stepOne
-    stepThree
-    stepTwo
-    id
-    active
+			programmeName
+			programmeId
+			sessionId
+			sessionName
+			stepOne
+			stepThree
+			stepTwo
+			id
+			active
 		}
 	}
 `;
@@ -804,33 +828,33 @@ export const GET_ALL_SECTIONS = gql`
 `;
 
 export const INVOICE = gql`
-query Invoice($invoicenumber: String!) {
-	invoice(invoicenumber: $invoicenumber) {
-		fullName
-		invoiceNumber
-		datePaid
-		email
-		phone
-		total
-		id
-		programmeName
-		departmentName
-		paymentType {
-			paymentTypeName
-		}
-		feeDetail {
-			feeType {
-				name
-				description
+	query Invoice($invoicenumber: String!) {
+		invoice(invoicenumber: $invoicenumber) {
+			fullName
+			invoiceNumber
+			datePaid
+			email
+			phone
+			total
+			id
+			programmeName
+			departmentName
+			paymentType {
+				paymentTypeName
 			}
-			feeTypeId
-			session {
-				name
+			feeDetail {
+				feeType {
+					name
+					description
+				}
+				feeTypeId
+				session {
+					name
+				}
 			}
+			paystackRedirectUrl
 		}
-paystackRedirectUrl
-}
-}
+	}
 `;
 
 export const ALL_LEVEL = gql`
@@ -875,86 +899,63 @@ export const OLEVEL_SUBJECT = gql`
 `;
 
 export const PREVIEW = gql`
-	query preview($programmeId: Int!, $sessionId: Int!) {
+	query Preview($programmeId: Int!, $sessionId: Int!) {
 		preview(programmeId: $programmeId, sessionId: $sessionId) {
+			personId
+			personUrl
+			applicationFormNumber
 			mainPages {
 				pageName
 				pageId
-				programmeName
 				programmeId
 				sessionId
+				programmeName
 				sessionName
 				sections {
 					sectionName
 					sectionId
 					fieldDetails {
 						id
-						dynamicFormPageSectionSetupId
-						errorMessage
-						input_type
 						label
-						list
 						required
+						input_type
+						list
 						response
-						dynamicFormPageSectionSetup {
-							active
-							dynamicFormPageSetupId
-							id
-							name
-							dynamicFormPageSetup {
-								active
-								dynamicFormProgrammeAndSessionSetupId
-								id
-								name
-								dynamicFormProgrammeAndSessionSetup {
-									active
-									id
-									programmeId
-									sessionId
-									programme {
-										activated
-										activeForApllication
-										description
-										id
-										name
-										shortName
-										slug
-									}
-									session {
-										id
-										activated
-										activeForResult
-										activeForAllocation
-										activeForApplication
-										activeForHostel
-										activeForFees
-										endDate
-										startDate
-										slug
-										name
-									}
-								}
-							}
-						}
+						errorMessage
+						dynamicFormPageSectionSetupId
+						isReadonly
 					}
 				}
 			}
 			olevelResultCombination {
-				centerName
-				centerCode
-				examCode
 				examNumber
 				examYear
-				meetsCriteria
 				olevelType
 				olevelTypeId
 				scannedCopyUrl
 				scratchCardPin
+				centerName
+				centerCode
+				examCode
+				sitting
+				meetsCriteria
 				olevelResultCombinationDetails {
-					dateCreated
+					subject
 					grade
 					gradeDesc
+					dateCreated
+				}
+			}
+			submitOlevelResult {
+				examNumber
+				examYear
+				olevelType
+				centerName
+				examCode
+				sitting
+				olevelResultsDto {
 					subject
+					grade
 				}
 			}
 		}
@@ -972,29 +973,29 @@ export const GET_ALL_OLEVEL_TYPE = gql`
 	}
 `;
 export const CHECK_STUDENT_BIO = gql`
-query CheckStudentBio {
-	checkStudentBio {
-		fullName
-		status
-		courseOfStudy
-		applicationFormNumber
-		courseOption
-		programmeName
-		applicationForm {
-			id
-			formNumber
-		}
-		matricNumber
-		isAdmitted
-		payments {
-			person {
-				passportUrl
+	query CheckStudentBio {
+		checkStudentBio {
+			fullName
+			status
+			courseOfStudy
+			applicationFormNumber
+			courseOption
+			programmeName
+			applicationForm {
+				id
+				formNumber
 			}
+			matricNumber
+			isAdmitted
+			payments {
+				person {
+					passportUrl
+				}
+			}
+			session
+			level
 		}
-		session
-  		level
-}
-}
+	}
 `;
 
 export const RECEIPT = gql`
@@ -1058,21 +1059,21 @@ export const RECEIPT = gql`
 `;
 
 export const STUDENT_PROFILE = gql`
-query StudentProfile {
-	studentProfile {
-	  passportUrl
-	  faculty
-	  programmeName
-	  courseOption
-	  courseOfStudy
-	  matricNumber
-	  phoneNumber
-	  address
-	  email
-	  fullName
-	  level
+	query StudentProfile {
+		studentProfile {
+			passportUrl
+			faculty
+			programmeName
+			courseOption
+			courseOfStudy
+			matricNumber
+			phoneNumber
+			address
+			email
+			fullName
+			level
+		}
 	}
-  }
 `;
 
 export const VIEW_REGISTERED_COURSES = gql`
@@ -1186,54 +1187,55 @@ export const UPLOAD_SHEET = gql`
 	}
 `;
 
-
-export const STUDENT_COURSE_REG = gql`query CourseRegisterForAll {
-  courseRegisterForAll {
-    cGPA
-    courseRegDatas {
-      gpa
-      isActive
-      isResultAvailable
-      levelId
-      levelName
-      sessionId
-      sessionName
-      semesterCourseDisplayDtos {
-        compulsoryCourseCount
-        gpa
-        isActive
-        isResultAvailable
-        maxCreditUnit
-        optionalCourseCount
-        results {
-          alreadyRegistered
-          courseCode
-          courseId
-          courseType
-          courseName
-          courseWeightValue
-          creditUnit
-          grade
-          gradeWeight
-          isAlreadyRegistered
-          isCarryOver
-          lastModified
-          score
-        }
-        semesterId
-        semesterName
-        activeIndex
-      }
-    }
-    currentLevel
-    currentSemester
-   departmentName
-    fullName
-    passportUrl
-    programmeName
-    activeIndex
-	 departmentId
-    programmeId
-	matricNo
-  }
-}`;
+export const STUDENT_COURSE_REG = gql`
+	query CourseRegisterForAll {
+		courseRegisterForAll {
+			cGPA
+			courseRegDatas {
+				gpa
+				isActive
+				isResultAvailable
+				levelId
+				levelName
+				sessionId
+				sessionName
+				semesterCourseDisplayDtos {
+					compulsoryCourseCount
+					gpa
+					isActive
+					isResultAvailable
+					maxCreditUnit
+					optionalCourseCount
+					results {
+						alreadyRegistered
+						courseCode
+						courseId
+						courseType
+						courseName
+						courseWeightValue
+						creditUnit
+						grade
+						gradeWeight
+						isAlreadyRegistered
+						isCarryOver
+						lastModified
+						score
+					}
+					semesterId
+					semesterName
+					activeIndex
+				}
+			}
+			currentLevel
+			currentSemester
+			departmentName
+			fullName
+			passportUrl
+			programmeName
+			activeIndex
+			departmentId
+			programmeId
+			matricNo
+		}
+	}
+`;
