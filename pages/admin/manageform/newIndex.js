@@ -21,6 +21,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
+import { Card } from "primereact/card";
 // import Select from "react-select";
 
 const pageDetails = {
@@ -226,43 +227,64 @@ export default function index() {
 							<div class="card card-body mt-6">
 								<p class=" font-medium text-lg py-4 pl-3">Create Pages</p>
 								<div class="flex col-12">
-									<div class="col-4 mr-4">
-										{/* <div className="col-lg-4 col-sm-12"> */}
-										<div className="local-forms form-group">
-											<label>
-												Programme
-												<span className="login-danger">*</span>
-											</label>
-											<Dropdown
-												value={programmeId}
-												options={selectProgramme}
-												placeholder="Select Programme"
-												onChange={(e) => {
-													setProgrammeId(e.target.value);
-												}}
-												className="w-full md:w-21.5rem"
-												optionLabel="Name"
-											/>
-										</div>
-									</div>
-									<div class=" col-4 mr-4">
-										<div class=" mr-4">
+									<div class="flex col-8">
+										<div class="col-5 mr-4">
+											{/* <div className="col-lg-4 col-sm-12"> */}
 											<div className="local-forms form-group">
 												<label>
-													Session
+													Programme
 													<span className="login-danger">*</span>
 												</label>
 												<Dropdown
-													value={sessionId}
-													options={selectSession}
-													placeholder="Select Session"
+													value={programmeId}
+													options={selectProgramme}
+													placeholder="Select Programme"
 													onChange={(e) => {
-														setSessionId(e.target.value);
+														setProgrammeId(e.target.value);
 													}}
 													className="w-full md:w-21.5rem"
 													optionLabel="Name"
 												/>
 											</div>
+										</div>
+										<div class=" col-5 mr-4">
+											<div class=" mr-4">
+												<div className="local-forms form-group">
+													<label>
+														Session
+														<span className="login-danger">*</span>
+													</label>
+													<Dropdown
+														value={sessionId}
+														options={selectSession}
+														placeholder="Select Session"
+														onChange={(e) => {
+															setSessionId(e.target.value);
+														}}
+														className="w-full md:w-21.5rem"
+														optionLabel="Name"
+													/>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div
+										style={{
+											marginTop: -70,
+										}}>
+										<div>
+											<Card title=" Instructions">
+												<p className="m-0">
+													1. To create an O-Level Page, the page name should
+													include "O-Level" in brackets, like Page3 (O-Level).
+												</p>
+												<p className="m-0">
+													2. To create a Passport Page, the page name should
+													include "Passport" in brackets, like Page3 (Passport).
+												</p>
+												<p className="m-0">3. Check The Preview Below</p>
+												<p className="m-0">4. Save</p>
+											</Card>
 										</div>
 									</div>
 								</div>

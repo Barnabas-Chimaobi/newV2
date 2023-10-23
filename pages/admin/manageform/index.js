@@ -9,6 +9,7 @@ import {
 	GET_ALL_SESSION,
 	GET_ALL_PAGES,
 	GET_ALL_SET_UP_DONE,
+	PREVIEW,
 } from "../../../pages/api/queries/basicQueries";
 import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
 import { useRouter } from "next/router";
@@ -66,6 +67,29 @@ export default function ManageForm() {
 			data: allSetupDoneList,
 		},
 	] = useLazyQuery(GET_ALL_SET_UP_DONE);
+
+	const [
+		lazyLoadPreview,
+		{ loading: previewLoad, error: previewError, data: previewData },
+	] = useLazyQuery(PREVIEW);
+
+	const handlePreview = async (data) => {
+		try {
+			try {
+				const payload = {
+					programmeId: data.programmeId,
+					sessionId: data.sessionId,
+				};
+				let response = await lazyLoadPreview({ variables: payload });
+				console.log(response.data, "response");
+				setFormObj(response.data);
+			} catch (err) {
+				toast.error(err.message);
+			}
+		} catch (err) {
+			toast.error(err.message);
+		}
+	};
 
 	console.log(allSetupDoneList, "all setup done ");
 
@@ -224,23 +248,19 @@ export default function ManageForm() {
 									<h4>Setup Forms</h4>
 
 									{/* <div className="form-group mb-0 mt-3  row">
-
-                                        <div className="col-md-10">
-                                            <div className="input-group">
-
-                                                <Dropdown
-
-                                                    placeholder="select Programme"
-
-                                                    className="w-full md:w-10.5rem lg:w-16rem"
-                                                    optionLabel="Name"
-                                                />
-                                                <button className="btn btn-primary" type="button">
-                                                    View Forms
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div> */}
+										<div className="col-md-10">
+											<div className="input-group">
+												<Dropdown
+													placeholder="select Programme"
+													className="w-full md:w-10.5rem lg:w-16rem"
+													optionLabel="Name"
+												/>
+												<button className="btn btn-primary" type="button">
+													View Forms
+												</button>
+											</div>
+										</div>
+									</div> */}
 								</div>
 							</div>
 							<div class="card card-table">
@@ -249,6 +269,7 @@ export default function ManageForm() {
 										<Spinner />
 									) : (
 										<Table
+											allowPreview={true}
 											//  saveFunc={null}
 											headers={headers}
 											generateColumnTemplates={generateColumnTemplates}

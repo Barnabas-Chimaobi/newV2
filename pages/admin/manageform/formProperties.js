@@ -300,6 +300,7 @@ export default function FormProperties(props) {
 					<br />
 					<hr />
 					<br />
+
 					<div class="d-flex">
 						{/* <div class=" "> */}
 						<div class="col-4 mr-4">
@@ -326,7 +327,7 @@ export default function FormProperties(props) {
 						<div className="col-lg-4 col-sm-12 ml-2 mr-4 mt-2">
 							<div className="local-forms form-group">
 								<label>
-									Page Name
+									Field Name
 									<span className="login-danger">*</span>
 								</label>
 								<InputText
@@ -353,12 +354,14 @@ export default function FormProperties(props) {
 							</div>
 						</div>
 					</div>
+					<Biodata func={deleteField} form={formList} />
+
 					<div
 						class="columns-4 justify-items-center ..."
-						style={{ marginTop: "60px" }}></div>
+						style={{ marginTop: "30px" }}></div>
 				</div>
 
-				<div class="" style={{ marginTop: "60px" }}>
+				<div class="" style={{ marginTop: "40px" }}>
 					<div className="mt-4">
 						<button
 							type="button"
@@ -389,7 +392,6 @@ export default function FormProperties(props) {
 					</div>
 				</div>
 			</div>
-			<Biodata func={deleteField} form={formList} />
 		</>
 	);
 }

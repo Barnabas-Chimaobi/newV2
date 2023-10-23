@@ -25,6 +25,8 @@ import { Chip } from "primereact/chip";
 import Decrypt from "./decrypt";
 import Encrypt from "./encrypt";
 import Link from "next/link";
+import { PREVIEW } from "../pages/api/queries/basicQueries";
+import Form from "@/components/formPreview";
 
 export default function GenericTable({
 	headers,
@@ -48,7 +50,7 @@ export default function GenericTable({
 	showAdmitButton,
 	showManageButton,
 	showOnlyDeleteButton,
-
+	allowPreview,
 	showAddPages,
 	saveAdmission,
 	admissionType,
@@ -85,10 +87,41 @@ export default function GenericTable({
 	console.log(selectedProducts, "selected products");
 	const [content, setContent] = useState([]);
 	const [checked, setChecked] = useState(false);
+	const [formObj, setFormObj] = useState({});
+	const [preview, setPreview] = useState(false);
+	const [formHeader, setFormHeader] = useState("");
 	const [
 		saveFaculty,
 		{ loading: facultyLoad, error: facultyError, data: facultyData },
 	] = useMutation(SAVE_FACULTY);
+
+	const [
+		lazyLoadPreview,
+		{ loading: previewLoad, error: previewError, data: previewData },
+	] = useLazyQuery(PREVIEW);
+
+	const handlePreview = async (data) => {
+		console.log(data, "data=====");
+		setFormHeader(data);
+		try {
+			try {
+				const payload = {
+					programmeId: parseInt(data.programmeId),
+					sessionId: parseInt(data.sessionId),
+				};
+				let response = await lazyLoadPreview({ variables: payload });
+				console.log(response, payload, "response");
+				setFormObj(response.data.preview);
+				if (response != undefined) {
+					setPreview(true);
+				}
+			} catch (err) {
+				// toast.error(err.message);
+			}
+		} catch (err) {
+			// toast.error(err.message);
+		}
+	};
 
 	const formatCurrency = (value) => {
 		return value.toLocaleString("en-US", {
@@ -543,6 +576,7 @@ export default function GenericTable({
 	};
 
 	const actionBodyTemplate = (rowData) => {
+		console.log(rowData, "rowdata=====");
 		if (showOnlyDeleteButton) {
 			return (
 				<React.Fragment>
@@ -560,14 +594,6 @@ export default function GenericTable({
 		if (showManageButton) {
 			return (
 				<React.Fragment>
-					<Button
-						icon="pi pi-pencil"
-						rounded
-						outlined
-						className="mr-2"
-						onClick={() => editProduct(rowData)}
-					/>
-
 					<Button
 						label="Manage"
 						rounded
@@ -595,6 +621,18 @@ export default function GenericTable({
 		if (allowEdit) {
 			return (
 				<React.Fragment>
+					{allowPreview ? (
+						<Button
+							label="Preview"
+							// icon="pi pi-trash"
+							rounded
+							outlined
+							// severity="danger"
+							onClick={() => handlePreview(rowData)}
+							className="mr-2"
+						/>
+					) : null}
+
 					<Button
 						icon="pi pi-pencil"
 						rounded
@@ -710,7 +748,13 @@ export default function GenericTable({
 				) : (
 					<></>
 				)}
-
+				<Dialog
+					onHide={() => setPreview(false)}
+					header={`${formHeader.sessionName} ${formHeader.programmeName}`}
+					visible={preview}
+					style={{ width: "70vw", marginTop: 40 }}>
+					<Form data={formObj} isPreview={preview} />
+				</Dialog>
 				<DataTable
 					style={dataTableStyle}
 					ref={dt}

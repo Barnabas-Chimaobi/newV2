@@ -1,4 +1,8 @@
 import React, { useState } from "react";
+import { InputText } from "primereact/inputtext";
+import { Dropdown } from "primereact/dropdown";
+import { Calendar } from "primereact/calendar";
+
 const parseFieldSetting = (field, initialData) => {
 	let names = {};
 	let allName = [];
@@ -8,22 +12,19 @@ const parseFieldSetting = (field, initialData) => {
 		// check if field is in initial data
 		const fieldValue = initialData ? initialData[field.name] : null;
 		return (
-			<div key={field.name} className="sm:col-span-3 mx-8">
-				<label
-					htmlFor={field.name}
-					className="block text-sm font-medium text-gray-700 capitalize">
-					{field.label}
-				</label>
-				<div className="mt-1">
-					<input
-						className="dynamic_inputs"
-						// onChange={handleChange}
-						type="text"
+			<div className="mt-4">
+				<div className="local-forms form-group">
+					<label>
+						{field.label}
+						<span className="login-danger">*</span>
+					</label>
+					<InputText
 						name={field.label}
 						id={field.name}
-						autoComplete={field.name}
+						className="w-full md:w-21.5rem"
 						value={fieldValue}
-						class="px-5 uppercase  focus:ring-green-500 focus:border-green-500 block w-full sm:text-sm border-gray-300 border h-10 rounded-md"
+						// onChange={(e) => setSectionName(e.target.value)}
+						placeholder="Type here"
 					/>
 				</div>
 			</div>
@@ -38,21 +39,24 @@ const parseFieldSetting = (field, initialData) => {
 			</option>
 		));
 		return (
-			<div key={field.name} className="sm:col-span-3 mx-8">
-				<label
-					htmlFor={field.name}
-					className="block text-sm font-medium text-gray-700 capitalize">
-					{field.label}
-				</label>
-				<div className="mt-1">
-					<select
-						name={field.name}
-						id={field.name}
-						autoComplete={field.name}
-						className=" focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 border h-10 px-4 rounded-md">
-						<option selected={true}>select</option>
-						{options}
-					</select>
+			<div class="d-flex">
+				<div class=" mt-4 mr-4">
+					<div className="local-forms form-group">
+						<label>
+							{field.label}
+							<span className="login-danger">*</span>
+						</label>
+						<Dropdown
+							options={options}
+							placeholder="Select value here........."
+							onChange={(e) => {
+								// handlefieldType(e);
+								// setSessionId(e.target.value);
+							}}
+							className="w-full md:w-21.5rem"
+							optionLabel="Name"
+						/>
+					</div>
 				</div>
 			</div>
 		);
@@ -66,23 +70,16 @@ const parseFieldSetting = (field, initialData) => {
 			</option>
 		));
 		return (
-			<div key={field.name} className="sm:col-span-3 mx-8">
-				<label
-					htmlFor={field.name}
-					className="block text-sm font-medium text-gray-700 capitalize">
-					{field.label}
-				</label>
-				<div className="mt-1">
-					<input
-						className="dynamic_inputs"
-						// onChange={handleChange}
-						type="date"
-						name={field.label}
-						id={field.name}
-						autoComplete={field.name}
-						value={fieldValue}
-						class="px-5 uppercase  focus:ring-green-500 focus:border-green-500 block w-full sm:text-sm border-gray-300 border h-10 rounded-md"
-					/>
+			<div key={field.name}>
+				<div class=" mt-4 mr-4">
+					<div className="local-forms form-group">
+						<label
+							htmlFor={field.name}
+							className="block text-sm font-medium text-gray-700 capitalize">
+							{field.label}
+						</label>
+						<Calendar onChange={(e) => {}} showIcon />
+					</div>
 				</div>
 			</div>
 		);
