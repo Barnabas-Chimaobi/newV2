@@ -22,6 +22,7 @@ import { activeFormView } from "../../../redux/reducers/formReducers";
 import { ToastContainer, toast } from "react-toastify";
 import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
+import Spinner from "@/components/spinner";
 // import Select from "react-select";
 
 export default function FormProperties(props) {
@@ -268,7 +269,7 @@ export default function FormProperties(props) {
 
 	return (
 		<>
-			{/* {load ? <Loader /> : null} */}
+			{load ? <Spinner /> : null}
 			<ToastContainer />
 			<div className="card card-body mx-auto py-1 mt-5">
 				<div className=" py-2 ">
@@ -276,7 +277,7 @@ export default function FormProperties(props) {
 
 					<div class="">
 						<div class="">
-							<div class="col-4 mr-4">
+							<div class="col-lg-4">
 								<div className="local-forms form-group">
 									<label>
 										Sections
@@ -285,7 +286,7 @@ export default function FormProperties(props) {
 									<Dropdown
 										value={pageId}
 										options={sections}
-										placeholder="Select Tab"
+										placeholder="Select Section"
 										onChange={(e) => {
 											handleSections(e);
 											// setSessionId(e.target.value);
@@ -301,9 +302,9 @@ export default function FormProperties(props) {
 					<hr />
 					<br />
 
-					<div class="d-flex">
+					<div class="row">
 						{/* <div class=" "> */}
-						<div class="col-4 mr-4">
+						<div class="col-lg-4 mr-4">
 							<div className="local-forms form-group">
 								<label>
 									Field Type
@@ -324,7 +325,7 @@ export default function FormProperties(props) {
 						</div>
 						{/* </div> */}
 
-						<div className="col-lg-4 col-sm-12 ml-2 mr-4 mt-2">
+						<div className="col-lg-4 col-sm-12 mr-4">
 							<div className="local-forms form-group">
 								<label>
 									Field Name
@@ -340,7 +341,7 @@ export default function FormProperties(props) {
 							</div>
 						</div>
 
-						<div className="col-auto text-end download-grp mt-2">
+						<div className="col-auto text-end download-grp mt-0">
 							<div>
 								<button
 									type="button"
@@ -361,33 +362,25 @@ export default function FormProperties(props) {
 						style={{ marginTop: "30px" }}></div>
 				</div>
 
-				<div class="" style={{ marginTop: "40px" }}>
-					<div className="mt-4">
+				<div class="row">
+					<div className="col-lg-1 mb-4 mt-4">
+						<div>
+							<button
+								type="button"
+								onClick={() => previous("two")}
+								className="btn btn-primary">
+								Previous
+							</button>
+						</div>
+					</div>
+					<div className="col-lg-3 mt-4">
 						<button
 							type="button"
 							onClick={() => {
 								saveFormStepTwo();
 							}}
-							className="col-12 btn btn-primary">
+							className=" btn btn-primary">
 							Save and proceed
-						</button>
-					</div>
-				</div>
-
-				{/* <div class="flex justify-between" style={{ textAlign: "end" }}>
-					<button
-						onClick={() => previous("two")}
-						style={{ paddingTop: 80, fontSize: 18 }}>
-						<label style={{ color: "green" }}>Previous</label>
-					</button>
-				</div> */}
-				<div className="mb-4 mt-4">
-					<div>
-						<button
-							type="button"
-							onClick={() => previous("two")}
-							className="btn btn-primary">
-							Previous
 						</button>
 					</div>
 				</div>

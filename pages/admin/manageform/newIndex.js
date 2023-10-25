@@ -22,6 +22,7 @@ import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
+import Spinner from "@/components/spinner";
 // import Select from "react-select";
 
 const pageDetails = {
@@ -221,14 +222,14 @@ export default function index() {
 					{/* <h2 className="font-semibold py-10 text-center text-xl">
 						Dynamic Application Form Setup
 					</h2> */}
-
+					{load && <Spinner />}
 					<div className="mx-auto py-12 bg-white-200 rounded-md max-w-7xl lg:px-8 shadow-2xl">
 						{formViewCondition == "one" ? (
 							<div class="card card-body mt-6">
 								<p class=" font-medium text-lg py-4 pl-3">Create Pages</p>
-								<div class="flex col-12">
-									<div class="flex col-8">
-										<div class="col-5 mr-4">
+								<div class="row">
+									<div class="row col-lg-8 ">
+										<div class="col-lg-5  mr-4">
 											{/* <div className="col-lg-4 col-sm-12"> */}
 											<div className="local-forms form-group">
 												<label>
@@ -247,8 +248,8 @@ export default function index() {
 												/>
 											</div>
 										</div>
-										<div class=" col-5 mr-4">
-											<div class=" mr-4">
+										<div class=" col-lg-5">
+											<div class="">
 												<div className="local-forms form-group">
 													<label>
 														Session
@@ -269,9 +270,12 @@ export default function index() {
 										</div>
 									</div>
 									<div
-										style={{
-											marginTop: -70,
-										}}>
+										className="col-lg-4 mt-lg-0 mt-2 "
+										style={
+											{
+												// marginTop: -70,
+											}
+										}>
 										<div>
 											<Card title=" Instructions">
 												<p className="m-0">
@@ -337,7 +341,7 @@ export default function index() {
 								)}
 								<br />
 
-								<div className=" row">
+								<div className="row ">
 									<div className="col-lg-4 col-sm-12 ml-2">
 										<div className="local-forms form-group">
 											<label>
@@ -353,13 +357,27 @@ export default function index() {
 										</div>
 									</div>
 
-									<div className="col-lg-5 col-sm-12 ">
+									<div className="col-lg-1 col-sm-12 ">
 										<div className="local-forms form-group">
 											<Button
 												label="Add"
 												className="btn btn-outline-primary me-2"
 												onClick={() => handleAddTabs()}
 											/>
+										</div>
+									</div>
+									<div class="col-lg-3">
+										<div className="">
+											<button
+												className=" btn btn-primary"
+												type="button"
+												onClick={() => {
+													saveFormStepOne();
+												}}
+												// className="bg-green-600 text-white rounded-md w-full p-3"
+											>
+												Save and proceed
+											</button>
 										</div>
 									</div>
 								</div>
@@ -407,7 +425,7 @@ export default function index() {
 									</div>
 								</div> */}
 
-								<div class="w-full ..." style={{ marginTop: "60px" }}>
+								{/* <div class="w-full ..." style={{ marginTop: "60px" }}>
 									<div className="mt-4">
 										<button
 											className=" col-12 btn btn-primary"
@@ -415,12 +433,11 @@ export default function index() {
 											onClick={() => {
 												saveFormStepOne();
 											}}
-											// className="bg-green-600 text-white rounded-md w-full p-3"
 										>
 											Save and proceed
 										</button>
 									</div>
-								</div>
+								</div> */}
 							</div>
 						) : formViewCondition == "two" ? (
 							<FormSection

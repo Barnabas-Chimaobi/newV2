@@ -16,8 +16,20 @@ import { useRouter } from "next/router";
 import Table from "../../../components/table";
 import { Column } from "primereact/column";
 import Spinner from "@/components/spinner";
+import {
+	ACTIVATE_FORM,
+	DELETE_FORM,
+} from "../../../pages/api/mutations/adminMutation";
 
 export default function ManageForm() {
+	const [
+		activateForm,
+		{ loading: formLoading, error: errors, data: formData },
+	] = useMutation(ACTIVATE_FORM);
+	const [
+		deleteForm,
+		{ loading: deleteLoading, error: deleteError, data: deleteData },
+	] = useMutation(DELETE_FORM);
 	const [programme, setprogramme] = useState("");
 	const [availableForms, setavailableForms] = useState("");
 	const [isLoading, setisLoading] = useState(true);
@@ -72,24 +84,6 @@ export default function ManageForm() {
 		lazyLoadPreview,
 		{ loading: previewLoad, error: previewError, data: previewData },
 	] = useLazyQuery(PREVIEW);
-
-	const handlePreview = async (data) => {
-		try {
-			try {
-				const payload = {
-					programmeId: data.programmeId,
-					sessionId: data.sessionId,
-				};
-				let response = await lazyLoadPreview({ variables: payload });
-				console.log(response.data, "response");
-				setFormObj(response.data);
-			} catch (err) {
-				toast.error(err.message);
-			}
-		} catch (err) {
-			toast.error(err.message);
-		}
-	};
 
 	console.log(allSetupDoneList, "all setup done ");
 
@@ -233,6 +227,42 @@ export default function ManageForm() {
 		setisLoading(false);
 	};
 
+	const activeForm = async (x) => {
+		console.log(
+			{
+				id: parseInt(x.Id),
+				programmeid: parseInt(x.programmeId),
+				toggle: x.active == true ? false : true,
+			},
+			"console===sss===="
+		);
+		try {
+			const active = await activateForm({
+				variables: {
+					id: parseInt(x.Id),
+					programmeid: parseInt(x.programmeId),
+					toggle: x.active == true ? false : true,
+				},
+			});
+			console.log(active, "errr======");
+			window.location.reload();
+		} catch (err) {
+			console.log(err, "errr======");
+			// toast.error(err.message);
+		}
+	};
+
+	const deleteEachForm = async (id) => {
+		try {
+			console.log(id.Id, "idddd====");
+			const deletes = await deleteForm({ variables: { formid: id.Id } });
+			window.location.reload();
+			// handlePreview()
+		} catch (err) {
+			// toast.error(err.message);
+		}
+	};
+
 	useEffect(() => {
 		LoadData();
 	}, []);
@@ -282,8 +312,8 @@ export default function ManageForm() {
 											variablesForQuery={{}}
 											tableContent={availableForms}
 											dropDownObjects={DropDownObjectsprosession}
-											// editFunc={null}
-											//  deleteFunc={null}
+											editFunc={activeForm}
+											deleteFunc={deleteEachForm}
 											showCheckBox={false}
 											showManageButton={false}
 											showOnlyDeleteButton={false}
