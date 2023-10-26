@@ -1,7 +1,6 @@
 "use client";
 import AdminLayout from "../components/AdminLayout";
 import StudentLayout from "../components/StudentLayout";
-
 import Script from "next/script";
 import "../public/assets/css/bootstrap-datetimepicker.min.css";
 import "../public/assets/css/ckeditor.css";
@@ -15,7 +14,6 @@ import "../public/assets/plugins/fontawesome/css/all.min.css";
 import "../public/assets/plugins/select2/css/select2.min.css";
 import "../public/assets/css/style.css";
 import "../styles/Home.module.css";
-
 import {
 	ApolloClient,
 	InMemoryCache,
@@ -269,6 +267,7 @@ export default function Home({ Component, pageProps }) {
 			<Provider store={store}>
 				<ApolloProvider client={client}>
 					<ErrorBoundary>
+						{/* <ReportView /> */}
 						<main className={poppins.className}>
 							<Component {...pageProps} />
 						</main>
