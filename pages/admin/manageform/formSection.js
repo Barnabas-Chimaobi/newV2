@@ -21,6 +21,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
+import Spinner from "@/components/spinner";
 // import Select from "react-select";
 
 const pageDetails = {
@@ -197,17 +198,17 @@ export default function FormSection(props) {
 		<>
 			{
 				<div className="card card-body mt-6 mx-auto py-1 ">
-					{/* {load ? <Loader /> : null} */}
+					{load ? <Spinner /> : null}
 					<ToastContainer />
 					<div className=" py-2  ">
 						<p class=" font-medium text-lg pb-4">Create Sections</p>
 
-						<div className="d-flex">
+						<div className="row">
 							{/* <div class=""> */}
-							<div class="col-4 mr-4">
+							<div class="col-lg-4 mr-4">
 								<div className="local-forms form-group">
 									<label>
-										tabs
+										pages
 										<span className="login-danger">*</span>
 									</label>
 									<Dropdown
@@ -225,7 +226,7 @@ export default function FormSection(props) {
 								{/* </div> */}
 							</div>
 							{/* <div className="d-flex"> */}
-							<div className="col-lg-4 col-sm-12 ml-2 mr-4 mt-2">
+							<div className="col-lg-4 col-sm-12 mr-4">
 								<div className="local-forms form-group">
 									<label>
 										Section Name
@@ -241,7 +242,7 @@ export default function FormSection(props) {
 								</div>
 							</div>
 
-							<div className="col-lg-5 col-sm-12 mt-2 ">
+							<div className="col-lg-2 col-sm-12 ">
 								<div className="local-forms form-group">
 									<Button
 										label="Add"
@@ -342,10 +343,21 @@ export default function FormSection(props) {
 							})}
 						</div>
 					</div>
-					<div class="w-full ..." style={{ marginTop: "60px" }}>
-						<div className="mt-4">
+					<div class="row">
+						{/* <div class=""> */}
+						<div className=" col-lg-1 mt-4 mb-4">
+							<div>
+								<button
+									type="button"
+									onClick={() => previous("one")}
+									className="btn btn-primary">
+									Previous
+								</button>
+							</div>
+						</div>
+						<div className="col-lg-3 mt-4">
 							<button
-								className=" col-12 btn btn-primary"
+								className=" btn btn-primary"
 								type="button"
 								onClick={() => {
 									saveFormStepTwo();
@@ -355,17 +367,7 @@ export default function FormSection(props) {
 								Save and proceed
 							</button>
 						</div>
-					</div>
-
-					<div className=" mt-4 mb-4">
-						<div>
-							<button
-								type="button"
-								onClick={() => previous("one")}
-								className="btn btn-primary">
-								Previous
-							</button>
-						</div>
+						{/* </div> */}
 					</div>
 				</div>
 			}

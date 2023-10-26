@@ -77,7 +77,7 @@ html {
 body {
 	background-color: var(--milk-color);
 	color: var(--ash-color);
-	font-family: "Roboto", sans-serif;
+	font-family: "Poppins", sans-serif;
 	font-size: 15px;
 	height: 100%;
 	line-height: 1.5;
@@ -8543,14 +8543,14 @@ body[data-layout-mode="dark"]
 .schoolName {
 	font-size: 18px;
 	line-height: 0%;
-	/* padding-top: 42px; */
+	padding-top: 12px;
 	width: max-content;
 	/* padding-left: 5px; */
 }
 .schoolAddress {
 	font-size: 12px;
 	padding-left: 5px;
-	padding-top: 5px;
+	/* padding-top: 5px; */
 }
 .image .imagecontact {
 	background-image: url("../img/footerImg.png");
@@ -8580,40 +8580,6 @@ body[data-layout-mode="dark"]
 }
 .logins .fpi {
 	font-size: 46px;
-}
-
-.imagebg {
-	background-image: url("../img/ilaroGate.png");
-	background-position: center;
-	height: 600px;
-	background-repeat: no-repeat;
-	background-size: cover;
-	align-items: center;
-	justify-content: center;
-	display: flex;
-	background-color: rgba(255, 255, 255, 0.5);
-}
-
-.imagebg1 {
-	background-image: url("../img/ilaro2.png");
-	background-position: center;
-	height: 600px;
-	background-repeat: no-repeat;
-	background-size: cover;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-
-.imagebg2 {
-	background-image: url("../img/ilaro1.png");
-	background-position: center;
-	height: 600px;
-	background-repeat: no-repeat;
-	background-size: cover;
-	display: flex;
-	align-items: center;
-	justify-content: center;
 }
 
 .caption .container h1 {
@@ -9622,9 +9588,8 @@ body[data-layout-mode="dark"]
 
 @media (max-width: 575.98px) {
 	.login-body {
-	
-	margin-left: 0px;
-}
+		margin-left: 0px;
+	}
 	.carousel-inner .carousel-caption {
 		display: none;
 	}
