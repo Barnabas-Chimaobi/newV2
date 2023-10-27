@@ -19,7 +19,7 @@ export default function createCourse() {
   ] = useLazyQuery(ALL_COURSE);
 
   const addNewCourse = async (data) => {
-    console.log("code entered here", courseCode, courseName);
+    // console.log("code entered here", courseCode, courseName);
     try {
       const save = await addCourse({
         variables: {
@@ -27,14 +27,14 @@ export default function createCourse() {
           code: data?.courseCode,
         },
       });
-      console.log(save, "saveee====");
+      // console.log(save, "saveee====");
       setShowAddModal(false);
       if (save?.data?.saveCourse?.id > 0) {
         toast.success("Course added successfully");
         getAllCourse();
       }
     } catch (error) {
-      console.log(error, "errorss===");
+      // console.log(error, "errorss===");
       toast.error(error.message);
     }
   };
@@ -93,7 +93,7 @@ export default function createCourse() {
     };
   });
 
-  console.log(allCourseData, "coursedataaa");
+  // console.log(allCourseData, "coursedataaa");
 
   useEffect(() => {
     getAllCourse();

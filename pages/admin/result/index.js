@@ -227,7 +227,7 @@ export default function index() {
         true
       );
 
-      setShowModal(true);
+      setShowTable(true);
       console.log(sheetData, "sheetdata");
       sheetData?.map((item, index) => {
         if (index != 0) {
