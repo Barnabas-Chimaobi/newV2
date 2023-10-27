@@ -160,7 +160,7 @@ export default function viewFeeSetup() {
                         <Dropdown
                           value={feeType}
                           options={feeTypeList}
-                          placeholder="select Programme"
+                          placeholder="select Feetype"
                           onChange={(e) => setFeeType(e.target.value)}
                           className="w-full md:w-21.5rem"
                           optionLabel="Name"

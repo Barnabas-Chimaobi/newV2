@@ -6,6 +6,7 @@ import CreateCourse from "./createCourse";
 import CourseAllocation from "./courseAllocation";
 import CourseAssignment from "./courseAssignment";
 import AssignCourses from "./assignCourses";
+import BulkCourseUpload from "./bulkCourseUpload";
 
 export default function index() {
   return (
@@ -17,6 +18,9 @@ export default function index() {
               <TabView>
                 <TabPanel header="Create Course">
                   <CreateCourse />
+                </TabPanel>
+                <TabPanel header=" Bulk Course Upload">
+                  <BulkCourseUpload />
                 </TabPanel>
                 <TabPanel header="Course Allocation">
                   <CourseAllocation />

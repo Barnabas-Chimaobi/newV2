@@ -91,6 +91,7 @@ export default function index() {
           endDate: data?.Enddate.substring(0, 10),
         },
       });
+      console.log(savePayload, "saveSession");
       getSession();
     } catch (err) {
       toast.error(err.message);

@@ -117,7 +117,6 @@ const AdminLayout = ({ children }) => {
           </a>
         </div>
 
-
         <a className="mobile_btn" id="mobile_btn">
           <i className="fas fa-bars" />
         </a>
@@ -145,7 +144,6 @@ const AdminLayout = ({ children }) => {
               <div className="user-header">
                 <div className="avatar avatar-sm">
                   <img
-
                     src={Constant?.BACK_END_URL + "/" + passport}
                     alt="User Image"
                     className="avatar-img rounded-circle"
@@ -159,7 +157,6 @@ const AdminLayout = ({ children }) => {
               <a className="dropdown-item" href="profile.html">
                 My Profile
               </a>
-
 
               <Link
                 className="dropdown-item"

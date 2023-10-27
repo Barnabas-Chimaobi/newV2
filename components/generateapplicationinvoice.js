@@ -5,7 +5,6 @@ import Table from "./table";
 import { Column } from "primereact/column";
 import Toaster from "./toast/toaster";
 import {
-
   VALIDATE_EMAIL,
   GET_NATIONALITY,
   GET_STATE_BY_COUNTRY,
@@ -15,8 +14,6 @@ import {
   FEE_AMOUNT_FORM,
   DEPARTMENT_OPTION_DROP_DOWN,
   GENERATE_APPLICATION_FORM_INVOICE,
-
-	
 } from "../pages/api/queries/applicant";
 import { toast, ToastContainer } from "react-toastify";
 import { SAVE_BIODATA } from "../pages/api/mutations/applicant";
@@ -28,7 +25,6 @@ import NairaFormatter from "./nairaformatter";
 import Encrypt from "@/components/encrypt";
 
 export default function Generateapplicationinvoice() {
-
   const router = useRouter();
   const [toastText, setToastText] = useState("");
   const [toastType, setToastType] = useState("");
@@ -259,6 +255,7 @@ export default function Generateapplicationinvoice() {
         setpageTwo("Active Show");
         const ProgrammeData = await getProgrammes();
         setprogrammes(ProgrammeData?.data?.allProgrammeOnSale);
+        console.log(programmes, "progg$$");
         if (emailResponse?.data?.validateEmail?.person != null) {
           GetStates(emailResponse?.data?.validateEmail?.person?.nationality);
           // console.log(emailResponse?.data?.validateEmail?.person)
@@ -831,23 +828,6 @@ export default function Generateapplicationinvoice() {
                                       <span>Generate Application Invoice</span>
                                     </h5>
                                   </div>
-                                  {/* <div class="invoice-total-footer col-lg-4 col-md-12">
-
-                                                                        <div className="card">
-                                                                            <div className="card-body">
-                                                                                <h4>Total Amount <span>&#8358; {formAmount}</span></h4>
-
-                                                                            </div></div>
-                                                                    </div> */}
-
-                                  {/* <div className="invoice-total-footer col-lg-4 col-md-12">
-
-                                                                        <div className="card">
-                                                                            <div className="card-body" style={{ backgroundColor: 'lightblue', padding: '20px', borderRadius: '10px' }}>
-                                                                                <h4 style={{ color: 'white' }}>Total Amount <span style={{ color: 'yellow' }}>&#8358; {formAmount}</span></h4>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div> */}
 
                                   <div className="invoice-total-footer col-lg-4 col-md-12">
                                     <div className="card">
@@ -1073,5 +1053,4 @@ export default function Generateapplicationinvoice() {
       </Header>
     </>
   );
-
 }
