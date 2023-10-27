@@ -74,22 +74,31 @@ const AdminLayout = ({ children }) => {
     return (
       <>
         <ul>
-          <li class="menu-title">
-            <span>Admin Menu</span>
+          <li class="menu-title fas fa-bars">
+            <span className="ml-4">Admin Menu</span>
           </li>
 
-          {showMenu?.menu?.map((item) => (
-            <Menu>
-              <SubMenu label={item?.name}>
-                {item?.dropdowns?.map((drops) => (
-                  <MenuItem onClick={() => gotoPath(drops?.path)}>
-                    {" "}
-                    {drops?.name}{" "}
-                  </MenuItem>
-                ))}
-              </SubMenu>
-            </Menu>
-          ))}
+          {showMenu?.menu?.map(
+            (item) => (
+              console.log(item, "items======"),
+              (
+                <Menu>
+                  <SubMenu
+                    style={{ fontWeight: "bolder" }}
+                    icon={<i className={item.icon} />}
+                    label={item?.name}
+                  >
+                    {item?.dropdowns?.map((drops) => (
+                      <MenuItem onClick={() => gotoPath(drops?.path)}>
+                        {" "}
+                        {drops?.name}{" "}
+                      </MenuItem>
+                    ))}
+                  </SubMenu>
+                </Menu>
+              )
+            )
+          )}
         </ul>
       </>
     );
@@ -141,7 +150,7 @@ const AdminLayout = ({ children }) => {
               </span>
             </a>
             <div className="dropdown-menu">
-              <div className="user-header">
+              {/* <div className="user-header">
                 <div className="avatar avatar-sm">
                   <img
                     src={Constant?.BACK_END_URL + "/" + passport}
@@ -153,9 +162,9 @@ const AdminLayout = ({ children }) => {
                   <h6>{fullName}</h6>
                   <p className="text-muted mb-0">Administrator</p>
                 </div>
-              </div>
+              </div> */}
               <a className="dropdown-item" href="profile.html">
-                My Profile
+                == My Profile
               </a>
 
               <Link
@@ -167,16 +176,17 @@ const AdminLayout = ({ children }) => {
             </div>
           </li>
         </ul>
-      </div>
-      <div className="sidebar" id="sidebar">
-        {isLoading ? renderfunction() : <></>}
-        {/* <div className="sidebar-inner slimscroll">
+
+        {/* </div> */}
+        <div className="sidebar" id="sidebar">
+          {isLoading ? renderfunction() : <></>}
+          {/* <div className="sidebar-inner slimscroll">
 
 					<div id="sidebar-menu" className="sidebar-menu">
 						{isLoading ? renderfunction() : <></>}
 					</div>
 				</div> */}
-        {/* <Sidebar>
+          {/* <Sidebar>
 					<Menu>
 						<SubMenu label="Charts">
 							<MenuItem> Pie charts </MenuItem>
@@ -187,9 +197,10 @@ const AdminLayout = ({ children }) => {
 					</Menu>
 				</Sidebar>
 				; */}
-      </div>
+        </div>
 
-      {children}
+        {children}
+      </div>
     </div>
   );
 };

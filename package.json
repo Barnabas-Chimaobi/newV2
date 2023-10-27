@@ -10,12 +10,13 @@
   },
   "dependencies": {
     "@apollo/client": "^3.8.1",
+    "@boldreports/react-reporting-components": "^5.3.8",
+    "@grapecity/activereports-react": "^4.1.0",
     "@reduxjs/toolkit": "^1.9.5",
     "chart.js": "^4.4.0",
     "crypto-js": "^4.1.1",
     "graphql": "^16.8.0",
     "graphql-tag": "^2.12.6",
-    "jquery": "^1.9.1",
     "jspdf": "^2.5.1",
     "mdb-react-ui-kit": "^6.3.0",
     "next": "13.4.19",
@@ -31,5 +32,6 @@
     "redux-persist": "^6.0.0",
     "toastr": "^2.1.4",
     "xlsx": "^0.18.5"
-  }
+  },
+  "devDependencies": {}
 }

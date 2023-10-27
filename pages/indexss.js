@@ -172,12 +172,6 @@ const Home = () => {
 
 	return (
 		<>
-			<link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
-			<link rel="stylesheet" href="/assets/css/font-awesome.min.css" />
-			<link rel="stylesheet" href="/assets/css/owl.carousel.css" />
-			<link rel="stylesheet" href="/assets/css/owl.theme.default.min.css" />
-			<link rel="stylesheet" href="/assets/css/templatemo-style.css" />
-
 			{isLoading && <Spinner />}
 			{/* <div class=""> */}
 			<HeaderLanding />
