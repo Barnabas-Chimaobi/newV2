@@ -14,6 +14,7 @@ import Spinner from "@/components/spinner";
 import formatTime from "@/components/timeconverter";
 
 const Home = () => {
+	// what is code
 	console.log(formatTime("2023-10-27T12:20:44.875-07:00"));
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
@@ -381,7 +382,7 @@ const Home = () => {
 				itemTemplate={productTemplate}
 			/> */}
 			<div
-				className="col-lg-6 col-sm-6 mb-8 "
+				class="sideIcon col-lg-6 col-sm-6 mb-8"
 				style={{
 					position: "relative",
 					float: "right",
@@ -390,9 +391,9 @@ const Home = () => {
 					backgroundColor: "#D6261A",
 					borderRadius: 5,
 				}}>
-				<div class="nav-center p-5 py-3  d-flex flex-direction-row justify-content-around">
+				<div class="nav-center p-5 py-3  d-flex  justify-content-around">
 					<div class=" p-2">
-						<a href="#" class="col-3:text-sm text-white font-bold">
+						<a href="#" class=" text-white font-bold">
 							Generate Invoice
 						</a>
 					</div>
