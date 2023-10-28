@@ -8644,6 +8644,15 @@ body[data-layout-mode="dark"]
 	background-color: #fff;
 }
 
+.sideIcon {
+	position: "relative";
+	float: right;
+	margin-bottom: 140;
+	z-index: 5;
+	background-color: "#D6261A";
+	border-radius: 5;
+}
+
 /*-----------------
 	29. Responsive
 -----------------------*/
@@ -9587,6 +9596,14 @@ body[data-layout-mode="dark"]
 }
 
 @media (max-width: 575.98px) {
+	.sideIcon {
+		position: "relative";
+		float: right;
+		margin-top: -40;
+		z-index: 5;
+		background-color: "#D6261A";
+		border-radius: 5;
+	}
 	.login-body {
 		margin-left: 0px;
 	}
