@@ -5,9 +5,12 @@ import { Column } from "primereact/column";
 import { isNullableType } from "graphql";
 import Table from "../../../components/table";
 import { CREATE_PREFIX } from "@/pages/api/mutations/admin";
-import { VIEW_ALL_PREFIX } from "@/pages/api/queries/admin";
+import { VIEW_ALL_PREFIX, ALL_PROGRAMME } from "@/pages/api/queries/admin";
 
 export default function index() {
+  const [showTable, setShowTable] = useState(false);
+  const [programmeState, setProgrammeState] = useState([]);
+
   const [
     createPrefix,
     {
@@ -16,10 +19,17 @@ export default function index() {
       data: createPrefixData,
     },
   ] = useMutation(CREATE_PREFIX);
+
   const [
     viewPrefix,
     { loading: viewPrefixLoad, error: viewPrefixError, data: viewPrefixData },
-  ] = useMutation(VIEW_ALL_PREFIX);
+  ] = useLazyQuery(VIEW_ALL_PREFIX);
+
+  const [
+    programme,
+    { loading: programmeloading, error: programmeerror, data: programmeList },
+  ] = useLazyQuery(ALL_PROGRAMME);
+  // console.log(programmeList, "programme");
 
   const createPrefixFunc = async (data) => {
     const payload = await createPrefix({
@@ -31,13 +41,6 @@ export default function index() {
       },
     });
   };
-
-  const selectProgramme = programmeList?.allProgramme?.map((item) => {
-    return {
-      Name: item.name,
-      Id: item.id,
-    };
-  });
 
   const headers = [
     {
@@ -73,18 +76,38 @@ export default function index() {
       return {
         ApplicationFormPrefix: item?.applicationNumberPrefix,
         Programme: item?.programme?.name,
+        Id: item?.id,
       };
     }
   );
 
-  //   console.log(viewTimetableData, "viewww");
+  // const selectProgramme = programmeList?.allProgramme?.map((item) => {
+  //   return {
+  //     Name: item.name,
+  //     Id: item.id,
+  //   };
+  // });
 
+  const selectProgramme = programmeList?.allProgramme?.map((item) => {
+    return {
+      Name: item.name,
+      Id: item.id,
+    };
+  });
+
+  console.log(programmeList?.allProgramme, "jjjjjjjjjjjjjj");
+  console.log(selectProgramme, "<<<<<<<<<");
+
+  useEffect(() => {
+    programme();
+  }, []);
+
+  // console.log(selectProgramme, "viewww");
   const TableObj = {
     ApplicationFormPrefix: "",
     Programme: "",
     Id: "",
   };
-
   const DropDownObjects = [
     {
       Name: "ApplicationFormPrefix",
@@ -102,27 +125,32 @@ export default function index() {
       Id: "",
     },
   ];
+
   return (
     <div>
       <div className="page-wrapper">
         <div className="content container-fluid">
-          <div className="px-5 py-5">
-            <Table
-              saveFunc={createPrefixFunc}
-              headers={headers}
-              generateColumnTemplates={generateColumnTemplates}
-              tableName={"Application Form Prefix"}
-              allowEdit={true}
-              allowApply={false}
-              tableObjectBody={TableObj}
-              showExport={false}
-              showAddButton={true}
-              variablesForQuery={{}}
-              tableContent={tableRow}
-              dropDownObjects={DropDownObjects}
-              deleteFunc={{}}
-            />
-          </div>
+          {/* {showTable ? ( */}
+          {selectProgramme?.length != 0 && (
+            <div className="px-5 py-5">
+              <Table
+                saveFunc={createPrefixFunc}
+                headers={headers}
+                generateColumnTemplates={generateColumnTemplates}
+                tableName={"Application Form Prefix"}
+                allowEdit={true}
+                allowApply={false}
+                tableObjectBody={TableObj}
+                showExport={false}
+                showAddButton={true}
+                variablesForQuery={{}}
+                tableContent={tableRow}
+                dropDownObjects={DropDownObjects}
+                deleteFunc={{}}
+              />
+            </div>
+          )}
+          {/* ) : null} */}
         </div>
       </div>
     </div>

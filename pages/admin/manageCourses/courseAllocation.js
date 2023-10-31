@@ -43,7 +43,7 @@ export default function courseAllocation() {
     },
   ] = useLazyQuery(COURSE_ALLOCATION_BY_PROGRAMME_AND_DEPARTMENT);
 
-  console.log(courseAllocationData, "allocationnn");
+  // console.log(courseAllocationData, "allocationnn");
 
   const [
     getDepartment,
@@ -101,7 +101,7 @@ export default function courseAllocation() {
         sessionid: data?.Session?.Id,
       },
     });
-    console.log(saveResponse, "responseeee!!");
+    // console.log(saveResponse, "responseeee!!");
     if (saveResponse?.data?.saveCourseAllocation?.id > 0) {
       toast.success("Course Successfully Allocated");
     }
@@ -233,7 +233,7 @@ export default function courseAllocation() {
       Id: item.userId,
     };
   });
-
+  console.log(userList, "userlist");
   const selectSemester = semesterData?.allSemeter?.map((item) => {
     return {
       Name: item.name,
