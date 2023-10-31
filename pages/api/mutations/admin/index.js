@@ -96,8 +96,8 @@ export const DELETE_APPLICATION_FORMNUMBERSETUP = gql`
   }
 `;
 export const DELETE_DEPARTMENT = gql`
-  mutation deleteDepartment($id: Int!) {
-    deleteDepartment(id: $id)
+  mutation DeleteDepartment($deleteDepartmentId: Int!) {
+    deleteDepartment(id: $deleteDepartmentId)
   }
 `;
 export const DELETE_DEPARTMENT_OPTION = gql`
@@ -569,12 +569,12 @@ export const SAVE_PROGRAMME_DEPARTMENT = gql`
 `;
 
 export const SAVE_ROLE = gql`
-mutation SaveRole($name: String!) {
-  saveRole(name: $name) {
-    roleId
-    roleName
+  mutation SaveRole($name: String!) {
+    saveRole(name: $name) {
+      roleId
+      roleName
+    }
   }
-}
 `;
 
 export const SAVE_STUDENT_RESULT = gql`
@@ -1028,20 +1028,20 @@ export const CREATE_TIMETABLE = gql`
   }
 `;
 
-
 export const UPDATE_ROLE = gql`
-mutation UpdateRole($updateRoleId: Int!, $name: String!) {
-  updateRole(id: $updateRoleId, name: $name) {
-    roleId
-    roleName
+  mutation UpdateRole($updateRoleId: Int!, $name: String!) {
+    updateRole(id: $updateRoleId, name: $name) {
+      roleId
+      roleName
+    }
   }
-}
 `;
 
 export const DELETE_ROLE = gql`
-mutation Mutation($deleteRoleId: Int!) {
-  deleteRole(id: $deleteRoleId)
-}`;
+  mutation Mutation($deleteRoleId: Int!) {
+    deleteRole(id: $deleteRoleId)
+  }
+`;
 export const CREATE_NOTIFICATIONS = gql`
   mutation CreateNotification($notification: NotificationDtoInput!) {
     createNotification(notification: $notification)

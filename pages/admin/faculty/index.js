@@ -18,7 +18,7 @@ export default function index() {
     faculty,
     { loading: loadingFaculty, error: error, data: facultyList },
   ] = useLazyQuery(GET_ALL_FACULTY);
-  console.log(facultyList, "facultydata");
+  // console.log(facultyList, "facultydata");
 
   const [
     saveeFaculty,
@@ -93,7 +93,7 @@ export default function index() {
   }, []);
 
   const saveFaculty = async (data) => {
-    console.log(data, "dataaaa");
+    // console.log(data, "dataaaa");
     try {
       const response = await saveeFaculty({
         variables: {
@@ -102,14 +102,14 @@ export default function index() {
         },
       });
       faculty();
-      console.log(response, "facResponse");
+      // console.log(response, "facResponse");
     } catch (err) {
       toast.error(err.message);
     }
   };
 
   const editFaculty = async (data) => {
-    console.log(data, "kjhgdfghjkljhgfhjk====");
+    // console.log(data, "kjhgdfghjkljhgfhjk====");
     try {
       const editResponse = await updateFaculty({
         variables: {
@@ -118,7 +118,7 @@ export default function index() {
           description: data?.Description,
         },
       });
-      console.log(editResponse, "edittt");
+      // console.log(editResponse, "edittt");
       faculty();
     } catch (err) {
       toast.error(err.message);
@@ -126,14 +126,14 @@ export default function index() {
   };
 
   const deleteFacultyFunc = async (data) => {
-    console.log(data, "deleteeeeplssss");
+    // console.log(data, "deleteeeeplssss");
     try {
       const del = await deleteFaculty({
         variables: {
           deleteFacultyId: data?.Id,
         },
       });
-      console.log(del, "del");
+      // console.log(del, "del");
       faculty();
     } catch (err) {
       toast.error(err.message);
@@ -164,7 +164,6 @@ export default function index() {
                     editFunc={editFaculty}
                     deleteFunc={deleteFacultyFunc}
                     showCheckBox={false}
-
                   />
                 </div>
               </div>
