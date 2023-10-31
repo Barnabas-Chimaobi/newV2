@@ -12,21 +12,22 @@ import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 
 const AdminLayout = ({ children }) => {
   const router = useRouter();
-
   const [isLoading, setisLoading] = useState(false);
   const [showMenu, setShowMenu] = useState([]);
   const [displayMenu, { loading: menuLoad, error: menuError, data: menuData }] =
     useLazyQuery(MENUS);
 
-  console.log(menuData, "menudataaa");
+  // console.log(menuData, "menudataaa");
 
   const menuFunc = async () => {
     const menuResponse = await displayMenu();
-    console.log(menuResponse?.data, "responsee");
+    // console.log(menuResponse?.data, "responsee");
     setShowMenu(menuResponse?.data);
   };
+
   const [fullName, setfullName] = useState("");
   const [passport, setpassport] = useState("");
+
   const pageLoad = () => {
     if (typeof window !== "undefined") {
       const fullName = localStorage.getItem("fullName");
@@ -35,6 +36,8 @@ const AdminLayout = ({ children }) => {
       setpassport(passport);
     }
   };
+
+  console.log(passport);
 
   useEffect(() => {
     menuFunc();
@@ -57,6 +60,7 @@ const AdminLayout = ({ children }) => {
   const submenuStyle = {
     display: "none",
   };
+
   const [activeSubMenu, setActiveSubMenu] = useState(null);
 
   const handleSubMenuToggle = (index) => {

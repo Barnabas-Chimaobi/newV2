@@ -57,7 +57,7 @@ export default function menuRole() {
     },
   ] = useLazyQuery(MENUROLE_BY_ROLEID);
 
-  console.log(menuRoleByRoleIdData, "menuDataaaaaaa");
+  // console.log(menuRoleByRoleIdData, "menuDataaaaaaa");
 
   const menuList = allMenuData?.allMenu?.map((item) => {
     return {
@@ -126,7 +126,7 @@ export default function menuRole() {
   };
 
   const tableRow = menuRoleByRoleIdData?.menuRolebyRoleId?.map((item) => {
-    console.log(item, "itemmmm");
+    // console.log(item, "itemmmm");
     return {
       Menu: item?.menu?.name,
       Role: item?.role?.roleName,
@@ -153,7 +153,7 @@ export default function menuRole() {
           roleid: role?.Id,
         },
       });
-      console.log(role, "roleeee");
+      // console.log(role, "roleeee");
       setShowTable(true);
     } catch (err) {
       toast.error(err.message);

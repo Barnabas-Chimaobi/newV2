@@ -889,3 +889,16 @@ export const SAVE_COURSE_BULK = gql`
     }
   }
 `;
+
+export const SAVE_DEPARTMENT_BULK = gql`
+  mutation SaveDepartmentBulk(
+    $facultyid: Int!
+    $model: [BulkDepartmentUploadInput!]!
+  ) {
+    saveDepartmentBulk(facultyid: $facultyid, model: $model) {
+      departmentName
+      departmentCode
+      status
+    }
+  }
+`;

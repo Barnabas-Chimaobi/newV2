@@ -517,7 +517,7 @@ export default function Generateapplicationinvoice() {
                           Apply
                         </a>
                       </li>
-                      <li className="nav-item">
+                      {/* <li className="nav-item">
                         <a
                           className={`nav-link ${
                             tabFive !== "" ? "active" : ""
@@ -528,7 +528,7 @@ export default function Generateapplicationinvoice() {
                         >
                           Print Invoice
                         </a>
-                      </li>
+                      </li> */}
                     </ul>
                     <div className="tab-content">
                       <div

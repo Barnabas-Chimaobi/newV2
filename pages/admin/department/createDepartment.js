@@ -9,6 +9,7 @@ import { ALL_DEPARTMENT } from "../../../pages/api/queries/admin";
 import {
   UPDATE_DEPARTMENT,
   SAVE_DEPARTMENT,
+  DELETE_DEPARTMENT,
 } from "../../../pages/api/mutations/admin";
 import Spinner from "../../../components/spinner";
 export default function createDepartment() {
@@ -23,7 +24,7 @@ export default function createDepartment() {
         setIsLoading(false); // Set loading to false after data is fetched
       })
       .catch((error) => {
-        console.error("Error fetching faculty data:", error);
+        // console.error("Error fetching faculty data:", error);
         setIsLoading(false); // Set loading to false in case of an error
         toast.error("Error occured");
       });
@@ -65,7 +66,12 @@ export default function createDepartment() {
   const [saveDept, { loading: deptLoading, error: deptError, data: deptData }] =
     useMutation(SAVE_DEPARTMENT);
 
-  console.log(facultyList?.allFaculty, "faculty");
+  const [
+    delDepartment,
+    { loading: depatmentLoading, error: depatmentError, data: depatmentData },
+  ] = useMutation(DELETE_DEPARTMENT);
+
+  // console.log(facultyList?.allFaculty, "faculty");
 
   const FacultyListItem = facultyList?.allFaculty?.map((item) => ({
     Id: item?.id,
@@ -79,7 +85,7 @@ export default function createDepartment() {
 
   const saveDeptFunc = async (data) => {
     try {
-      console.log(data, "saveParaammmm");
+      // console.log(data, "saveParaammmm");
       const saveResponse = await saveDept({
         variables: {
           name: data?.Name,
@@ -96,7 +102,7 @@ export default function createDepartment() {
 
   const editDept = async (data) => {
     try {
-      console.log(data, "editdataaa");
+      // console.log(data, "editdataaa");
       const editResponse = await updateDepart({
         variables: {
           updateDepartmentId: data?.Id,
@@ -112,7 +118,17 @@ export default function createDepartment() {
   };
 
   const deleteDept = async (data) => {
-    console.log(data, "kjhgdfghjkljhgfhjk====");
+    // console.log(data, "kjhgdfghjkljhgfhjk====");
+    try {
+      const remove = await delDepartment({
+        variables: {
+          deleteDepartmentId: data?.Id,
+        },
+      });
+      allDepartment();
+    } catch (err) {
+      toast.error(err.message);
+    }
   };
 
   console.log(FacultyListItem, "falcuty drip dhdjdkl");
