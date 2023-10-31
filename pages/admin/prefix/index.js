@@ -82,7 +82,6 @@ export default function index() {
   const TableObj = {
     ApplicationFormPrefix: "",
     Programme: "",
-
     Id: "",
   };
 
