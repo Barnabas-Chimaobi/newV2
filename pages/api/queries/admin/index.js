@@ -1434,8 +1434,8 @@ export const VIEW_ALL_NOTIFICATIONS = gql`
 `;
 
 export const VIEW_ALL_PREFIX = gql`
-  query ViewAllApplicationFormNumberSetup {
-    viewAllApplicationFormNumberSetup {
+  query AllApplicationFormNumberSetup {
+    allApplicationFormNumberSetup {
       id
       applicationNumberPrefix
       programmeId
