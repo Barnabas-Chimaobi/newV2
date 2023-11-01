@@ -23,7 +23,7 @@ export default function index() {
     { loading: allMenuLoad, error: allMenuError, data: allMenuData },
   ] = useLazyQuery(ALL_MENU);
 
-  console.log(allMenuData, "menuuuuu");
+  // console.log(allMenuData, "menuuuuu");
 
   const [
     saveMenu,
@@ -50,11 +50,11 @@ export default function index() {
   const getMenu = async () => {
     setIsLoading(true);
     const menu = await menuGroup();
-    console.log(menu, "data=======");
+    // console.log(menu, "data=======");
     setIsLoading(false);
   };
 
-  console.log(allMenuGroupData, "menuGrouopp");
+  // console.log(allMenuGroupData, "menuGrouopp");
 
   useEffect(() => {
     getMenu();
@@ -73,7 +73,7 @@ export default function index() {
         },
       });
       allMenu();
-      console.log(saveMenuResponse, "savemenuresponse");
+      // console.log(saveMenuResponse, "savemenuresponse");
       setShowAddModal(false);
       if (saveMenuResponse?.data?.saveMenu?.id > 0) {
         toast.success("A New Menu has been created");
@@ -84,7 +84,7 @@ export default function index() {
   };
 
   const updateMenuFunc = async (data) => {
-    console.log(data, "data========updatee");
+    // console.log(data, "data========updatee");
     try {
       const updateMenuResponse = await updateMenu({
         variables: {
@@ -123,7 +123,7 @@ export default function index() {
     };
   });
 
-  console.log(menuGroupList, "console=======");
+  // console.log(menuGroupList, "console=======");
 
   const tableRow = allMenuData?.allMenu?.map((item) => {
     console.log(item, "itemmmm");

@@ -902,3 +902,17 @@ export const SAVE_DEPARTMENT_BULK = gql`
     }
   }
 `;
+
+export const COPY_FORM = gql`
+  mutation CopyFormToProgrammeAndSession(
+    $sessionid: Int!
+    $programmeid: Int!
+    $programmesessionid: Int!
+  ) {
+    copyFormToProgrammeAndSession(
+      sessionid: $sessionid
+      programmeid: $programmeid
+      programmesessionid: $programmesessionid
+    )
+  }
+`;
