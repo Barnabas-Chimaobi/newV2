@@ -9070,6 +9070,14 @@ body[data-layout-mode="dark"]
 }
 
 @media (max-width: 767.98px) {
+	/* .carousel-item img {
+		color: #000;
+		background-color: #fff;
+		margin-bottom: 100px;
+		height: 100px;
+		width: 100px;
+		background-size: cover;
+	} */
 	body {
 		font-size: 0.9375rem;
 	}

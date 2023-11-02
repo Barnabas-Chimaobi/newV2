@@ -259,6 +259,7 @@ const Home = () => {
 			</nav>
 
 			<div
+				// style={{ height: 500 }}
 				id="carouselExampleCrossfade"
 				class="carousel slide carousel-fade"
 				data-mdb-ride="carousel">
@@ -349,7 +350,7 @@ const Home = () => {
 						</div>
 						<img
 							src={Constant.ILARO2}
-							class="d-block w-100 h-50"
+							class=" d-block w-100 h-50"
 							alt="Exotic Fruits"
 						/>
 					</div>
@@ -371,6 +372,7 @@ const Home = () => {
 					<span class="visually-hidden">Next</span>
 				</button>
 			</div>
+
 			{/* <Carousel
 				value={product}
 				numVisible={1}
@@ -381,6 +383,7 @@ const Home = () => {
 				autoplayInterval={5000}
 				itemTemplate={productTemplate}
 			/> */}
+
 			<div
 				class="sideIcon col-lg-6 col-sm-6 mb-8"
 				style={{
