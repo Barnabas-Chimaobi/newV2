@@ -27,7 +27,7 @@ export default function Admittedstudent({ formNo, status }) {
   const [olevelTypes, setolevelTypes] = useState("");
   const [firstSitting, setfirstSitting] = useState("");
   const [secondSitting, setsecondSitting] = useState("");
-  console.log(status, "formAndStatus");
+  // console.log(status?.payments[0]?.personId, "formAndStatus");
   const [
     admissionStatus,
     {
@@ -36,6 +36,7 @@ export default function Admittedstudent({ formNo, status }) {
       data: admissionStatusData,
     },
   ] = useLazyQuery(CHECK_ADMISSION_STATUS);
+
   const [
     OlevelGrade,
     {
@@ -44,6 +45,7 @@ export default function Admittedstudent({ formNo, status }) {
       data: OlevelGradeData,
     },
   ] = useLazyQuery(OLEVEL_GRADE);
+
   const [
     OlevelSubject,
     {
@@ -52,10 +54,12 @@ export default function Admittedstudent({ formNo, status }) {
       data: OlevelSubjectData,
     },
   ] = useLazyQuery(OLEVEL_SUBJECT);
+
   const [
     OlevelType,
     { loading: OlevelTypeLoad, error: OlevelTypeError, data: OlevelTypeData },
   ] = useLazyQuery(OLEVEL_TYPE);
+
   const [firstSub1, setfirstSub1] = useState("");
   const [firstSub2, setfirstSub2] = useState("");
   const [firstSub3, setfirstSub3] = useState("");
@@ -246,9 +250,7 @@ export default function Admittedstudent({ formNo, status }) {
     try {
       const invoice = await generateInvoiceFee({
         variables: {
-          personId:
-            admittedApplicatData?.applicationForm?.applicantAppliedCourse
-              ?.personId,
+          personId: status?.payments[0]?.personId,
           levelId: 1,
           formtypeid: 1,
           sessionId: 0,
@@ -256,7 +258,8 @@ export default function Admittedstudent({ formNo, status }) {
           paymentMode: 1,
         },
       });
-      console.log(invoice.data, "Invoiceeeeeeeeeee");
+      // console.log(invoice.data, "Invoiceeeeeeeeeee");
+
       setloadingbutton(false);
       router.push(
         Constant.BASE_URL +
@@ -264,7 +267,7 @@ export default function Admittedstudent({ formNo, status }) {
           Encrypt(invoice?.data?.generateInvoice?.invoiceNumber)
       );
     } catch (error) {
-      console.error("Error fetching form:", error);
+      // console.error("Error fetching form:", error);
       setloadingbutton(false);
     }
   };
@@ -272,8 +275,9 @@ export default function Admittedstudent({ formNo, status }) {
   const generateReceipt = async (invoiceNo) => {
     try {
       router.push(Constant.BASE_URL + `/common/receipt/` + Encrypt(invoiceNo));
+      console.log(invoiceNo, "invnooo");
     } catch (error) {
-      console.error("Error fetching form:", error);
+      // console.error("Error fetching form:", error);
     }
   };
 

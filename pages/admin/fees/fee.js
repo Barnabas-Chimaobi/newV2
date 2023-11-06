@@ -25,7 +25,7 @@ export default function fee() {
   const [allFee, { loading: feeLoad, error: feeError, data: feeData }] =
     useLazyQuery(ALL_FEE);
 
-  console.log(feeData, "feedataaa");
+  // console.log(feeData, "feedataaa");
 
   const saveFee = async (data) => {
     try {
@@ -33,7 +33,7 @@ export default function fee() {
         variables: {
           name: data?.Name,
           amount: data?.Amount,
-          description: item?.Description,
+          description: data?.Description,
         },
       });
       allFee();
@@ -72,7 +72,7 @@ export default function fee() {
 
   const headers = [
     {
-      field: "Setup Name",
+      field: " Name",
       header: "Setup Name",
       sortable: true,
       style: { minWidth: "12rem", backgroundColor: "white" },
@@ -110,7 +110,7 @@ export default function fee() {
     },
     {
       Name: "Amount",
-      Type: "Text",
+      Type: "Number",
       List: isNullableType,
       Description: "",
       Id: "",
