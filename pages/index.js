@@ -1,21 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { Constant } from "@/constant";
-import dynamic from "next/dynamic";
-import HeaderLanding from "@/components/headeLanding";
-import Login from "./login";
-import Script from "next/script";
 import { useRouter } from "next/router";
-import { Carousel } from "primereact/carousel";
-import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
+import React from "react";
+import { useState } from "react";
+import { useMutation } from "@apollo/client";
 import { STAFF_LOGIN } from "./api/mutations/authMutation";
-import { toast, ToastContainer } from "react-toastify";
-import Spinner from "@/components/spinner";
+import Script from "next/script";
+import { Constant } from "@/constant";
 
-import formatTime from "@/components/timeconverter";
-
-const Home = () => {
-	// what is code
-	console.log(formatTime("2023-10-27T12:20:44.875-07:00"));
+export default function index() {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [isLoading, setIsLoading] = useState("");
@@ -53,7 +44,7 @@ const Home = () => {
 				console.log(payLoad, "payLoad");
 				if (payLoad?.data?.staffLogin?.role === "Administrator") {
 					router.push("./admin/dashboard");
-				} else {
+				} else if (payLoad?.data?.staffLogin?.role === "Student") {
 					router.push("./student/dashboard");
 				}
 			} catch (err) {
@@ -62,543 +53,366 @@ const Home = () => {
 		}
 	};
 
-	const product = [
-		{ image: Constant.ILAROGATE, id: 1 },
-		{ image: Constant.ILARO11, id: 2 },
-		{ image: Constant.ILARO2, id: 3 },
-	];
-	const responsiveOptions = [
-		{
-			breakpoint: "1199px",
-			numVisible: 1,
-			numScroll: 1,
-		},
-		{
-			breakpoint: "991px",
-			numVisible: 2,
-			numScroll: 1,
-		},
-		{
-			breakpoint: "767px",
-			numVisible: 1,
-			numScroll: 1,
-		},
-	];
-
-	useEffect(() => {
-		const handleRouteChange = (url, { shallow }) => {
-			console.log("kjhgfdghj======");
-			// Check if the route change was a "back" navigation
-			if (shallow) {
-				// This means the user navigated away from the page and then came back
-				console.log("Navigated back to this page");
-			}
-		};
-
-		// Listen for route changes
-		router.events.on("routeChangeComplete", handleRouteChange);
-
-		// Clean up the event listener when the component unmounts
-		return () => {
-			router.events.off("routeChangeComplete", handleRouteChange);
-		};
-	}, []);
-
 	return (
 		<>
-			{/* <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
-			<link rel="stylesheet" href="/assets/css/font-awesome.min.css" />
-			<link rel="stylesheet" href="/assets/css/owl.carousel.css" />
-			<link rel="stylesheet" href="/assets/css/owl.theme.default.min.css" />
-			<link rel="stylesheet" href="/assets/css/templatemo-style.css" /> */}
+			<meta charSet="utf-8" />
+			<title>CryptoCoin - Free Cryptocurrency Website Template</title>
+			<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+			<meta content="" name="keywords" />
+			<meta content="" name="description" />
+			{/* Favicon */}
+			<link href="img/favicon.ico" rel="icon" />
+			{/* Google Web Fonts */}
+			<link rel="preconnect" href="https://fonts.googleapis.com" />
+			<link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
 			<link
-				href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+				href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500&family=Roboto:wght@500;700&display=swap"
+				rel="stylesheet"
+			/>
+			{/* Icon Font Stylesheet */}
+			<link
+				href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
 				rel="stylesheet"
 			/>
 			<link
-				href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;1,200&display=swap"
+				href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
 				rel="stylesheet"
 			/>
-
+			{/* Libraries Stylesheet */}
+			<link href="./lib/animate/animate.min.css" rel="stylesheet" />
 			<link
-				href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css"
+				href="./lib/owlcarousel/assets/owl.carousel.min.css"
 				rel="stylesheet"
 			/>
-
-			{isLoading && <Spinner />}
-			{/* <div class=""> */}
-			{/* <HeaderLanding /> */}
-			<nav
-				class="navbar navbar-expand-lg navbar-light"
-				style={{ backgroundColor: "#2A166D" }}>
-				<div class="container-fluid">
-					{/* <a class="navbar-brand" href="#">
-						Navbar
-					</a>
-					<button
-						class="navbar-toggler"
-						type="button"
-						data-mdb-toggle="collapse"
-						data-mdb-target="#navbarNav"
-						aria-controls="navbarNav"
-						aria-expanded="false"
-						aria-label="Toggle navigation">
-						<i class="fas fa-bars"></i>
-					</button> */}
-					<div
-						class="collapse navbar-collapse justify-content-end mr-8"
-						id="navbarNav">
-						<ul class="navbar-nav">
-							<li class="nav-item">
-								<a
-									class="nav-link text-white pr-5"
-									aria-current="page"
-									href="#">
-									School Website
-								</a>
-							</li>
-
-							<li class="nav-item">
-								<a class="nav-link text-white" href="#">
-									Staff portal
-								</a>
-							</li>
-						</ul>
-					</div>
-				</div>
-			</nav>
-
-			<nav class="navbar navbar-expand-lg navbar-light bg-light">
-				<div class="container">
-					<a class="navbar-brand me-2" href="https://mdbgo.com/">
+			{/* Customized Bootstrap Stylesheet */}
+			<link href="./css/bootstrap.min.css" rel="stylesheet" />
+			{/* Template Stylesheet */}
+			<link href="./css/style.css" rel="stylesheet" />
+			{/* Spinner Start */}
+			{/* <div
+				id="spinner"
+				className="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+				<div className="spinner-grow text-primary" role="status" />
+			</div> */}
+			{/* Spinner End */}
+			{/* Navbar Start */}
+			<nav className="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0 px-4 px-lg-5">
+				<a href="index.html" className="navbar-brand d-flex align-items-center">
+					<h2 className="m-0 text-primary">
 						<img
+							className="img-fluid me-2"
 							src={Constant.SCHOOL_LOGO}
-							height="35"
-							alt="MDB Logo"
-							loading="lazy"
-							// style="margin-top: -1px;"
+							alt=""
+							style={{ width: 45 }}
 						/>
-					</a>
+						{Constant.SCHOOL_NAME}
+					</h2>
+				</a>
+				<button
+					type="button"
+					className="navbar-toggler"
+					data-bs-toggle="collapse"
+					data-bs-target="#navbarCollapse">
+					<span className="navbar-toggler-icon" />
+				</button>
+				<div className="collapse navbar-collapse" id="navbarCollapse">
+					<div className="navbar-nav ms-auto py-4 py-lg-0">
+						<a href="./login" className="nav-item nav-link active">
+							Login
+						</a>
 
-					<button
-						class="navbar-toggler"
-						type="button"
-						data-mdb-toggle="collapse"
-						data-mdb-target="#navbarButtonsExample"
-						aria-controls="navbarButtonsExample"
-						aria-expanded="false"
-						aria-label="Toggle navigation">
-						<i class="fas fa-bars"></i>
-					</button>
-
-					<div class="collapse navbar-collapse" id="navbarButtonsExample">
-						<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-							<li class="nav-item">
-								<a style={{ marginBottom: 0 }} class="nav-link" href="#">
-									<p
-										class="text-black font-bold"
-										style={{ fontSize: 16, marginBottom: 0 }}>
-										{Constant.SCHOOL_NAME}
-									</p>
-									<p
-										class="text-black font-bold"
-										style={{ fontSize: 12, marginBottom: 0 }}>
-										{Constant.SCHOOL_ADDRESS}
-									</p>
-								</a>
-							</li>
-						</ul>
-
-						<div class="row  col-sm-12 col-lg-4">
+						<div className="nav-item dropdown">
 							<a
-								class="btn btn-link text-black  dropdown-toggle col-3 col-lg-5"
-								// type="button"
-								// id="dropdownMenuButton"
-								// data-mdb-toggle="dropdown"
-								aria-expanded="false">
-								Returning Students
+								href="#"
+								className="nav-link dropdown-toggle"
+								data-bs-toggle="dropdown">
+								New Students
 							</a>
-							<div class="dropdown col-lg-4">
-								<a
-									class="btn btn-link text-black  dropdown-toggle "
-									type="button"
-									id="dropdownMenuButton"
-									data-mdb-toggle="dropdown"
-									aria-expanded="false">
-									Applicant
+
+							<div className="dropdown-menu shadow-sm m-0">
+								<a href="feature.html" className="dropdown-item">
+									Application Guide
 								</a>
-								<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-									<li>
-										<a class="dropdown-item" href="#">
-											Application Guide
-										</a>
-									</li>
-									<li>
-										<a class="dropdown-item" href="/applicant/applicationform">
-											Manage Application
-										</a>
-									</li>
-									<li>
-										<a class="dropdown-item" href="./applicant/checkAdmission">
-											Check Admission Status
-										</a>
-									</li>
-								</ul>
+								<a href="/applicant/applicationform" className="dropdown-item">
+									Manage Application
+								</a>
+								<a href="./applicant/checkAdmission" className="dropdown-item">
+									Check Admission Status
+								</a>
 							</div>
-
-							<a
-								class="btn btn-link px-3 me-2 col-lg-2 col-4"
-								href="./login"
-								// onClick={() => router.push("./login")}
-							>
-								Login
-							</a>
 						</div>
+						<a href="contact.html" className="nav-item nav-link">
+							Contact
+						</a>
 					</div>
+					{/* <div className="h-100 d-lg-inline-flex align-items-center d-none">
+						<a
+							className="btn btn-square rounded-circle bg-light text-primary me-2"
+							href="">
+							<i className="fab fa-facebook-f" />
+						</a>
+						<a
+							className="btn btn-square rounded-circle bg-light text-primary me-2"
+							href="">
+							<i className="fab fa-twitter" />
+						</a>
+						<a
+							className="btn btn-square rounded-circle bg-light text-primary me-0"
+							href="">
+							<i className="fab fa-linkedin-in" />
+						</a>
+					</div> */}
 				</div>
 			</nav>
-
-			<div
-				id="carouselExampleCrossfade"
-				class="carousel slide carousel-fade"
-				data-mdb-ride="carousel">
-				<div class="carousel-indicators justify-content-start">
-					<button
-						type="button"
-						data-mdb-target="#carouselExampleCrossfade"
-						data-mdb-slide-to="0"
-						class="active"
-						aria-current="true"
-						aria-label="Slide 1"></button>
-					<button
-						type="button"
-						data-mdb-target="#carouselExampleCrossfade"
-						data-mdb-slide-to="1"
-						aria-label="Slide 2"></button>
-					<button
-						type="button"
-						data-mdb-target="#carouselExampleCrossfade"
-						data-mdb-slide-to="2"
-						aria-label="Slide 3"></button>
-				</div>
-				<div class="carousel-inner">
-					<div class="carousel-item active">
-						<div class="carousel-caption text-left mb-8">
-							<p className="" style={{ opacity: 0.7 }}>
-								WELCOME TO
-							</p>
-							<h5
-								className="text-white text-bold"
-								style={{ fontSize: 28, width: 500 }}>
-								ABIA STATE POLYTECHNIC STUDENT PORTAL
-							</h5>
-							<a
-								onClick={() => router.push("./login")}
-								// type="button"
-								class="btn-click btn px-5 mt-3 me-2">
-								Sign In
-							</a>
-						</div>
-						<img
-							src={Constant.ILAROGATE}
-							class="d-block w-100 h-50"
-							alt="Wild Landscape"
-						/>
-					</div>
-					<div class="carousel-item">
-						<div class="carousel-caption text-left mb-8">
-							<h5
-								className="text-white text-bold"
-								style={{ fontSize: 28, width: 500 }}>
+			{/* Navbar End */}
+			{/* Header Start */}
+			<div className="container-fluid hero-header bg-light py-5 mb-5">
+				<div className="container py-5">
+					<div className="row g-5 align-items-center">
+						<div className="col-lg-6">
+							<h3 className="display-6 mb-3 animated slideInDown">
 								START YOUR JOURNEY TO SUCCESS WITH OUR PRESTIGEOUS SCHOOL
-							</h5>
-							<p className="" style={{ opacity: 0.7 }}>
+							</h3>
+							<p className="animated slideInDown py-3">
 								Our online courses are built in partnership with technology
 								leaders and are designed to meet industry demands.
 							</p>
 							<a
-								onClick={() => router.push("./login")}
-								type="button"
-								class="btn-click btn mt-3 px-5 me-2">
+								href=""
+								className="btn btn-primary py-3 px-4 animated slideInDown">
 								Sign In
 							</a>
 						</div>
-						<img
-							src={Constant.ILARO11}
-							class="d-block w-100 h-50"
-							alt="Camera"
-						/>
-					</div>
-					<div class="carousel-item">
-						<div class="carousel-caption text-left mb-8">
-							<h5
-								className="text-white text-bold"
-								style={{ fontSize: 28, width: 500 }}>
-								Efficient Learning Methods
-							</h5>
-							<p className="" style={{ opacity: 0.7 }}>
-								We have the best facility to enhance distance learning through
-								improved technology.
-							</p>
-							<a
-								onClick={() => router.push("./login")}
-								type="button"
-								class="btn-click btn  mt-3 px-5 me-2">
-								Sign In
-							</a>
+						<div className="col-lg-6 animated fadeIn ">
+							<div className="d-flex col-lg-7">
+								<img
+									className="img-fluid animated pulse infinite"
+									style={{ animationDuration: "3s" }}
+									src={Constant.ILAROGATE}
+									alt=""
+								/>
+								<img
+									className="img-fluid ml-4 animated pulse infinite"
+									style={{ animationDuration: "3s" }}
+									src={Constant.ILAROGATE}
+									alt=""
+								/>
+							</div>
+							<div className="d-flex justify-content-center  ml-4 mt-4 ">
+								<img
+									className="img-fluid animated pulse infinite"
+									style={{ animationDuration: "3s" }}
+									src={Constant.ILAROGATE}
+									alt=""
+								/>
+							</div>
 						</div>
-						<img
-							src={Constant.ILARO2}
-							class="d-block w-100 h-50"
-							alt="Exotic Fruits"
-						/>
 					</div>
 				</div>
-				<button
-					class="carousel-control-prev"
-					type="button"
-					data-mdb-target="#carouselExampleCrossfade"
-					data-mdb-slide="prev">
-					<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-					<span class="visually-hidden">Previous</span>
-				</button>
-				<button
-					class="carousel-control-next"
-					type="button"
-					data-mdb-target="#carouselExampleCrossfade"
-					data-mdb-slide="next">
-					<span class="carousel-control-next-icon" aria-hidden="true"></span>
-					<span class="visually-hidden">Next</span>
-				</button>
 			</div>
-			{/* <Carousel
-				value={product}
-				numVisible={1}
-				numScroll={1}
-				responsiveOptions={responsiveOptions}
-				className="custom-carousel"
-				circular
-				autoplayInterval={5000}
-				itemTemplate={productTemplate}
-			/> */}
+			{/* Header End */}
+			{/* About Start */}
+			<div className="container-xxl py-5">
+				<div className="container">
+					<div className="row g-5 align-items-center">
+						<div className="d-flex justify-content-end">
+							<a className="btn btn-primary py-3 px-4 mx-1" href="">
+								Application Guide
+							</a>
+							<a className="btn btn-primary py-3 px-4 mx-1" href="">
+								Manage Admission
+							</a>
+							<a className="btn btn-primary py-3 px-4 mx-1" href="">
+								Check Admission Status
+							</a>
+						</div>
+						<div className="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
+							<img className="img-fluid" src={Constant.Rectangle} alt="" />
+						</div>
+						<div className="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
+							<div className="h-100">
+								<p className="text-primary fs-5 mb-4">
+									Enter correct information only and ensure that you do not
+									spell your names wrongly.
+								</p>
+								<p>
+									Note that your information and personal details are linked to
+									your Confirmation Order Number, your invoice number and the
+									form you purchase.
+								</p>
+								<p className="mb-4">
+									You would not be able to correct or change the information
+									with which you obtain your Confirmation Order Number, your
+									invoice and or your Application form after submitting that
+									information or purchasing the form. If you make any mistake,
+									do not use the Confirmation Order Number or invoice so
+									generated to obtain a form. Rather, generate another number
+									and invoice with your correct information and proceed with
+									those details.
+								</p>
+								<p className="">
+									<small class="">Last updated 3 mins ago</small>
+								</p>
+								{/* <div className="d-flex align-items-center mb-2">
+									<i className="fa fa-check bg-light text-primary btn-sm-square rounded-circle me-3 fw-bold" />
+									<span>Tempor erat elitr rebum at clita</span>
+								</div>
+								<div className="d-flex align-items-center mb-2">
+									<i className="fa fa-check bg-light text-primary btn-sm-square rounded-circle me-3 fw-bold" />
+									<span>Tempor erat elitr rebum at clita</span>
+								</div>
+								<div className="d-flex align-items-center mb-4">
+									<i className="fa fa-check bg-light text-primary btn-sm-square rounded-circle me-3 fw-bold" />
+									<span>Tempor erat elitr rebum at clita</span>
+								</div> */}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			{/* About End */}
+			{/* Facts Start */}
+
+			{/* Facts End */}
+			{/* Features Start */}
+
+			{/* FAQs Start */}
+			{/* Footer Start */}
 			<div
-				class="sideIcon col-lg-6 col-sm-6 mb-8"
-				style={{
-					position: "relative",
-					float: "right",
-					marginTop: -40,
-					zIndex: 5,
-					backgroundColor: "#D6261A",
-					borderRadius: 5,
-				}}>
-				<div class="nav-center p-5 py-3  d-flex  justify-content-around">
-					<div class=" p-2">
-						<a href="#" class=" text-white font-bold">
-							Generate Invoice
-						</a>
-					</div>
-					<div class=" p-2">
-						<a href="#" class="text-white font-bold">
-							Fill appliction form
-						</a>
-					</div>
-
-					<div class=" p-2">
-						<a href="#" class="text-white font-bold">
-							Application Status
-						</a>
+				className="container-fluid bg-light footer mt-5 pt-5 wow fadeIn"
+				data-wow-delay="0.1s">
+				<div className="container py-5">
+					<div className="row g-5">
+						<div className="col-md-6">
+							<h1 className="text-primary mb-4">
+								<img
+									className="img-fluid me-2"
+									src="img/icon-1.png"
+									alt=""
+									style={{ width: 45 }}
+								/>
+								CryptoCoin
+							</h1>
+							<span>
+								Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita
+								erat ipsum et lorem et sit, sed stet lorem sit clita. Diam dolor
+								diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et
+								lorem et sit.
+							</span>
+						</div>
+						<div className="col-md-6">
+							<h5 className="mb-4">Newsletter</h5>
+							<p>Clita erat ipsum et lorem et sit, sed stet lorem sit clita.</p>
+							<div className="position-relative">
+								<input
+									className="form-control bg-transparent w-100 py-3 ps-4 pe-5"
+									type="text"
+									placeholder="Your email"
+								/>
+								<button
+									type="button"
+									className="btn btn-primary py-2 px-3 position-absolute top-0 end-0 mt-2 me-2">
+									SignUp
+								</button>
+							</div>
+						</div>
+						<div className="col-lg-3 col-md-6">
+							<h5 className="mb-4">Get In Touch</h5>
+							<p>
+								<i className="fa fa-map-marker-alt me-3" />
+								123 Street, New York, USA
+							</p>
+							<p>
+								<i className="fa fa-phone-alt me-3" />
+								+012 345 67890
+							</p>
+							<p>
+								<i className="fa fa-envelope me-3" />
+								info@example.com
+							</p>
+						</div>
+						<div className="col-lg-3 col-md-6">
+							<h5 className="mb-4">Our Services</h5>
+							<a className="btn btn-link" href="">
+								Currency Wallet
+							</a>
+							<a className="btn btn-link" href="">
+								Currency Transaction
+							</a>
+							<a className="btn btn-link" href="">
+								Bitcoin Investment
+							</a>
+							<a className="btn btn-link" href="">
+								Token Sale
+							</a>
+						</div>
+						<div className="col-lg-3 col-md-6">
+							<h5 className="mb-4">Quick Links</h5>
+							<a className="btn btn-link" href="">
+								About Us
+							</a>
+							<a className="btn btn-link" href="">
+								Contact Us
+							</a>
+							<a className="btn btn-link" href="">
+								Our Services
+							</a>
+							<a className="btn btn-link" href="">
+								Terms &amp; Condition
+							</a>
+						</div>
+						<div className="col-lg-3 col-md-6">
+							<h5 className="mb-4">Follow Us</h5>
+							<div className="d-flex">
+								<a className="btn btn-square rounded-circle me-1" href="">
+									<i className="fab fa-twitter" />
+								</a>
+								<a className="btn btn-square rounded-circle me-1" href="">
+									<i className="fab fa-facebook-f" />
+								</a>
+								<a className="btn btn-square rounded-circle me-1" href="">
+									<i className="fab fa-youtube" />
+								</a>
+								<a className="btn btn-square rounded-circle me-1" href="">
+									<i className="fab fa-linkedin-in" />
+								</a>
+							</div>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div class=" container flex justify-content-center col-lg-9">
-				<p class="font-bold pb-10">INSTRUCTIONS</p>
-			</div>
-			<div class=" container flex justify-content-center col-lg-9">
-				<div class="card mb-3 ">
-					<div class="row g-0" style={{ backgroundColor: "#2A166D" }}>
-						<div class="col-md-3">
-							<img
-								style={{ width: 320, height: 320 }}
-								src={Constant.Rectangle}
-								alt="Trendy Pants and Shoes"
-								class="img-fluid rounded-start d-block w-100"
-							/>
-						</div>
-						<div class="col-md-8" style={{ backgroundColor: "#2A166D" }}>
-							<div class="card-body">
-								{/* <h5 class="card-title">Card title</h5> */}
-								<p class="card-text">
-									<p className="text-yellow-500">
-										{" "}
-										Enter correct information only and ensure that you do not
-										spell your names wrongly.
-									</p>
-									<p className="text-white">
-										Note that your information and personal details are linked
-										to your Confirmation Order Number, your invoice number and
-										the form you purchase.{" "}
-									</p>
-
-									<p className="text-white">
-										You would not be able to correct or change the information
-										with which you obtain your Confirmation Order Number, your
-										invoice and or your Application form after submitting that
-										information or purchasing the form. If you make any mistake,
-										do not use the Confirmation Order Number or invoice so
-										generated to obtain a form. Rather, generate another number
-										and invoice with your correct information and proceed with
-										those details.
-									</p>
-								</p>
-								<p className="text-white">
-									<small class=" text-white">Last updated 3 mins ago</small>
-								</p>
+				<div className="container-fluid copyright">
+					<div className="container">
+						<div className="row">
+							<div className="col-md-6 text-center text-md-start mb-3 mb-md-0">
+								© <a href="#">Your Site Name</a>, All Right Reserved.
+							</div>
+							<div className="col-md-6 text-center text-md-end">
+								{/*/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. *** /*/}
+								Designed By <a href="https://htmlcodex.com">HTML Codex</a>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+			{/* Footer End */}
+			{/* Back to Top */}
+			<a
+				href="#"
+				className="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top">
+				<i className="bi bi-arrow-up" />
+			</a>
 
-			{/* <section>
-				<div id="feature" class="logins col-lg-10 col-md-6 ">
-					<h2 class="fpi">Start your journey to a better future with FPI</h2>
-					<div className="login-wrapper">
-						<div className="container">
-							<div className="loginbox">
-								<div className="login-left">
-									<img
-										className="img-fluid"
-										src="assets/img/login.png"
-										alt="Logo"
-									/>
-								</div>
-								<div className="login-right">
-									<div className="login-right-wrap">
-										<h1>Hi, Welcome Back!</h1>
-										<p className="account-subtitle">
-											Sign in using your personalized account to access more
-											features of the portal
-										</p>
+			<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+			<Script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></Script>
+			{/* <Script src="./lib/wow/wow.min.js"></Script>
+			<Script src="./lib/easing/easing.min.js"></Script>
+			<Script src="./lib/waypoints/waypoints.min.js"></Script>
+			<Script src="./lib/owlcarousel/owl.carousel.min.js"></Script>
+			<Script src="./lib/counterup/counterup.min.js"></Script>
 
-										<form action="https://preschool.dreamguystech.com/template/index.html">
-											<div className="form-group">
-												<label>
-													Username <span className="login-danger">*</span>
-												</label>
-												<input
-													className="form-control"
-													type="text"
-													onChange={(e) => setUsername(e.target.value)}
-												/>
-												<span className="profile-views">
-													<i className="fas fa-user-circle"></i>
-												</span>
-											</div>
-											<div className="form-group">
-												<label>
-													Password <span className="login-danger">*</span>
-												</label>
-												<input
-													className="form-control pass-input"
-													type="text"
-													onChange={(e) => setPassword(e.target.value)}
-												/>
-												<span className="profile-views feather-eye toggle-password"></span>
-											</div>
-											<div className="forgotpass">
-												<div className="remember-me">
-													<label className="custom_check mr-2 mb-0 d-inline-flex remember-me">
-														{" "}
-														Remember me
-														<input type="checkbox" name="radio" />
-														<span className="checkmark"></span>
-													</label>
-												</div>
-												<a href="forgot-password.html">Forgot Password?</a>
-											</div>
-											<div className="form-group">
-												<button
-													className="btn btn-primary btn-block"
-													type="button"
-													onClick={() => loginFunc()}>
-													Login
-												</button>
-											</div>
-										</form>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</section> */}
-
-			<div class="container-fluid">
-				<div className="image bg-white mb-5">
-					<div className="imagecontact">
-						<p
-							className="p-4 text-white"
-							style={{
-								fontSize: "18px",
-								fontWeight: "bold",
-								textAlign: "center",
-								// marginRight: "500px",
-								// marginLeft: "500px",
-								// width: "800px",
-								// alignSelf: "center",
-							}}>
-							If you experience any difficulties or issues kindly call
-							07088391544 , 09059424123 , 09053630262 or email
-							support@lloydant.com, For transcript related call 08104593133
-						</p>
-					</div>
-				</div>
-			</div>
-
-			<footer
-				style={{ backgroundColor: "#2A166D" }}
-				class="container-fluid  text-center text-white">
-				<div class="container-fluid text-center">
-					© 2023 Copyright:
-					<a class="text-white" href="https://mdbootstrap.com/">
-						Lloydant
-					</a>
-				</div>
-			</footer>
-
-			{/* <div>
-				<div className="image bg-white mb-5">
-					<div className="imagecontact p-5">
-						<h3
-							className="p-4 text-white"
-							style={{
-								fontSize: "18px",
-								fontWeight: "bold",
-								textAlign: "center",
-								// marginRight: "500px",
-								// marginLeft: "500px",
-								// width: "800px",
-								// alignSelf: "center",
-							}}>
-							If you experience any difficulties or issues kindly call
-							07088391544 , 09059424123 , 09053630262 or email
-							support@lloydant.com, For transcript related call 08104593133
-						</h3>
-					</div>
-				</div>
-				<div className="footer w-100 bg-green-700 h-25 p-2">
-					<p className="rights-reserved font-bold text-white pt-4">
-						© 2023 Lloydant All rights reserved.
-					</p>
-				</div>
-			</div> */}
-			<Script
-				type="text/javascript"
-				src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"></Script>
-
-			{/* </div> */}
+			<Script src="./jss/main.js"></Script> */}
+			{/* JavaScript Libraries */}
+			{/* Template Javascript */}
 		</>
 	);
-};
-
-export default dynamic(() => Promise.resolve(Home), { ssr: false });
+}
