@@ -641,6 +641,7 @@ export default function GenericForm({
 	};
 
 	const handleTabNavigation = (targetTabIndex) => {
+		console.log(targetTabIndex, "tab====index=====");
 		saveAndContinue();
 		// console.log(data?.applicantForm?.mainPages.length, "index lemgth")
 		if (
@@ -1955,30 +1956,34 @@ export default function GenericForm({
 															item?.pageName?.includes("Passport") ? (
 																<></>
 															) : (
-																item?.sections?.map((item2, index2) => (
-																	<div className="row">
-																		<div className="col-12">
-																			<h5 className="form-title">
-																				<span>{item2?.sectionName}</span>
-																			</h5>
-																		</div>
-																		<>
-																			{item2.fieldDetails.map(
-																				(item3, index3) => (
-																					<>
-																						<div
-																							className="col-lg-4 col-sm-12"
-																							key={index3}>
-																							<div className="form-group local-forms">
-																								{RenderInputs(item3)}
-																							</div>
-																						</div>
-																					</>
-																				)
-																			)}
-																		</>
-																	</div>
-																))
+																item?.sections?.map(
+																	(item2, index2) =>
+																		index2 == activeTabIndex && (
+																			// console.log(item2, "hgfghjkhgjk====="),
+																			<div className="row">
+																				<div className="col-12">
+																					<h5 className="form-title">
+																						<span>{item2?.sectionName}</span>
+																					</h5>
+																				</div>
+																				<>
+																					{item2.fieldDetails.map(
+																						(item3, index3) => (
+																							<>
+																								<div
+																									className="col-lg-4 col-sm-12"
+																									key={index3}>
+																									<div className="form-group local-forms">
+																										{RenderInputs(item3)}
+																									</div>
+																								</div>
+																							</>
+																						)
+																					)}
+																				</>
+																			</div>
+																		)
+																)
 															)}
 
 															<div className="col-auto text-end float-end ms-auto download-grp">
