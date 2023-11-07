@@ -511,6 +511,12 @@ export const CHECK_ADMISSION_STATUS = gql`
         isPaid
         datePaid
         paymentGatewayId
+        feeDetail {
+          feeType {
+            name
+            id
+          }
+        }
       }
       applicationForm {
         applicantAppliedCourse {

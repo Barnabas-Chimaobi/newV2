@@ -92,9 +92,9 @@ export default function Receipt({ invoiceNumber }) {
     showPrint();
   };
 
-  useEffect(() => {
-    receiptFunc();
-  }, []);
+  //   useEffect(() => {
+  //     receiptFunc();
+  //   }, []);
   return (
     <div>
       {loading ? (
