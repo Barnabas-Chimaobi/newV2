@@ -150,13 +150,22 @@ export default function checkAdmission() {
 													Application From Number<span>*</span>
 												</label>
 												<input
-													type="email"
+													// type="text"
 													// placeholder="Password"
 													required=""
+													onChange={(e) =>
+														setApplcationFormNumber(e.target.value)
+													}
 												/>
 											</p>
 											<p>
-												<input type="submit" defaultValue="Submit" />
+												<button
+													onClick={() => checkStatus()}
+													type="submit"
+													// defaultValue="Submit"
+												>
+													Submit
+												</button>
 											</p>
 											{/* <p>
 								<a href="">Forget Password?</a>

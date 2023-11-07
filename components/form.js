@@ -298,117 +298,136 @@ export default function GenericForm({
 		});
 
 		// first sitting check
-		if (firstexamNumber !== "" || firstexamNumber !== null) {
-			if (isEmptySubject1) {
-				toasts.current.show({
-					severity: "info",
-					summary: "Info",
-					detail: "Please ensure you have selected all 9  subjects",
-				});
-			} else if (valueArr?.length !== 0 && isDuplicate) {
-				toasts.current.show({
-					severity: "info",
-					summary: "Info",
-					detail: "You selected a Subjects more than once in a sitting",
-				});
-			} else if (valueArr?.length !== 0 && isEmptyString) {
-				toasts.current.show({
-					severity: "info",
-					summary: "Info",
-					detail: "Please ensure you choose grade for all selected subjects",
-				});
-			} else {
-				null;
-			}
-		} else if (secondexamNumber !== null || secondexamNumber !== "") {
-			if (isEmptySubjectSecond) {
-				toasts.current.show({
-					severity: "info",
-					summary: "Info",
-					detail: "Please ensure you have selected all 9  subjects",
-				});
-			} else if (valueArrSecond?.length !== 0 && isDuplicateSecond) {
-				toasts.current.show({
-					severity: "info",
-					summary: "Info",
-					detail: "You selected a Subjects more than once in a sitting",
-				});
-			} else if (valueArrSecond?.length !== 0 && isEmptyStringSecond) {
-				console.log("hererrrrr===2222222");
-				toasts.current.show({
-					severity: "info",
-					summary: "Info",
-					detail: "Please ensure you choose grade for all selected subjects",
-				});
-			} else {
-				null;
-			}
+		let checkFirstSittingSelected = firstexamNumber?.length !== 0;
+		let secondSittingSelected = secondexamNumber !== null;
+		console.log(
+			checkFirstSittingSelected,
+			secondSittingSelected,
+			firstexamNumber,
+			secondexamNumber,
+			"hgfdsdfghjkssss====lectt===ed"
+		);
+		if (checkFirstSittingSelected && isEmptySubject1) {
+			toasts.current.show({
+				severity: "info",
+				summary: "Info",
+				detail: "Please ensure you have selected all 9  subjects",
+			});
+		} else if (
+			checkFirstSittingSelected &&
+			valueArr?.length !== 0 &&
+			isDuplicate
+		) {
+			toasts.current.show({
+				severity: "info",
+				summary: "Info",
+				detail: "You selected a Subjects more than once in a sitting",
+			});
+		} else if (
+			checkFirstSittingSelected &&
+			valueArr?.length !== 0 &&
+			isEmptyString
+		) {
+			toasts.current.show({
+				severity: "info",
+				summary: "Info",
+				detail: "Please ensure you choose grade for all selected subjects",
+			});
+		} else if (secondSittingSelected && isEmptySubjectSecond) {
+			toasts.current.show({
+				severity: "info",
+				summary: "Info",
+				detail: "Please ensure you have selected all 9  subjects",
+			});
+		} else if (
+			secondSittingSelected &&
+			valueArrSecond?.length !== 0 &&
+			isDuplicateSecond
+		) {
+			toasts.current.show({
+				severity: "info",
+				summary: "Info",
+				detail: "You selected a Subjects more than once in a sitting",
+			});
+		} else if (
+			secondSittingSelected &&
+			valueArrSecond?.length !== 0 &&
+			isEmptyStringSecond
+		) {
+			console.log("hererrrrr===2222222");
+			toasts.current.show({
+				severity: "info",
+				summary: "Info",
+				detail: "Please ensure you choose grade for all selected subjects",
+			});
 		} else {
-			if (isPreview === false) {
-				setisSaving(true);
-				setTimeout(async () => {
-					try {
-						var formsDto = fields.map((item) => {
-							return {
-								feildId: item.id,
-								response: item.response,
-							};
-						});
-						const formsApplicant = await formSubmit({
-							variables: {
-								model: {
-									personId: data?.applicantForm?.personId,
-									formDetails: formsDto,
-									submitOlevelResult: [
-										submitFirstOlevelResult,
-										submitSecondOlevelResult,
-									],
-									pictureUrl: pictureUrl,
-									canSubmit: canSubmitForm,
-								},
+			console.log("jhgfdsfghjklkjhgfdghjk======");
+			// if (isPreview === false) {
+			setisSaving(true);
+			setTimeout(async () => {
+				try {
+					var formsDto = fields.map((item) => {
+						return {
+							feildId: item.id,
+							response: item.response,
+						};
+					});
+					const formsApplicant = await formSubmit({
+						variables: {
+							model: {
+								personId: data?.applicantForm?.personId,
+								formDetails: formsDto,
+								submitOlevelResult: [
+									submitFirstOlevelResult,
+									submitSecondOlevelResult,
+								],
+								pictureUrl: pictureUrl,
+								canSubmit: canSubmitForm,
 							},
-						});
+						},
+					});
 
-						setsubmittedResponse(
-							formsApplicant?.data?.submitApplicationFormNewDto?.id
+					setsubmittedResponse(
+						formsApplicant?.data?.submitApplicationFormNewDto?.id
+					);
+					if (sub === 1) {
+						router.push(
+							Constant.BASE_URL +
+								`/common/acknowledgementslip/` +
+								formsApplicant?.data?.submitApplicationFormNewDto?.id
 						);
-						if (sub === 1) {
-							router.push(
-								Constant.BASE_URL +
-									`/common/acknowledgementslip/` +
-									formsApplicant?.data?.submitApplicationFormNewDto?.id
-							);
-						}
-						console.log(submittedResponse, "submitted response ....");
-						setisSaving(false);
-					} catch (err) {
-						setisSaving(false);
 					}
+					console.log(submittedResponse, "submitted response ....");
+					setisSaving(false);
+				} catch (err) {
+					console.log(submittedResponse, "error==== response ....");
+					setisSaving(false);
+				}
 
-					if (
-						targetTabIndex >= 0 &&
-						targetTabIndex < data?.applicantForm?.mainPages.length
-					) {
-						setActiveTabIndex(targetTabIndex);
-						if (targetTabIndex == 0) {
-							setpreviousactiveButton(false);
-						} else {
-							setpreviousactiveButton(true);
-						}
-						if (targetTabIndex == data?.applicantForm?.mainPages?.length - 1) {
-							setnextactiveButton(false);
-						} else {
-							setnextactiveButton(true);
-						}
+				if (
+					targetTabIndex >= 0 &&
+					targetTabIndex < data?.applicantForm?.mainPages.length
+				) {
+					setActiveTabIndex(targetTabIndex);
+					if (targetTabIndex == 0) {
+						setpreviousactiveButton(false);
 					} else {
-						if (targetTabIndex < 0) {
-							setpreviousactiveButton(false);
-						} else {
-							setnextactiveButton(false);
-						}
+						setpreviousactiveButton(true);
 					}
-				}, 3000);
-			}
+					if (targetTabIndex == data?.applicantForm?.mainPages?.length - 1) {
+						setnextactiveButton(false);
+					} else {
+						setnextactiveButton(true);
+					}
+				} else {
+					if (targetTabIndex < 0) {
+						setpreviousactiveButton(false);
+					} else {
+						setnextactiveButton(false);
+					}
+				}
+			}, 3000);
+			// }
 		}
 	};
 
