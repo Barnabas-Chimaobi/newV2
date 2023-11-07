@@ -105,7 +105,7 @@ export default function GenericTable({
   ] = useLazyQuery(PREVIEW);
 
   const handlePreview = async (data) => {
-    console.log(data, "data=====");
+    // console.log(data, "data=====");
     setFormHeader(data);
     try {
       try {
@@ -114,7 +114,7 @@ export default function GenericTable({
           sessionId: parseInt(data.sessionId),
         };
         let response = await lazyLoadPreview({ variables: payload });
-        console.log(response, payload, "response");
+        // console.log(response, payload, "response");
         setFormObj(response.data.preview);
         if (response != undefined) {
           setPreview(true);
@@ -146,7 +146,7 @@ export default function GenericTable({
     return Object.keys(product).map((fieldName) => {
       // console.log(fieldName, "ppppppppp");
       if (fieldName === "id") {
-        console.log(fieldName, "changing id values");
+        // console.log(fieldName, "changing id values");
         // if (e.target.value !== null && e.target.value > 0) {
         //   onSaveValueChange(fieldName, e.target.value);
         // }
@@ -205,6 +205,20 @@ export default function GenericTable({
                 id={fieldName}
                 value={product[fieldName]}
                 onChange={(e) => onSaveValueChange(fieldName, e.target.value)}
+              />
+            </div>
+          );
+        } else if (dropDownObject.Type === "Number") {
+          // Render a text input component
+          return (
+            <div key={fieldName} className="field">
+              <label htmlFor={fieldName} className="font-bold">
+                {toSentenceCase(fieldName)}
+              </label>
+              <InputNumber
+                id={fieldName}
+                value={product[fieldName]}
+                onValueChange={(e) => onSaveValueChange(fieldName, e.value)}
               />
             </div>
           );

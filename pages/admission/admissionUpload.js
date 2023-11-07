@@ -167,10 +167,10 @@ export default function manageAdmission() {
             sessionid: sessionName?.Id,
           },
         });
-        console.log(
-          unadmitted?.data?.unadmittedApplicants,
-          "Unadddddddddddddddddddddddddddd$$$$"
-        );
+        // console.log(
+        //   unadmitted?.data?.unadmittedApplicants,
+        //   "Unadddddddddddddddddddddddddddd$$$$"
+        // );
         let unadmittedMap = unadmitted?.data?.unadmittedApplicants?.map(
           (item) => {
             return {
@@ -199,7 +199,7 @@ export default function manageAdmission() {
           admissionlistformnumber: previewList,
         },
       });
-      console.log(admissionList?.data?.admissionListDtoNames, "gdgdgdgdgdg");
+      // console.log(admissionList?.data?.admissionListDtoNames, "gdgdgdgdgdg");
       //   setverifyingbutton(true);
       setShowTable(true);
       setPostArr(admissionList?.data?.admissionListDtoNames);
@@ -222,7 +222,7 @@ export default function manageAdmission() {
 
   const handlePrepApplicants = async (e) => {
     try {
-      console.log(e, "admitt studenbtsss");
+      // console.log(e, "admitt studenbtsss");
       if (posttArr?.length !== 0) {
         posttArr.forEach((x) => {
           const payload = {
@@ -233,7 +233,7 @@ export default function manageAdmission() {
             programmeId: programmeName?.Id,
             sessionId: sessionName?.Id,
           };
-          console.log(payload, "payload");
+          // console.log(payload, "payload");
           saveAdmittedFunc(payload);
         });
       } else if (e.length > 0) {
@@ -250,7 +250,7 @@ export default function manageAdmission() {
           programmeId: programmeName?.Id,
           sessionId: sessionName?.Id,
         };
-        console.log(payload, "payload");
+        // console.log(payload, "payload");
         saveAdmittedFunc(payload);
       } else {
         toast.warn("Please Select an applicant");
@@ -267,21 +267,22 @@ export default function manageAdmission() {
       },
     });
     toast.success("Admission succesful");
+    setShowTable(false);
   };
 
   const ProcessExcel = (data) => {
-    console.log(tempList, "templistt");
+    // console.log(tempList, "templistt");
     if (typeof window !== "undefined") {
       let workbook = XLSX.read(data, {
         type: "binary",
       });
       let firstSheet = workbook.SheetNames[0];
       let excelRows = XLSX.utils.sheet_to_json(workbook.Sheets[firstSheet]);
-      console.log(excelRows, "converted to json");
+      // console.log(excelRows, "converted to json");
       const extractNums = excelRows?.map((item) => item?.ApplicationNumber);
-      console.log(extractNums, "extraccccccccccccccccccccccccct");
+      // console.log(extractNums, "extraccccccccccccccccccccccccct");
       setPreviewList(extractNums);
-      console.log(previewList, "jkl.");
+      // console.log(previewList, "jkl.");
     }
   };
 
@@ -290,7 +291,7 @@ export default function manageAdmission() {
       setFiles(true);
     }
     setFiles(e.target.files[0]);
-    console.log("Single Files: ", e.target.files[0]);
+    // console.log("Single Files: ", e.target.files[0]);
     let fileUpload = e.target;
 
     let regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xls|.xlsx)$/;
@@ -312,7 +313,7 @@ export default function manageAdmission() {
             for (var i = 0; i < bytes.byteLength; i++) {
               data += String.fromCharCode(bytes[i]);
             }
-            console.log(data, "11111");
+            // console.log(data, "11111");
             ProcessExcel(data);
             setTempList(data);
           };
