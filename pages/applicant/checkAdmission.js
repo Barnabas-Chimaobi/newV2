@@ -166,6 +166,7 @@ export default function checkAdmission() {
                         />
                       </p>
                       {/* <p>
+
 								<a href="">Forget Password?</a>
 							</p> */}
                     </form>
