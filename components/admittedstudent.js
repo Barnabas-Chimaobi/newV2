@@ -21,13 +21,16 @@ import Spinner from "./spinner";
 export default function Admittedstudent({ formNo, status }) {
   const router = useRouter();
   const [loadedData, setloadedData] = useState(false);
-  const [admittedApplicatData, setadmittedApplicatData] = useState("");
+  // const [admittedApplicatData, setadmittedApplicatData] = useState({});
   const [olevelSubjects, setolevelSubjects] = useState("");
   const [olevelGrades, setolevelGrades] = useState("");
   const [olevelTypes, setolevelTypes] = useState("");
   const [firstSitting, setfirstSitting] = useState("");
   const [secondSitting, setsecondSitting] = useState("");
   // console.log(status?.payments[0]?.personId, "formAndStatus");
+  useEffect(() => {
+    // setadmittedApplicatData(status?.data?.checkAdmissionStatus);
+  }, []);
   const [
     admissionStatus,
     {
@@ -100,119 +103,8 @@ export default function Admittedstudent({ formNo, status }) {
   const [admissionProgress, setadmissionProgress] = useState(0);
   const [admissionSlipUrl, setadmissionSlipUrl] = useState("");
 
-  // const admissionStatusFunc = async (formNo) => {
-  //   try {
-  //     const inputId = parseInt(formNo);
-  //     const admissionStatusData = await admissionStatus({
-  //       variables: {
-  //         checkAdmissionStatusByIdId: inputId,
-  //       },
-  //     });
-  //     console.log(admissionStatusData, inputId, "fix nowwwww");
-  //     setadmittedApplicatData(
-  //       admissionStatusData?.data?.checkAdmissionStatusById
-  //     );
-
-  //     setfirstSitting(
-  //       admissionStatusData?.data?.checkAdmissionStatusById?.applicationForm
-  //         ?.applicationFormFullResponse?.submitOlevelResult[0]
-  //     );
-  //     setsecondSitting(
-  //       admissionStatusData?.data?.checkAdmissionStatusById?.applicationForm
-  //         ?.applicationFormFullResponse?.submitOlevelResult[1]
-  //     );
-  //     if (firstSitting?.olevelResultsDto?.length > 0) {
-  //       setfirstSub1({ name: firstSitting?.olevelResultsDto[0]?.subject });
-  //       setfirstGrade1({ name: firstSitting?.olevelResultsDto[0]?.grade });
-  //       setfirstSub2({ name: firstSitting?.olevelResultsDto[1]?.subject });
-  //       setfirstGrade2({ name: firstSitting?.olevelResultsDto[1]?.grade });
-  //       setfirstSub3({ name: firstSitting?.olevelResultsDto[2]?.subject });
-  //       setfirstGrade3({ name: firstSitting?.olevelResultsDto[2]?.grade });
-  //       setfirstSub4({ name: firstSitting?.olevelResultsDto[3]?.subject });
-  //       setfirstGrade4({ name: firstSitting?.olevelResultsDto[3]?.grade });
-  //       setfirstSub5({ name: firstSitting?.olevelResultsDto[4]?.subject });
-  //       setfirstGrade5({ name: firstSitting?.olevelResultsDto[4]?.grade });
-  //       setfirstSub6({ name: firstSitting?.olevelResultsDto[5]?.subject });
-  //       setfirstGrade6({ name: firstSitting?.olevelResultsDto[5]?.grade });
-  //       setfirstSub7({ name: firstSitting?.olevelResultsDto[6]?.subject });
-  //       setfirstGrade7({ name: firstSitting?.olevelResultsDto[6]?.grade });
-  //       setfirstSub8({ name: firstSitting?.olevelResultsDto[7]?.subject });
-  //       setfirstGrade8({ name: firstSitting?.olevelResultsDto[7]?.grade });
-  //       setfirstSub9({ name: firstSitting?.olevelResultsDto[8]?.subject });
-  //       setfirstGrade9({ name: firstSitting?.olevelResultsDto[8]?.grade });
-  //     }
-  //     if (secondSitting?.olevelResultsDto?.length > 0) {
-  //       setsecondSub1({ name: secondSitting?.olevelResultsDto[0]?.subject });
-  //       setsecondGrade1({ name: secondSitting?.olevelResultsDto[0]?.grade });
-  //       setsecondSub2({ name: secondSitting?.olevelResultsDto[1]?.subject });
-  //       setsecondGrade2({ name: secondSitting?.olevelResultsDto[1]?.grade });
-  //       setsecondSub3({ name: secondSitting?.olevelResultsDto[2]?.subject });
-  //       setsecondGrade3({ name: secondSitting?.olevelResultsDto[2]?.grade });
-  //       setsecondSub4({ name: secondSitting?.olevelResultsDto[3]?.subject });
-  //       setsecondGrade4({ name: secondSitting?.olevelResultsDto[3]?.grade });
-  //       setsecondSub5({ name: secondSitting?.olevelResultsDto[4]?.subject });
-  //       setsecondGrade5({ name: secondSitting?.olevelResultsDto[4]?.grade });
-  //       setsecondSub6({ name: secondSitting?.olevelResultsDto[5]?.subject });
-  //       setsecondGrade6({ name: secondSitting?.olevelResultsDto[5]?.grade });
-  //       setsecondSub7({ name: secondSitting?.olevelResultsDto[6]?.subject });
-  //       setsecondGrade7({ name: secondSitting?.olevelResultsDto[6]?.grade });
-  //       setsecondSub8({ name: secondSitting?.olevelResultsDto[7]?.subject });
-  //       setsecondGrade8({ name: secondSitting?.olevelResultsDto[7]?.grade });
-  //       setsecondSub9({ name: secondSitting?.olevelResultsDto[8]?.subject });
-  //       setsecondGrade9({ name: secondSitting?.olevelResultsDto[8]?.grade });
-  //     }
-
-  //     console.log(firstSitting, secondSitting, "fists anf second");
-  //     const subjects = await OlevelSubject();
-  //     setolevelSubjects(subjects?.data?.gellAllOLevelSubject);
-  //     const grades = await OlevelGrade();
-  //     setolevelGrades(grades?.data?.gellAllOLevelGrade);
-  //     console.log(
-  //       subjects?.data?.gellAllOLevelSubject,
-  //       grades?.data?.gellAllOLevelGrade,
-  //       "Data for olevel"
-  //     );
-  //   } catch (error) {
-  //     console.error("Error fetching form:", error);
-  //   }
-  // };
   const [chartData, setChartData] = useState({});
   const [chartOptions, setChartOptions] = useState({});
-
-  // useEffect(() => {
-  //   admissionStatusFunc(formnumber).then((x) => {
-  //     const statusProgress = admittedApplicatData?.applicantStatusId * 10;
-
-  //     setadmissionProgress(statusProgress);
-  //     setscaleProgress(100 - statusProgress);
-
-  //     const documentStyle = getComputedStyle(document.documentElement);
-
-  //     const data = {
-  //       labels: ["Admission Progress"],
-  //       datasets: [
-  //         {
-  //           data: [admissionProgress, scaleProgress],
-  //           backgroundColor: [
-  //             documentStyle.getPropertyValue("--blue-500"),
-  //             documentStyle.getPropertyValue("fff"),
-  //           ],
-  //           hoverBackgroundColor: [
-  //             documentStyle.getPropertyValue("--blue-400"),
-  //             documentStyle.getPropertyValue("fff"),
-  //           ],
-  //         },
-  //       ],
-  //     };
-  //     const options = {
-  //       cutout: "60%",
-  //     };
-
-  //     setChartData(data);
-  //     setChartOptions(options);
-  //     setloadedData(true);
-  //   });
-  // }, [formnumber]);
 
   const [email, setEmail] = useState("");
   const [tabOne, setTabOne] = useState("active");
@@ -228,13 +120,15 @@ export default function Admittedstudent({ formNo, status }) {
   const [loadingbutton, setloadingbutton] = useState(false);
 
   const selectedInvoice = (feetypeId) => {
+    let admittedApplicatData = status;
     if (!admittedApplicatData?.payments) {
       return "";
     }
 
-    return admittedApplicatData.payments.filter((payment) => {
-      return payment.feeDetail.feeType.id === feetypeId;
+    let dd = admittedApplicatData?.payments.filter((payment) => {
+      return payment?.feeDetail?.feeType?.id === feetypeId;
     });
+    return dd;
   };
 
   const [
@@ -1481,10 +1375,6 @@ export default function Admittedstudent({ formNo, status }) {
                                           >
                                             Print Receipt
                                           </button>
-
-                                          {/* <a className="btn btn-primary  col-lg-3 col-sm-12 mb-3 " href="#">
-                                                                                            Print Receipt
-                                                                                        </a> */}
                                         </div>
                                       </div>
                                     </div>
