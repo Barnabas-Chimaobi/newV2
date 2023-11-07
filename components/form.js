@@ -543,6 +543,7 @@ export default function GenericForm({
 	};
 	//console.log(fields, "feild valuesssss")
 	const RenderInputs = (field) => {
+		console.log(field, "field=========");
 		var selectedField = fields.find((fieldxx) => fieldxx.id === field.id);
 
 		if (field.input_type === "select") {

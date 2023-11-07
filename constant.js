@@ -11,7 +11,7 @@ const Constant = {
 	BASE_URL: "http://localhost:3000",
 	ILAROGATE: "/assets/img/abia1.png",
 	ILARO11: "/assets/img/abia3.png",
-	ILARO2: "/assets/img/abia3.png",
+	ILARO2: "/assets/img/abia2.png",
 	Rectangle: "/assets/img/Rectangle.png",
 	BACK_END_URL: "https://backendvirtualschoolv2.lloydant.com",
 };

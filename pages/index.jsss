@@ -1,0 +1,433 @@
+import { useRouter } from "next/router";
+import React from "react";
+import { useState } from "react";
+import { useMutation } from "@apollo/client";
+import { STAFF_LOGIN } from "./api/mutations/authMutation";
+import Script from "next/script";
+import { Constant } from "@/constant";
+
+export default function index() {
+	const [username, setUsername] = useState("");
+	const [password, setPassword] = useState("");
+	const [isLoading, setIsLoading] = useState("");
+
+	const router = useRouter();
+
+	const [login, { loading: loginLoad, error: loginError, data: loginData }] =
+		useMutation(STAFF_LOGIN);
+
+	const loginFunc = async () => {
+		if (username == "" || password == "") {
+			toast.error("Please provide username and password");
+		} else {
+			setIsLoading(true);
+			try {
+				const payLoad = await login({
+					variables: {
+						username: username,
+						password: password,
+					},
+				});
+				localStorage.clear();
+				localStorage.setItem("authToken", payLoad?.data?.staffLogin?.authToken);
+				localStorage.setItem(
+					"passport",
+					payLoad?.data?.staffLogin?.passportUrl
+				);
+				localStorage.setItem("fullName", payLoad?.data?.staffLogin?.fullName);
+				localStorage.setItem(
+					"matricNumber",
+					payLoad?.data?.staffLogin?.username
+				);
+				toast.success("Login Successful");
+				setIsLoading(false);
+				console.log(payLoad, "payLoad");
+				if (payLoad?.data?.staffLogin?.role === "Administrator") {
+					router.push("./admin/dashboard");
+				} else if (payLoad?.data?.staffLogin?.role === "Student") {
+					router.push("./student/dashboard");
+				}
+			} catch (err) {
+				toast.error(err.message);
+			}
+		}
+	};
+
+	return (
+		<>
+			<meta charSet="utf-8" />
+			<title>CryptoCoin - Free Cryptocurrency Website Template</title>
+			<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+			<meta content="" name="keywords" />
+			<meta content="" name="description" />
+			{/* Favicon */}
+			<link href="img/favicon.ico" rel="icon" />
+			{/* Google Web Fonts */}
+			<link rel="preconnect" href="https://fonts.googleapis.com" />
+			<link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+			<link
+				href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500&family=Roboto:wght@500;700&display=swap"
+				rel="stylesheet"
+			/>
+			{/* Icon Font Stylesheet */}
+			<link
+				href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
+				rel="stylesheet"
+			/>
+			<link
+				href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
+				rel="stylesheet"
+			/>
+			{/* Libraries Stylesheet */}
+			<link href="./lib/animate/animate.min.css" rel="stylesheet" />
+			<link
+				href="./lib/owlcarousel/assets/owl.carousel.min.css"
+				rel="stylesheet"
+			/>
+			{/* Customized Bootstrap Stylesheet */}
+			<link href="./css/bootstrap.min.css" rel="stylesheet" />
+			{/* Template Stylesheet */}
+			<link href="./css/style.css" rel="stylesheet" />
+			{/* Spinner Start */}
+			{/* <div
+				id="spinner"
+				className="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+				<div className="spinner-grow text-primary" role="status" />
+			</div> */}
+			{/* Spinner End */}
+			{/* Navbar Start */}
+			<nav className="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0 px-4 px-lg-5">
+				<a href="index.html" className="navbar-brand d-flex align-items-center">
+					<h2 className="m-0 text-primary">
+						<img
+							className="img-fluid me-2"
+							src={Constant.SCHOOL_LOGO}
+							alt=""
+							style={{ width: 45 }}
+						/>
+						{Constant.SCHOOL_NAME}
+					</h2>
+				</a>
+				<button
+					type="button"
+					className="navbar-toggler"
+					data-bs-toggle="collapse"
+					data-bs-target="#navbarCollapse">
+					<span className="navbar-toggler-icon" />
+				</button>
+				<div className="collapse navbar-collapse" id="navbarCollapse">
+					<div className="navbar-nav ms-auto py-4 py-lg-0">
+						<a href="./login" className="nav-item nav-link active">
+							Login
+						</a>
+
+						<div className="nav-item dropdown">
+							<a
+								href="#"
+								className="nav-link dropdown-toggle"
+								data-bs-toggle="dropdown">
+								New Students
+							</a>
+
+							<div className="dropdown-menu shadow-sm m-0">
+								<a href="feature.html" className="dropdown-item">
+									Application Guide
+								</a>
+								<a href="/applicant/applicationform" className="dropdown-item">
+									Manage Application
+								</a>
+								<a href="./applicant/checkAdmission" className="dropdown-item">
+									Check Admission Status
+								</a>
+							</div>
+						</div>
+						<a href="contact.html" className="nav-item nav-link">
+							Contact
+						</a>
+					</div>
+					{/* <div className="h-100 d-lg-inline-flex align-items-center d-none">
+						<a
+							className="btn btn-square rounded-circle bg-light text-primary me-2"
+							href="">
+							<i className="fab fa-facebook-f" />
+						</a>
+						<a
+							className="btn btn-square rounded-circle bg-light text-primary me-2"
+							href="">
+							<i className="fab fa-twitter" />
+						</a>
+						<a
+							className="btn btn-square rounded-circle bg-light text-primary me-0"
+							href="">
+							<i className="fab fa-linkedin-in" />
+						</a>
+					</div> */}
+				</div>
+			</nav>
+			{/* Navbar End */}
+			{/* Header Start */}
+			<div className="container-fluid hero-header bg-light py-5 mb-5">
+				<div className="container py-5">
+					<div className="row g-5 align-items-center">
+						<div className="col-lg-6">
+							<h3 className="display-6 mb-3 animated slideInDown">
+								START YOUR JOURNEY TO SUCCESS WITH OUR PRESTIGEOUS SCHOOL
+							</h3>
+							<p className="animated slideInDown py-3">
+								Our online courses are built in partnership with technology
+								leaders and are designed to meet industry demands.
+							</p>
+							<a
+								href=""
+								className="btn btn-primary py-3 px-4 animated slideInDown">
+								Sign In
+							</a>
+						</div>
+						<div className="col-lg-6 animated fadeIn ">
+							<div className="d-flex col-lg-7">
+								<img
+									className="img-fluid animated pulse infinite"
+									style={{
+										animationDuration: "3s",
+										width: 300,
+										height: 200,
+										borderRadius: 100,
+									}}
+									src={Constant.ILAROGATE}
+									alt=""
+								/>
+								<img
+									style={{
+										animationDuration: "3s",
+										width: 300,
+										height: 200,
+										borderRadius: 100,
+									}}
+									className="img-fluid ml-4 animated pulse infinite"
+									src={Constant.ILARO11}
+									alt=""
+								/>
+							</div>
+							<div className="d-flex justify-content-center  ml-4 mt-4 ">
+								<img
+									style={{
+										animationDuration: "3s",
+										width: 300,
+										height: 200,
+										borderRadius: 100,
+									}}
+									className="img-fluid animated pulse infinite"
+									src={Constant.ILARO2}
+									alt=""
+								/>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			{/* Header End */}
+			{/* About Start */}
+			<div className="container-xxl py-5">
+				<div className="container">
+					<div className="row g-5 align-items-center">
+						<div className="d-flex justify-content-end">
+							<a className="btn btn-primary py-3 px-4 mx-1" href="">
+								Application Guide
+							</a>
+							<a className="btn btn-primary py-3 px-4 mx-1" href="">
+								Manage Admission
+							</a>
+							<a className="btn btn-primary py-3 px-4 mx-1" href="">
+								Check Admission Status
+							</a>
+						</div>
+						<div className="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
+							<img className="img-fluid" src={Constant.Rectangle} alt="" />
+						</div>
+						<div className="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
+							<div className="h-100">
+								<p className="text-primary fs-5 mb-4">
+									Enter correct information only and ensure that you do not
+									spell your names wrongly.
+								</p>
+								<p>
+									Note that your information and personal details are linked to
+									your Confirmation Order Number, your invoice number and the
+									form you purchase.
+								</p>
+								<p className="mb-4">
+									You would not be able to correct or change the information
+									with which you obtain your Confirmation Order Number, your
+									invoice and or your Application form after submitting that
+									information or purchasing the form. If you make any mistake,
+									do not use the Confirmation Order Number or invoice so
+									generated to obtain a form. Rather, generate another number
+									and invoice with your correct information and proceed with
+									those details.
+								</p>
+								<p className="">
+									<small class="">Last updated 3 mins ago</small>
+								</p>
+								{/* <div className="d-flex align-items-center mb-2">
+									<i className="fa fa-check bg-light text-primary btn-sm-square rounded-circle me-3 fw-bold" />
+									<span>Tempor erat elitr rebum at clita</span>
+								</div>
+								<div className="d-flex align-items-center mb-2">
+									<i className="fa fa-check bg-light text-primary btn-sm-square rounded-circle me-3 fw-bold" />
+									<span>Tempor erat elitr rebum at clita</span>
+								</div>
+								<div className="d-flex align-items-center mb-4">
+									<i className="fa fa-check bg-light text-primary btn-sm-square rounded-circle me-3 fw-bold" />
+									<span>Tempor erat elitr rebum at clita</span>
+								</div> */}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			{/* About End */}
+			{/* Facts Start */}
+
+			{/* Facts End */}
+			{/* Features Start */}
+
+			{/* FAQs Start */}
+			{/* Footer Start */}
+			<div
+				className="container-fluid bg-light footer mt-5 pt-5 wow fadeIn"
+				data-wow-delay="0.1s">
+				<div className="container py-5">
+					<div className="row g-5">
+						<div className="col-md-6">
+							<h1 className="text-primary mb-4">
+								{/* <img
+									className="img-fluid me-2"
+									src="img/icon-1.png"
+									alt=""
+									style={{ width: 45 }}
+								/> */}
+								{/* CryptoCoin */}
+							</h1>
+							<span>
+								Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita
+								erat ipsum et lorem et sit, sed stet lorem sit clita. Diam dolor
+								diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et
+								lorem et sit.
+							</span>
+						</div>
+						<div className="col-md-6">
+							<h5 className="mb-4">Newsletter</h5>
+							<p>Clita erat ipsum et lorem et sit, sed stet lorem sit clita.</p>
+							<div className="position-relative">
+								<input
+									className="form-control bg-transparent w-100 py-3 ps-4 pe-5"
+									type="text"
+									placeholder="Your email"
+								/>
+								<button
+									type="button"
+									className="btn btn-primary py-2 px-3 position-absolute top-0 end-0 mt-2 me-2">
+									SignUp
+								</button>
+							</div>
+						</div>
+						<div className="col-lg-3 col-md-6">
+							<h5 className="mb-4">Get In Touch</h5>
+							<p>
+								<i className="fa fa-map-marker-alt me-3" />
+								123 Street, New York, USA
+							</p>
+							<p>
+								<i className="fa fa-phone-alt me-3" />
+								+012 345 67890
+							</p>
+							<p>
+								<i className="fa fa-envelope me-3" />
+								info@example.com
+							</p>
+						</div>
+						<div className="col-lg-3 col-md-6">
+							<h5 className="mb-4">Our Services</h5>
+							<a className="btn btn-link" href="">
+								Currency Wallet
+							</a>
+							<a className="btn btn-link" href="">
+								Currency Transaction
+							</a>
+							<a className="btn btn-link" href="">
+								Bitcoin Investment
+							</a>
+							<a className="btn btn-link" href="">
+								Token Sale
+							</a>
+						</div>
+						<div className="col-lg-3 col-md-6">
+							<h5 className="mb-4">Quick Links</h5>
+							<a className="btn btn-link" href="">
+								About Us
+							</a>
+							<a className="btn btn-link" href="">
+								Contact Us
+							</a>
+							<a className="btn btn-link" href="">
+								Our Services
+							</a>
+							<a className="btn btn-link" href="">
+								Terms &amp; Condition
+							</a>
+						</div>
+						<div className="col-lg-3 col-md-6">
+							<h5 className="mb-4">Follow Us</h5>
+							<div className="d-flex">
+								<a className="btn btn-square rounded-circle me-1" href="">
+									<i className="fab fa-twitter" />
+								</a>
+								<a className="btn btn-square rounded-circle me-1" href="">
+									<i className="fab fa-facebook-f" />
+								</a>
+								<a className="btn btn-square rounded-circle me-1" href="">
+									<i className="fab fa-youtube" />
+								</a>
+								<a className="btn btn-square rounded-circle me-1" href="">
+									<i className="fab fa-linkedin-in" />
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div className="container-fluid copyright">
+					<div className="container">
+						<div className="row">
+							<div className="col-md-6 text-center text-md-start mb-3 mb-md-0">
+								© <a href="#">Your Site Name</a>, All Right Reserved.
+							</div>
+							<div className="col-md-6 text-center text-md-end">
+								{/*/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. *** /*/}
+								Designed By <a href="https://htmlcodex.com">HTML Codex</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			{/* Footer End */}
+			{/* Back to Top */}
+			<a
+				href="#"
+				className="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top">
+				<i className="bi bi-arrow-up" />
+			</a>
+
+			<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+			<Script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></Script>
+			{/* <Script src="./lib/wow/wow.min.js"></Script>
+			<Script src="./lib/easing/easing.min.js"></Script>
+			<Script src="./lib/waypoints/waypoints.min.js"></Script>
+			<Script src="./lib/owlcarousel/owl.carousel.min.js"></Script>
+			<Script src="./lib/counterup/counterup.min.js"></Script>
+
+			<Script src="./jss/main.js"></Script> */}
+			{/* JavaScript Libraries */}
+			{/* Template Javascript */}
+		</>
+	);
+}
