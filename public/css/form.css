@@ -69,7 +69,8 @@ div.credit a {
 	width: 60%;
 	-webkit-clip-path: polygon(0 0, 0% 100%, 100% 0);
 	clip-path: polygon(0 0, 0% 100%, 100% 0);
-	background: #44c7f5;
+	background: #2196f3;
+	margin-left: -12px;
 }
 
 .login-1 .col-right {
@@ -132,7 +133,7 @@ div.credit a {
 }
 
 .login-1 .login-text .btn:hover {
-	color: #44c7f5;
+	color: #2196f3;
 	box-shadow: inset 150px 0 0 0 #ffffff;
 }
 
