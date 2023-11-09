@@ -7,7 +7,7 @@ export default function AdmissionStep() {
 	const statusvalue = statusState.status;
 	return (
 		<div>
-			<Admittedstudent status={statusvalue} formNo={statusState.formNo} />
+			<Admittedstudent />
 		</div>
 	);
 }
