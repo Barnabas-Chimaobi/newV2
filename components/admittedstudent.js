@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
-
 import { Chart } from "primereact/chart";
 import { Dropdown } from "primereact/dropdown";
 import Header from "./header";
@@ -14,9 +13,10 @@ import {
   OLEVEL_TYPE,
 } from "../pages/api/queries/applicant";
 import { GENERATE_INVOICE } from "../pages/api/mutations/applicant";
-
 import { Card } from "primereact/card";
 import Spinner from "./spinner";
+import Link from "next/link";
+// import Login from "@/pages/login";
 
 export default function Admittedstudent({ formNo, status }) {
   const router = useRouter();
@@ -28,6 +28,7 @@ export default function Admittedstudent({ formNo, status }) {
   const [firstSitting, setfirstSitting] = useState("");
   const [secondSitting, setsecondSitting] = useState("");
   // console.log(status?.payments[0]?.personId, "formAndStatus");
+
   useEffect(() => {
     // setadmittedApplicatData(status?.data?.checkAdmissionStatus);
   }, []);
@@ -1394,7 +1395,37 @@ export default function Admittedstudent({ formNo, status }) {
                         <div className="row">
                           <div className="col-sm-12">
                             <div className="card">
-                              <div className="card-body"></div>
+                              <div className="card-body">
+                                <div className="col-md-12 col-lg-9 d-flex">
+                                  <Card title="Login As A Student">
+                                    <div className="card flex-fill bg-white">
+                                      <div className="card-header">
+                                        <h5 className="card-title mb-0">
+                                          This marks the end of your Admission
+                                          Process
+                                        </h5>
+                                      </div>
+                                      <div className="card-body">
+                                        <p className="card-text">
+                                          Login as a student using your
+                                          matriculation Number as username and
+                                          password of 1234567
+                                        </p>
+                                        <div class="row ">
+                                          <Link href="/login">
+                                            <button
+                                              type="button"
+                                              className="btn btn-primary col-lg-3 col-sm-12 mb-3 mr-2"
+                                            >
+                                              Login
+                                            </button>
+                                          </Link>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </Card>
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
