@@ -165,7 +165,9 @@ const AdminLayout = ({ children }) => {
                   <p className="text-muted mb-0">Administrator</p>
                 </div>
               </div> */}
-							<a className="dropdown-item" href="profile.html">
+							<a
+								className="dropdown-item"
+								href={Constant.BASE_URL + "/admin/profile"}>
 								My Profile
 							</a>
 
