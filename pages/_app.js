@@ -34,9 +34,12 @@ import { useRouter } from "next/router";
 import ErrorBoundary from "./error";
 import store from "../redux/stores";
 import { Provider } from "react-redux";
-import { Poppins } from "next/font/google";
+import { Poppins, Rubik } from "next/font/google";
 
-const poppins = Poppins({ subsets: ["latin"], weight: "500" });
+const poppins = Rubik({
+	subsets: ["latin"],
+	weight: "400",
+});
 
 export default function Home({ Component, pageProps }) {
 	const router = useRouter();

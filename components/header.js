@@ -20,8 +20,8 @@ export default function header({ children }) {
 							/>
 						</a>
 						<div class="pt-3">
-							<p className="schoolName">{Constant.SCHOOL_NAME}</p>
-							<p className="schoolAddress">{Constant.SCHOOL_ADDRESS}</p>
+							<h4 className="schoolName">{Constant.SCHOOL_NAME}</h4>
+							<p className="schoolAddress pt-1">{Constant.SCHOOL_ADDRESS}</p>
 						</div>
 						<a href="index.html" className="logo logo-small">
 							<img
