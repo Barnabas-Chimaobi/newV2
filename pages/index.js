@@ -195,11 +195,11 @@ const Home = () => {
 						<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 							<li class="nav-item">
 								<a style={{ marginBottom: 0 }} class="nav-link" href="#">
-									<p
+									<h4
 										class="text-black font-bold"
 										style={{ fontSize: 16, marginBottom: 0 }}>
 										{Constant.SCHOOL_NAME}
-									</p>
+									</h4>
 									<p
 										class="text-black font-bold"
 										style={{ fontSize: 12, marginBottom: 0 }}>
@@ -211,16 +211,18 @@ const Home = () => {
 
 						<div class="row  col-sm-12 col-lg-4">
 							<a
-								class="btn btn-link text-black  dropdown-toggle col-3 col-lg-5"
+								aria-current="page"
+								class=" nav-link  btn-link text-black  dropdown-toggle col-3 col-lg-5"
 								// type="button"
 								// id="dropdownMenuButton"
 								// data-mdb-toggle="dropdown"
 								aria-expanded="false">
 								Returning Students
 							</a>
+
 							<div class="dropdown col-lg-4">
 								<a
-									class="btn btn-link text-black  dropdown-toggle "
+									class="nav-link btn-link text-black  dropdown-toggle "
 									type="button"
 									id="dropdownMenuButton"
 									data-mdb-toggle="dropdown"
@@ -247,7 +249,7 @@ const Home = () => {
 							</div>
 
 							<a
-								class="btn btn-link px-3 me-2 col-lg-2 col-4"
+								class="nav-link text-black btn-link px-3 me-2 col-lg-2 col-4"
 								href="./login"
 								// onClick={() => router.push("./login")}
 							>
@@ -293,12 +295,16 @@ const Home = () => {
 								style={{ fontSize: 28, width: 500 }}>
 								ABIA STATE POLYTECHNIC STUDENT PORTAL
 							</h5>
-							<a
-								onClick={() => router.push("./login")}
-								// type="button"
-								class="btn-click btn px-5 mt-3 me-2">
-								Sign In
-							</a>
+
+							<div className="flex">
+								<a
+									href="./login"
+									// onClick={() => router.push("./login")}
+									// type="button"
+									class="btn-click py-2 rounded nav-link px-5 mt-3 me-2">
+									Sign In
+								</a>
+							</div>
 						</div>
 						<img
 							src={Constant.ILAROGATE}
@@ -317,12 +323,15 @@ const Home = () => {
 								Our online courses are built in partnership with technology
 								leaders and are designed to meet industry demands.
 							</p>
-							<a
-								onClick={() => router.push("./login")}
-								type="button"
-								class="btn-click btn mt-3 px-5 me-2">
-								Sign In
-							</a>
+							<div className="flex">
+								<a
+									href="./login"
+									// onClick={() => router.push("./login")}
+									// type="button"
+									class="btn-click py-2 rounded nav-link px-5 mt-3 me-2">
+									Sign In
+								</a>
+							</div>
 						</div>
 						<img
 							src={Constant.ILARO11}
@@ -341,12 +350,15 @@ const Home = () => {
 								We have the best facility to enhance distance learning through
 								improved technology.
 							</p>
-							<a
-								onClick={() => router.push("./login")}
-								type="button"
-								class="btn-click btn  mt-3 px-5 me-2">
-								Sign In
-							</a>
+							<div className="flex">
+								<a
+									href="./login"
+									// onClick={() => router.push("./login")}
+									// type="button"
+									class="btn-click py-2 rounded nav-link px-5 mt-3 me-2">
+									Sign In
+								</a>
+							</div>
 						</div>
 						<img
 							src={Constant.ILARO2}
@@ -414,7 +426,7 @@ const Home = () => {
 				</div>
 			</div>
 			<div class=" container flex justify-content-center col-lg-9">
-				<p class="font-bold pb-10">INSTRUCTIONS</p>
+				<h4 class="font-bold pb-3 text-decoration-underline">INSTRUCTIONS</h4>
 			</div>
 			<div class=" container flex justify-content-center col-lg-9">
 				<div class="card mb-3 ">

@@ -163,27 +163,29 @@ const AdminLayout = ({ children }) => {
                   <p className="text-muted mb-0">Administrator</p>
                 </div>
               </div> */}
-              <a className="dropdown-item" href="profile.html">
-                My Profile
-              </a>
 
-              <Link
-                className="dropdown-item"
-                href={Constant.BASE_URL + `/login`}
-              >
-                Logout
-              </Link>
-            </div>
-          </li>
-        </ul>
+							<a
+								className="dropdown-item"
+								href={Constant.BASE_URL + "/admin/profile"}>
+								My Profile
+							</a>
 
-        <div className="sidebar" id="sidebar">
-          {isLoading ? renderfunction() : <></>}
-        </div>
-      </div>
-      <div class="">{children}</div>
-    </div>
-  );
+							<Link
+								className="dropdown-item"
+								href={Constant.BASE_URL + `/login`}>
+								Logout
+							</Link>
+						</div>
+					</li>
+				</ul>
+
+				<div className="sidebar" id="sidebar">
+					{isLoading ? renderfunction() : <></>}
+				</div>
+			</div>
+			<div class="">{children}</div>
+		</div>
+	);
 };
 
 export default dynamic(() => Promise.resolve(AdminLayout), { ssr: false });
