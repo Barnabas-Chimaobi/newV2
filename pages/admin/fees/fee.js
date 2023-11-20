@@ -72,7 +72,7 @@ export default function fee() {
 
   const headers = [
     {
-      field: " Name",
+      field: "Name",
       header: "Setup Name",
       sortable: true,
       style: { minWidth: "12rem", backgroundColor: "white" },
