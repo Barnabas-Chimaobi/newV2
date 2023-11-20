@@ -265,7 +265,7 @@ const Home = () => {
 				id="carouselExampleCrossfade"
 				class="carousel slide carousel-fade"
 				data-mdb-ride="carousel">
-				<div class="carousel-indicators justify-content-start">
+				{/* <div class="carousel-indicators justify-content-start">
 					<button
 						type="button"
 						data-mdb-target="#carouselExampleCrossfade"
@@ -283,40 +283,43 @@ const Home = () => {
 						data-mdb-target="#carouselExampleCrossfade"
 						data-mdb-slide-to="2"
 						aria-label="Slide 3"></button>
-				</div>
+				</div> */}
 				<div class="carousel-inner">
 					<div class="carousel-item active">
-						<div class="carousel-caption text-left mb-8">
-							<p className="" style={{ opacity: 0.7 }}>
-								WELCOME TO
-							</p>
-							<h5
-								className="text-white text-bold"
-								style={{ fontSize: 28, width: 500 }}>
-								ABIA STATE POLYTECHNIC STUDENT PORTAL
-							</h5>
-
-							<div className="flex">
-								<a
-									href="./login"
-									// onClick={() => router.push("./login")}
-									// type="button"
-									class="btn-click py-2 rounded nav-link px-5 mt-3 me-2">
-									Sign In
-								</a>
-							</div>
-						</div>
 						<img
+							style={{ minHeight: 350 }}
 							src={Constant.ILAROGATE}
 							class="d-block w-100 h-50"
 							alt="Wild Landscape"
 						/>
+						<div class="carousel-caption d-block text-left mb-8">
+							<p className="title" style={{ opacity: 0.7 }}>
+								WELCOME TO
+							</p>
+							<h5 className=" nameSchool text-white text-bold ">
+								ABIA STATE POLYTECHNIC STUDENT PORTAL
+							</h5>
+
+							<div className="signin flex">
+								<a
+									href="./login"
+									// onClick={() => router.push("./login")}
+									// type="button"
+									class="btn-click py-2 rounded nav-link px-5 mt-3 me-2 signin">
+									Sign In
+								</a>
+							</div>
+						</div>
 					</div>
 					<div class="carousel-item">
-						<div class="carousel-caption text-left mb-8">
-							<h5
-								className="text-white text-bold"
-								style={{ fontSize: 28, width: 500 }}>
+						<img
+							style={{ minHeight: 350 }}
+							src={Constant.ILARO11}
+							class="d-block w-100 h-50"
+							alt="Camera"
+						/>
+						<div class="carousel-caption d-block text-left mb-8">
+							<h5 className="text-white text-bold nameSchool">
 								START YOUR JOURNEY TO SUCCESS WITH OUR PRESTIGEOUS SCHOOL
 							</h5>
 							<p className="" style={{ opacity: 0.7 }}>
@@ -328,22 +331,21 @@ const Home = () => {
 									href="./login"
 									// onClick={() => router.push("./login")}
 									// type="button"
-									class="btn-click py-2 rounded nav-link px-5 mt-3 me-2">
+									class="btn-click py-2 rounded nav-link px-5 mt-3 me-2 signin">
 									Sign In
 								</a>
 							</div>
 						</div>
-						<img
-							src={Constant.ILARO11}
-							class="d-block w-100 h-50"
-							alt="Camera"
-						/>
 					</div>
 					<div class="carousel-item">
-						<div class="carousel-caption text-left mb-8">
-							<h5
-								className="text-white text-bold"
-								style={{ fontSize: 28, width: 500 }}>
+						<img
+							style={{ minHeight: 350 }}
+							src={Constant.ILARO2}
+							class=" w-100 h-50"
+							alt="Exotic Fruits"
+						/>
+						<div class="carousel-caption d-block text-left mb-8">
+							<h5 className="text-white text-bold nameSchool">
 								Efficient Learning Methods
 							</h5>
 							<p className="" style={{ opacity: 0.7 }}>
@@ -355,16 +357,11 @@ const Home = () => {
 									href="./login"
 									// onClick={() => router.push("./login")}
 									// type="button"
-									class="btn-click py-2 rounded nav-link px-5 mt-3 me-2">
+									class="btn-click py-2 rounded nav-link px-5 mt-3 me-2 signin">
 									Sign In
 								</a>
 							</div>
 						</div>
-						<img
-							src={Constant.ILARO2}
-							class=" d-block w-100 h-50"
-							alt="Exotic Fruits"
-						/>
 					</div>
 				</div>
 				<button
@@ -396,17 +393,8 @@ const Home = () => {
 				itemTemplate={productTemplate}
 			/> */}
 
-			<div
-				class="sideIcon col-lg-6 col-sm-6 mb-8"
-				style={{
-					position: "relative",
-					float: "right",
-					marginTop: -40,
-					zIndex: 5,
-					backgroundColor: "#D6261A",
-					borderRadius: 5,
-				}}>
-				<div class="nav-center p-5 py-3  d-flex  justify-content-around">
+			<div class="sideIcon col-lg-6 col-sm-12 mb-8">
+				<div class="nav-center p-5 py-3  d-flex justify-content-around">
 					<div class=" p-2">
 						<a href="#" class=" text-white font-bold">
 							Generate Invoice
@@ -426,7 +414,9 @@ const Home = () => {
 				</div>
 			</div>
 			<div class=" container flex justify-content-center col-lg-9">
-				<h4 class="font-bold pb-3 text-decoration-underline">INSTRUCTIONS</h4>
+				<h4 class="font-bold pb-3 text-decoration-underline instruction">
+					INSTRUCTIONS
+				</h4>
 			</div>
 			<div class=" container flex justify-content-center col-lg-9">
 				<div class="card mb-3 ">

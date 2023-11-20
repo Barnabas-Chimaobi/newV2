@@ -731,6 +731,8 @@ export default function GenericForm({
 		}
 	};
 
+	console.log(data, "dta=====");
+
 	return (
 		<>
 			<Header>

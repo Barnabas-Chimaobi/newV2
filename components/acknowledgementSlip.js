@@ -28,7 +28,7 @@ export default function AcknowledgementSlip({ data }) {
 					applicationformid: parseInt(Number),
 				},
 			});
-			console.log(Response);
+			console.log(Response.data, "response===");
 			setDetails(Response?.data?.acknowledgementPage);
 			setloading(false);
 		} catch (error) {
@@ -91,8 +91,6 @@ export default function AcknowledgementSlip({ data }) {
         #printButton {
           display: block;
         }
-
-
       `;
 
 		// Create a new style element

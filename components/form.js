@@ -33,6 +33,7 @@ export default function GenericForm({
 	isPreview,
 	olevelTypes,
 }) {
+	console.log(data, "newdata=======sss====");
 	const toasts = useRef(null);
 	const router = useRouter();
 	const [submittedResponse, setsubmittedResponse] = useState("");
@@ -958,7 +959,19 @@ export default function GenericForm({
 							},
 						},
 					});
-
+					console.log(
+						{
+							personId: data?.applicantForm?.personId,
+							formDetails: formsDto,
+							submitOlevelResult: [
+								submitFirstOlevelResult,
+								submitSecondOlevelResult,
+							],
+							pictureUrl: pictureUrl,
+							canSubmit: canSubmitForm,
+						},
+						"data========"
+					);
 					setsubmittedResponse(
 						formsApplicant?.data?.submitApplicationFormNewDto?.id
 					);
@@ -2091,787 +2104,798 @@ export default function GenericForm({
 				style={{ width: "50vw" }}
 				onHide={() => setformpreview(false)}>
 				<div>
-					{data?.applicantForm?.mainPages.map((item, index) => (
-						<>
-							<div key={index}>
-								{item?.pageName?.includes("O-level Result") ? (
-									<div className="row">
-										<div className="col-sm-12">
-											<div className="">
-												<div className="card-header">
-													<h5 className="card-title">Preview Olevel Details</h5>
-												</div>
-												<div className="card-body">
-													<div className="row">
-														<div className="col-md-6">
-															<div className="card">
-																<div className="card-header">
-																	<h5 className="card-title">
-																		First Sitting Olevel Details
-																	</h5>
-																</div>
-																<div className="card-body">
-																	<form action="#">
-																		<div className="form-group">
-																			<label>Exam Number</label>
-																			<input
-																				value={firstexamNumber}
-																				type="text"
-																				className="form-control"
-																				onChange={(e) =>
-																					setfirstexamNumber(e.target.value)
-																				}
-																				disabled
-																			/>
-																		</div>
-																		<div className="form-group">
-																			<label>Olevel Type</label>
-																			<Dropdown
-																				value={firstexamType}
-																				onChange={(e) =>
-																					setfirstexamType(e.value)
-																				}
-																				options={olevelTypesList}
-																				placeholder="Select Your Subject"
-																				className="w-full md:w-21.5rem"
-																				disabled
-																			/>
-																		</div>
-																		<div className="form-group">
-																			<label>Exam Year</label>
-																			<Dropdown
-																				value={firstexamYear}
-																				onChange={(e) =>
-																					setfirstexamYear(e.value)
-																				}
-																				options={yearsList}
-																				placeholder="Select Year"
-																				className="w-full md:w-21.5rem"
-																				disabled
-																			/>
-																		</div>
-
-																		{olevelSubjects === null &&
-																		olevelGrades === null ? (
-																			<></>
-																		) : (
-																			<div className="table-responsive">
-																				<table className="table table-bordered mb-1">
-																					<thead>
-																						<tr>
-																							<th>S/N</th>
-																							<th>Subject</th>
-																							<th>Grade</th>
-																						</tr>
-																					</thead>
-																					<tbody>
-																						<tr>
-																							<td>1</td>
-																							<td>
-																								{" "}
-																								<Dropdown
-																									value={firstSub1}
-																									onChange={(e) =>
-																										setfirstSub1(e.value)
-																									}
-																									options={olevelSubjects}
-																									optionLabel="name"
-																									placeholder="Select Your Subject"
-																									className="w-full md:w-21.5rem"
-																									disabled
-																								/>
-																							</td>
-
-																							<td>
-																								<Dropdown
-																									value={firstGrade1}
-																									onChange={(e) =>
-																										setfirstGrade1(e.value)
-																									}
-																									options={olevelGrades}
-																									optionLabel="name"
-																									placeholder="Select Your Grade"
-																									className="w-full md:w-21.5rem"
-																									disabled
-																								/>
-																							</td>
-																						</tr>
-																						<tr>
-																							<td>2</td>
-																							<td>
-																								{" "}
-																								<Dropdown
-																									value={firstSub2}
-																									onChange={(e) =>
-																										setfirstSub2(e.value)
-																									}
-																									options={olevelSubjects}
-																									optionLabel="name"
-																									placeholder="Select Your Subject"
-																									className="w-full md:w-21.5rem"
-																									disabled
-																								/>
-																							</td>
-
-																							<td>
-																								<Dropdown
-																									value={firstGrade2}
-																									onChange={(e) =>
-																										setfirstGrade2(e.value)
-																									}
-																									options={olevelGrades}
-																									optionLabel="name"
-																									placeholder="Select Your Grade"
-																									className="w-full md:w-21.5rem"
-																									disabled
-																								/>
-																							</td>
-																						</tr>
-																						<tr>
-																							<td>3</td>
-																							<td>
-																								{" "}
-																								<Dropdown
-																									value={firstSub3}
-																									onChange={(e) =>
-																										setfirstSub3(e.value)
-																									}
-																									options={olevelSubjects}
-																									optionLabel="name"
-																									placeholder="Select Your Subject"
-																									className="w-full md:w-21.5rem"
-																									disabled
-																								/>
-																							</td>
-
-																							<td>
-																								<Dropdown
-																									value={firstGrade3}
-																									onChange={(e) =>
-																										setfirstGrade3(e.value)
-																									}
-																									options={olevelGrades}
-																									optionLabel="name"
-																									placeholder="Select Your Grade"
-																									className="w-full md:w-21.5rem"
-																									disabled
-																								/>
-																							</td>
-																						</tr>
-																						<tr>
-																							<td>4</td>
-																							<td>
-																								{" "}
-																								<Dropdown
-																									value={firstSub4}
-																									onChange={(e) =>
-																										setfirstSub4(e.value)
-																									}
-																									options={olevelSubjects}
-																									optionLabel="name"
-																									placeholder="Select Your Subject"
-																									className="w-full md:w-21.5rem"
-																									disabled
-																								/>
-																							</td>
-
-																							<td>
-																								<Dropdown
-																									value={firstGrade4}
-																									onChange={(e) =>
-																										setfirstGrade4(e.value)
-																									}
-																									options={olevelGrades}
-																									optionLabel="name"
-																									placeholder="Select Your Grade"
-																									className="w-full md:w-21.5rem"
-																									disabled
-																								/>
-																							</td>
-																						</tr>
-																						<tr>
-																							<td>5</td>
-																							<td>
-																								{" "}
-																								<Dropdown
-																									value={firstSub5}
-																									onChange={(e) =>
-																										setfirstSub5(e.value)
-																									}
-																									options={olevelSubjects}
-																									optionLabel="name"
-																									placeholder="Select Your Subject"
-																									className="w-full md:w-21.5rem"
-																									disabled
-																								/>
-																							</td>
-
-																							<td>
-																								<Dropdown
-																									value={firstGrade5}
-																									onChange={(e) =>
-																										setfirstGrade5(e.value)
-																									}
-																									options={olevelGrades}
-																									optionLabel="name"
-																									placeholder="Select Your Grade"
-																									className="w-full md:w-21.5rem"
-																									disabled
-																								/>
-																							</td>
-																						</tr>
-																						<tr>
-																							<td>6</td>
-																							<td>
-																								{" "}
-																								<Dropdown
-																									value={firstSub6}
-																									onChange={(e) =>
-																										setfirstSub6(e.value)
-																									}
-																									options={olevelSubjects}
-																									optionLabel="name"
-																									placeholder="Select Your Subject"
-																									className="w-full md:w-21.5rem"
-																									disabled
-																								/>
-																							</td>
-
-																							<td>
-																								<Dropdown
-																									value={firstGrade6}
-																									onChange={(e) =>
-																										setfirstGrade6(e.value)
-																									}
-																									options={olevelGrades}
-																									optionLabel="name"
-																									placeholder="Select Your Grade"
-																									className="w-full md:w-21.5rem"
-																									disabled
-																								/>
-																							</td>
-																						</tr>
-																						<tr>
-																							<td>7</td>
-																							<td>
-																								{" "}
-																								<Dropdown
-																									value={firstSub7}
-																									onChange={(e) =>
-																										setfirstSub7(e.value)
-																									}
-																									options={olevelSubjects}
-																									optionLabel="name"
-																									placeholder="Select Your Subject"
-																									className="w-full md:w-21.5rem"
-																									disabled
-																								/>
-																							</td>
-
-																							<td>
-																								<Dropdown
-																									value={firstGrade7}
-																									onChange={(e) =>
-																										setfirstGrade7(e.value)
-																									}
-																									options={olevelGrades}
-																									optionLabel="name"
-																									placeholder="Select Your Grade"
-																									className="w-full md:w-21.5rem"
-																									disabled
-																								/>
-																							</td>
-																						</tr>
-																						<tr>
-																							<td>8</td>
-																							<td>
-																								{" "}
-																								<Dropdown
-																									value={firstSub8}
-																									onChange={(e) =>
-																										setfirstSub8(e.value)
-																									}
-																									options={olevelSubjects}
-																									optionLabel="name"
-																									placeholder="Select Your Subject"
-																									className="w-full md:w-21.5rem"
-																									disabled
-																								/>
-																							</td>
-
-																							<td>
-																								<Dropdown
-																									value={firstGrade8}
-																									onChange={(e) =>
-																										setfirstGrade8(e.value)
-																									}
-																									options={olevelGrades}
-																									optionLabel="name"
-																									placeholder="Select Your Grade"
-																									className="w-full md:w-21.5rem"
-																									disabled
-																								/>
-																							</td>
-																						</tr>
-																						<tr>
-																							<td>9</td>
-																							<td>
-																								{" "}
-																								<Dropdown
-																									value={firstSub9}
-																									onChange={(e) =>
-																										setfirstSub9(e.value)
-																									}
-																									options={olevelSubjects}
-																									optionLabel="name"
-																									placeholder="Select Your Subject"
-																									className="w-full md:w-21.5rem"
-																									disabled
-																								/>
-																							</td>
-
-																							<td>
-																								<Dropdown
-																									value={firstGrade9}
-																									onChange={(e) =>
-																										setfirstGrade9(e.value)
-																									}
-																									options={olevelGrades}
-																									optionLabel="name"
-																									placeholder="Select Your Grade"
-																									className="w-full md:w-21.5rem"
-																									disabled
-																								/>
-																							</td>
-																						</tr>
-																					</tbody>
-																				</table>
-																			</div>
-																		)}
-																	</form>
-																</div>
-															</div>
+					{data?.applicantForm?.mainPages.map(
+						(item, index) => (
+							console.log(item, "item========="),
+							(
+								<>
+									<div key={index}>
+										{item?.pageName?.includes("O-level Result") ? (
+											<div className="row">
+												<div className="col-sm-12">
+													<div className="">
+														<div className="card-header">
+															<h5 className="card-title">
+																Preview Olevel Details
+															</h5>
 														</div>
-														<div className="col-md-6">
-															<div className="card">
-																<div className="card-header">
-																	<h5 className="card-title">
-																		Second Sitting Olevel Details
-																	</h5>
+														<div className="card-body">
+															<div className="row">
+																<div className="col-md-6">
+																	<div className="card">
+																		<div className="card-header">
+																			<h5 className="card-title">
+																				First Sitting Olevel Details
+																			</h5>
+																		</div>
+																		<div className="card-body">
+																			<form action="#">
+																				<div className="form-group">
+																					<label>Exam Number</label>
+																					<input
+																						value={firstexamNumber}
+																						type="text"
+																						className="form-control"
+																						onChange={(e) =>
+																							setfirstexamNumber(e.target.value)
+																						}
+																						disabled
+																					/>
+																				</div>
+																				<div className="form-group">
+																					<label>Olevel Type</label>
+																					<Dropdown
+																						value={firstexamType}
+																						onChange={(e) =>
+																							setfirstexamType(e.value)
+																						}
+																						options={olevelTypesList}
+																						placeholder="Select Your Subject"
+																						className="w-full md:w-21.5rem"
+																						disabled
+																					/>
+																				</div>
+																				<div className="form-group">
+																					<label>Exam Year</label>
+																					<Dropdown
+																						value={firstexamYear}
+																						onChange={(e) =>
+																							setfirstexamYear(e.value)
+																						}
+																						options={yearsList}
+																						placeholder="Select Year"
+																						className="w-full md:w-21.5rem"
+																						disabled
+																					/>
+																				</div>
+
+																				{olevelSubjects === null &&
+																				olevelGrades === null ? (
+																					<></>
+																				) : (
+																					<div className="table-responsive">
+																						<table className="table table-bordered mb-1">
+																							<thead>
+																								<tr>
+																									<th>S/N</th>
+																									<th>Subject</th>
+																									<th>Grade</th>
+																								</tr>
+																							</thead>
+																							<tbody>
+																								<tr>
+																									<td>1</td>
+																									<td>
+																										{" "}
+																										<Dropdown
+																											value={firstSub1}
+																											onChange={(e) =>
+																												setfirstSub1(e.value)
+																											}
+																											options={olevelSubjects}
+																											optionLabel="name"
+																											placeholder="Select Your Subject"
+																											className="w-full md:w-21.5rem"
+																											disabled
+																										/>
+																									</td>
+
+																									<td>
+																										<Dropdown
+																											value={firstGrade1}
+																											onChange={(e) =>
+																												setfirstGrade1(e.value)
+																											}
+																											options={olevelGrades}
+																											optionLabel="name"
+																											placeholder="Select Your Grade"
+																											className="w-full md:w-21.5rem"
+																											disabled
+																										/>
+																									</td>
+																								</tr>
+																								<tr>
+																									<td>2</td>
+																									<td>
+																										{" "}
+																										<Dropdown
+																											value={firstSub2}
+																											onChange={(e) =>
+																												setfirstSub2(e.value)
+																											}
+																											options={olevelSubjects}
+																											optionLabel="name"
+																											placeholder="Select Your Subject"
+																											className="w-full md:w-21.5rem"
+																											disabled
+																										/>
+																									</td>
+
+																									<td>
+																										<Dropdown
+																											value={firstGrade2}
+																											onChange={(e) =>
+																												setfirstGrade2(e.value)
+																											}
+																											options={olevelGrades}
+																											optionLabel="name"
+																											placeholder="Select Your Grade"
+																											className="w-full md:w-21.5rem"
+																											disabled
+																										/>
+																									</td>
+																								</tr>
+																								<tr>
+																									<td>3</td>
+																									<td>
+																										{" "}
+																										<Dropdown
+																											value={firstSub3}
+																											onChange={(e) =>
+																												setfirstSub3(e.value)
+																											}
+																											options={olevelSubjects}
+																											optionLabel="name"
+																											placeholder="Select Your Subject"
+																											className="w-full md:w-21.5rem"
+																											disabled
+																										/>
+																									</td>
+
+																									<td>
+																										<Dropdown
+																											value={firstGrade3}
+																											onChange={(e) =>
+																												setfirstGrade3(e.value)
+																											}
+																											options={olevelGrades}
+																											optionLabel="name"
+																											placeholder="Select Your Grade"
+																											className="w-full md:w-21.5rem"
+																											disabled
+																										/>
+																									</td>
+																								</tr>
+																								<tr>
+																									<td>4</td>
+																									<td>
+																										{" "}
+																										<Dropdown
+																											value={firstSub4}
+																											onChange={(e) =>
+																												setfirstSub4(e.value)
+																											}
+																											options={olevelSubjects}
+																											optionLabel="name"
+																											placeholder="Select Your Subject"
+																											className="w-full md:w-21.5rem"
+																											disabled
+																										/>
+																									</td>
+
+																									<td>
+																										<Dropdown
+																											value={firstGrade4}
+																											onChange={(e) =>
+																												setfirstGrade4(e.value)
+																											}
+																											options={olevelGrades}
+																											optionLabel="name"
+																											placeholder="Select Your Grade"
+																											className="w-full md:w-21.5rem"
+																											disabled
+																										/>
+																									</td>
+																								</tr>
+																								<tr>
+																									<td>5</td>
+																									<td>
+																										{" "}
+																										<Dropdown
+																											value={firstSub5}
+																											onChange={(e) =>
+																												setfirstSub5(e.value)
+																											}
+																											options={olevelSubjects}
+																											optionLabel="name"
+																											placeholder="Select Your Subject"
+																											className="w-full md:w-21.5rem"
+																											disabled
+																										/>
+																									</td>
+
+																									<td>
+																										<Dropdown
+																											value={firstGrade5}
+																											onChange={(e) =>
+																												setfirstGrade5(e.value)
+																											}
+																											options={olevelGrades}
+																											optionLabel="name"
+																											placeholder="Select Your Grade"
+																											className="w-full md:w-21.5rem"
+																											disabled
+																										/>
+																									</td>
+																								</tr>
+																								<tr>
+																									<td>6</td>
+																									<td>
+																										{" "}
+																										<Dropdown
+																											value={firstSub6}
+																											onChange={(e) =>
+																												setfirstSub6(e.value)
+																											}
+																											options={olevelSubjects}
+																											optionLabel="name"
+																											placeholder="Select Your Subject"
+																											className="w-full md:w-21.5rem"
+																											disabled
+																										/>
+																									</td>
+
+																									<td>
+																										<Dropdown
+																											value={firstGrade6}
+																											onChange={(e) =>
+																												setfirstGrade6(e.value)
+																											}
+																											options={olevelGrades}
+																											optionLabel="name"
+																											placeholder="Select Your Grade"
+																											className="w-full md:w-21.5rem"
+																											disabled
+																										/>
+																									</td>
+																								</tr>
+																								<tr>
+																									<td>7</td>
+																									<td>
+																										{" "}
+																										<Dropdown
+																											value={firstSub7}
+																											onChange={(e) =>
+																												setfirstSub7(e.value)
+																											}
+																											options={olevelSubjects}
+																											optionLabel="name"
+																											placeholder="Select Your Subject"
+																											className="w-full md:w-21.5rem"
+																											disabled
+																										/>
+																									</td>
+
+																									<td>
+																										<Dropdown
+																											value={firstGrade7}
+																											onChange={(e) =>
+																												setfirstGrade7(e.value)
+																											}
+																											options={olevelGrades}
+																											optionLabel="name"
+																											placeholder="Select Your Grade"
+																											className="w-full md:w-21.5rem"
+																											disabled
+																										/>
+																									</td>
+																								</tr>
+																								<tr>
+																									<td>8</td>
+																									<td>
+																										{" "}
+																										<Dropdown
+																											value={firstSub8}
+																											onChange={(e) =>
+																												setfirstSub8(e.value)
+																											}
+																											options={olevelSubjects}
+																											optionLabel="name"
+																											placeholder="Select Your Subject"
+																											className="w-full md:w-21.5rem"
+																											disabled
+																										/>
+																									</td>
+
+																									<td>
+																										<Dropdown
+																											value={firstGrade8}
+																											onChange={(e) =>
+																												setfirstGrade8(e.value)
+																											}
+																											options={olevelGrades}
+																											optionLabel="name"
+																											placeholder="Select Your Grade"
+																											className="w-full md:w-21.5rem"
+																											disabled
+																										/>
+																									</td>
+																								</tr>
+																								<tr>
+																									<td>9</td>
+																									<td>
+																										{" "}
+																										<Dropdown
+																											value={firstSub9}
+																											onChange={(e) =>
+																												setfirstSub9(e.value)
+																											}
+																											options={olevelSubjects}
+																											optionLabel="name"
+																											placeholder="Select Your Subject"
+																											className="w-full md:w-21.5rem"
+																											disabled
+																										/>
+																									</td>
+
+																									<td>
+																										<Dropdown
+																											value={firstGrade9}
+																											onChange={(e) =>
+																												setfirstGrade9(e.value)
+																											}
+																											options={olevelGrades}
+																											optionLabel="name"
+																											placeholder="Select Your Grade"
+																											className="w-full md:w-21.5rem"
+																											disabled
+																										/>
+																									</td>
+																								</tr>
+																							</tbody>
+																						</table>
+																					</div>
+																				)}
+																			</form>
+																		</div>
+																	</div>
 																</div>
-																<div className="card-body">
-																	<form action="#">
-																		<div className="form-group">
-																			<label>Exam Number</label>
-																			<input
-																				value={secondexamNumber}
-																				type="text"
-																				className="form-control"
-																				onChange={(e) =>
-																					setsecondexamNumber(e.target.value)
-																				}
-																				disabled
-																			/>
+																<div className="col-md-6">
+																	<div className="card">
+																		<div className="card-header">
+																			<h5 className="card-title">
+																				Second Sitting Olevel Details
+																			</h5>
 																		</div>
-																		<div className="form-group">
-																			<label>Olevel Type</label>
-																			<Dropdown
-																				value={secondexamType}
-																				onChange={(e) =>
-																					setsecondexamType(e.value)
-																				}
-																				options={olevelTypesList}
-																				placeholder="Select Your Subject"
-																				className="w-full md:w-21.5rem"
-																				disabled
-																			/>
+																		<div className="card-body">
+																			<form action="#">
+																				<div className="form-group">
+																					<label>Exam Number</label>
+																					<input
+																						value={secondexamNumber}
+																						type="text"
+																						className="form-control"
+																						onChange={(e) =>
+																							setsecondexamNumber(
+																								e.target.value
+																							)
+																						}
+																						disabled
+																					/>
+																				</div>
+																				<div className="form-group">
+																					<label>Olevel Type</label>
+																					<Dropdown
+																						value={secondexamType}
+																						onChange={(e) =>
+																							setsecondexamType(e.value)
+																						}
+																						options={olevelTypesList}
+																						placeholder="Select Your Subject"
+																						className="w-full md:w-21.5rem"
+																						disabled
+																					/>
+																				</div>
+																				<div className="form-group">
+																					<label>Exam Year</label>
+																					<Dropdown
+																						value={secondexamYear}
+																						onChange={(e) =>
+																							setsecondexamYear(e.value)
+																						}
+																						options={yearsList}
+																						placeholder="Select Year"
+																						className="w-full md:w-21.5rem"
+																						disabled
+																					/>
+																				</div>
+																				{olevelSubjects === null &&
+																				olevelGrades === null ? (
+																					<></>
+																				) : (
+																					<div className="table-responsive">
+																						<table className="table table-bordered mb-1">
+																							<thead>
+																								<tr>
+																									<th>S/N</th>
+																									<th>Subject</th>
+																									<th>Grade</th>
+																								</tr>
+																							</thead>
+																							<tbody>
+																								<tr>
+																									<td>1</td>
+																									<td>
+																										{" "}
+																										<Dropdown
+																											value={secondSub1}
+																											onChange={(e) =>
+																												setsecondSub1(e.value)
+																											}
+																											options={olevelSubjects}
+																											optionLabel="name"
+																											placeholder="Select Your Subject"
+																											className="w-full md:w-21.5rem"
+																											disabled
+																										/>
+																									</td>
+
+																									<td>
+																										<Dropdown
+																											value={secondGrade1}
+																											onChange={(e) =>
+																												setsecondGrade1(e.value)
+																											}
+																											options={olevelGrades}
+																											optionLabel="name"
+																											placeholder="Select Your Grade"
+																											className="w-full md:w-21.5rem"
+																											disabled
+																										/>
+																									</td>
+																								</tr>
+																								<tr>
+																									<td>2</td>
+																									<td>
+																										{" "}
+																										<Dropdown
+																											value={secondSub2}
+																											onChange={(e) =>
+																												setsecondSub2(e.value)
+																											}
+																											options={olevelSubjects}
+																											optionLabel="name"
+																											placeholder="Select Your Subject"
+																											className="w-full md:w-21.5rem"
+																											disabled
+																										/>
+																									</td>
+
+																									<td>
+																										<Dropdown
+																											value={secondGrade2}
+																											onChange={(e) =>
+																												setsecondGrade2(e.value)
+																											}
+																											options={olevelGrades}
+																											optionLabel="name"
+																											placeholder="Select Your Grade"
+																											className="w-full md:w-21.5rem"
+																											disabled
+																										/>
+																									</td>
+																								</tr>
+																								<tr>
+																									<td>3</td>
+																									<td>
+																										{" "}
+																										<Dropdown
+																											value={secondSub3}
+																											onChange={(e) =>
+																												setsecondSub3(e.value)
+																											}
+																											options={olevelSubjects}
+																											optionLabel="name"
+																											placeholder="Select Your Subject"
+																											className="w-full md:w-21.5rem"
+																											disabled
+																										/>
+																									</td>
+
+																									<td>
+																										<Dropdown
+																											value={secondGrade3}
+																											onChange={(e) =>
+																												setsecondGrade3(e.value)
+																											}
+																											options={olevelGrades}
+																											optionLabel="name"
+																											placeholder="Select Your Grade"
+																											className="w-full md:w-21.5rem"
+																											disabled
+																										/>
+																									</td>
+																								</tr>
+																								<tr>
+																									<td>4</td>
+																									<td>
+																										{" "}
+																										<Dropdown
+																											value={secondSub4}
+																											onChange={(e) =>
+																												setsecondSub4(e.value)
+																											}
+																											options={olevelSubjects}
+																											optionLabel="name"
+																											placeholder="Select Your Subject"
+																											className="w-full md:w-21.5rem"
+																											disabled
+																										/>
+																									</td>
+
+																									<td>
+																										<Dropdown
+																											value={secondGrade4}
+																											onChange={(e) =>
+																												setsecondGrade4(e.value)
+																											}
+																											options={olevelGrades}
+																											optionLabel="name"
+																											placeholder="Select Your Grade"
+																											className="w-full md:w-21.5rem"
+																											disabled
+																										/>
+																									</td>
+																								</tr>
+																								<tr>
+																									<td>5</td>
+																									<td>
+																										{" "}
+																										<Dropdown
+																											value={secondSub5}
+																											onChange={(e) =>
+																												setsecondSub5(e.value)
+																											}
+																											options={olevelSubjects}
+																											optionLabel="name"
+																											placeholder="Select Your Subject"
+																											className="w-full md:w-21.5rem"
+																											disabled
+																										/>
+																									</td>
+
+																									<td>
+																										<Dropdown
+																											value={secondGrade5}
+																											onChange={(e) =>
+																												setsecondGrade5(e.value)
+																											}
+																											options={olevelGrades}
+																											optionLabel="name"
+																											placeholder="Select Your Grade"
+																											className="w-full md:w-21.5rem"
+																											disabled
+																										/>
+																									</td>
+																								</tr>
+																								<tr>
+																									<td>6</td>
+																									<td>
+																										{" "}
+																										<Dropdown
+																											value={secondSub6}
+																											onChange={(e) =>
+																												setsecondSub6(e.value)
+																											}
+																											options={olevelSubjects}
+																											optionLabel="name"
+																											placeholder="Select Your Subject"
+																											className="w-full md:w-21.5rem"
+																											disabled
+																										/>
+																									</td>
+
+																									<td>
+																										<Dropdown
+																											value={secondGrade6}
+																											onChange={(e) =>
+																												setsecondGrade6(e.value)
+																											}
+																											options={olevelGrades}
+																											optionLabel="name"
+																											placeholder="Select Your Grade"
+																											className="w-full md:w-21.5rem"
+																											disabled
+																										/>
+																									</td>
+																								</tr>
+																								<tr>
+																									<td>7</td>
+																									<td>
+																										{" "}
+																										<Dropdown
+																											value={secondSub7}
+																											onChange={(e) =>
+																												setsecondSub7(e.value)
+																											}
+																											options={olevelSubjects}
+																											optionLabel="name"
+																											placeholder="Select Your Subject"
+																											className="w-full md:w-21.5rem"
+																											disabled
+																										/>
+																									</td>
+
+																									<td>
+																										<Dropdown
+																											value={secondGrade7}
+																											onChange={(e) =>
+																												setsecondGrade7(e.value)
+																											}
+																											options={olevelGrades}
+																											optionLabel="name"
+																											placeholder="Select Your Grade"
+																											className="w-full md:w-21.5rem"
+																											disabled
+																										/>
+																									</td>
+																								</tr>
+																								<tr>
+																									<td>8</td>
+																									<td>
+																										{" "}
+																										<Dropdown
+																											value={secondSub8}
+																											onChange={(e) =>
+																												setsecondSub8(e.value)
+																											}
+																											options={olevelSubjects}
+																											optionLabel="name"
+																											placeholder="Select Your Subject"
+																											className="w-full md:w-21.5rem"
+																											disabled
+																										/>
+																									</td>
+
+																									<td>
+																										<Dropdown
+																											value={secondGrade8}
+																											onChange={(e) =>
+																												setsecondGrade8(e.value)
+																											}
+																											options={olevelGrades}
+																											optionLabel="name"
+																											placeholder="Select Your Grade"
+																											className="w-full md:w-21.5rem"
+																											disabled
+																										/>
+																									</td>
+																								</tr>
+																								<tr>
+																									<td>9</td>
+																									<td>
+																										{" "}
+																										<Dropdown
+																											value={secondSub9}
+																											onChange={(e) =>
+																												setsecondSub9(e.value)
+																											}
+																											options={olevelSubjects}
+																											optionLabel="name"
+																											placeholder="Select Your Subject"
+																											className="w-full md:w-21.5rem"
+																											disabled
+																										/>
+																									</td>
+
+																									<td>
+																										<Dropdown
+																											value={secondGrade9}
+																											onChange={(e) =>
+																												setsecondGrade9(e.value)
+																											}
+																											options={olevelGrades}
+																											optionLabel="name"
+																											placeholder="Select Your Grade"
+																											className="w-full md:w-21.5rem"
+																											disabled
+																										/>
+																									</td>
+																								</tr>
+																							</tbody>
+																						</table>
+																					</div>
+																				)}
+																			</form>
 																		</div>
-																		<div className="form-group">
-																			<label>Exam Year</label>
-																			<Dropdown
-																				value={secondexamYear}
-																				onChange={(e) =>
-																					setsecondexamYear(e.value)
-																				}
-																				options={yearsList}
-																				placeholder="Select Year"
-																				className="w-full md:w-21.5rem"
-																				disabled
-																			/>
-																		</div>
-																		{olevelSubjects === null &&
-																		olevelGrades === null ? (
-																			<></>
-																		) : (
-																			<div className="table-responsive">
-																				<table className="table table-bordered mb-1">
-																					<thead>
-																						<tr>
-																							<th>S/N</th>
-																							<th>Subject</th>
-																							<th>Grade</th>
-																						</tr>
-																					</thead>
-																					<tbody>
-																						<tr>
-																							<td>1</td>
-																							<td>
-																								{" "}
-																								<Dropdown
-																									value={secondSub1}
-																									onChange={(e) =>
-																										setsecondSub1(e.value)
-																									}
-																									options={olevelSubjects}
-																									optionLabel="name"
-																									placeholder="Select Your Subject"
-																									className="w-full md:w-21.5rem"
-																									disabled
-																								/>
-																							</td>
-
-																							<td>
-																								<Dropdown
-																									value={secondGrade1}
-																									onChange={(e) =>
-																										setsecondGrade1(e.value)
-																									}
-																									options={olevelGrades}
-																									optionLabel="name"
-																									placeholder="Select Your Grade"
-																									className="w-full md:w-21.5rem"
-																									disabled
-																								/>
-																							</td>
-																						</tr>
-																						<tr>
-																							<td>2</td>
-																							<td>
-																								{" "}
-																								<Dropdown
-																									value={secondSub2}
-																									onChange={(e) =>
-																										setsecondSub2(e.value)
-																									}
-																									options={olevelSubjects}
-																									optionLabel="name"
-																									placeholder="Select Your Subject"
-																									className="w-full md:w-21.5rem"
-																									disabled
-																								/>
-																							</td>
-
-																							<td>
-																								<Dropdown
-																									value={secondGrade2}
-																									onChange={(e) =>
-																										setsecondGrade2(e.value)
-																									}
-																									options={olevelGrades}
-																									optionLabel="name"
-																									placeholder="Select Your Grade"
-																									className="w-full md:w-21.5rem"
-																									disabled
-																								/>
-																							</td>
-																						</tr>
-																						<tr>
-																							<td>3</td>
-																							<td>
-																								{" "}
-																								<Dropdown
-																									value={secondSub3}
-																									onChange={(e) =>
-																										setsecondSub3(e.value)
-																									}
-																									options={olevelSubjects}
-																									optionLabel="name"
-																									placeholder="Select Your Subject"
-																									className="w-full md:w-21.5rem"
-																									disabled
-																								/>
-																							</td>
-
-																							<td>
-																								<Dropdown
-																									value={secondGrade3}
-																									onChange={(e) =>
-																										setsecondGrade3(e.value)
-																									}
-																									options={olevelGrades}
-																									optionLabel="name"
-																									placeholder="Select Your Grade"
-																									className="w-full md:w-21.5rem"
-																									disabled
-																								/>
-																							</td>
-																						</tr>
-																						<tr>
-																							<td>4</td>
-																							<td>
-																								{" "}
-																								<Dropdown
-																									value={secondSub4}
-																									onChange={(e) =>
-																										setsecondSub4(e.value)
-																									}
-																									options={olevelSubjects}
-																									optionLabel="name"
-																									placeholder="Select Your Subject"
-																									className="w-full md:w-21.5rem"
-																									disabled
-																								/>
-																							</td>
-
-																							<td>
-																								<Dropdown
-																									value={secondGrade4}
-																									onChange={(e) =>
-																										setsecondGrade4(e.value)
-																									}
-																									options={olevelGrades}
-																									optionLabel="name"
-																									placeholder="Select Your Grade"
-																									className="w-full md:w-21.5rem"
-																									disabled
-																								/>
-																							</td>
-																						</tr>
-																						<tr>
-																							<td>5</td>
-																							<td>
-																								{" "}
-																								<Dropdown
-																									value={secondSub5}
-																									onChange={(e) =>
-																										setsecondSub5(e.value)
-																									}
-																									options={olevelSubjects}
-																									optionLabel="name"
-																									placeholder="Select Your Subject"
-																									className="w-full md:w-21.5rem"
-																									disabled
-																								/>
-																							</td>
-
-																							<td>
-																								<Dropdown
-																									value={secondGrade5}
-																									onChange={(e) =>
-																										setsecondGrade5(e.value)
-																									}
-																									options={olevelGrades}
-																									optionLabel="name"
-																									placeholder="Select Your Grade"
-																									className="w-full md:w-21.5rem"
-																									disabled
-																								/>
-																							</td>
-																						</tr>
-																						<tr>
-																							<td>6</td>
-																							<td>
-																								{" "}
-																								<Dropdown
-																									value={secondSub6}
-																									onChange={(e) =>
-																										setsecondSub6(e.value)
-																									}
-																									options={olevelSubjects}
-																									optionLabel="name"
-																									placeholder="Select Your Subject"
-																									className="w-full md:w-21.5rem"
-																									disabled
-																								/>
-																							</td>
-
-																							<td>
-																								<Dropdown
-																									value={secondGrade6}
-																									onChange={(e) =>
-																										setsecondGrade6(e.value)
-																									}
-																									options={olevelGrades}
-																									optionLabel="name"
-																									placeholder="Select Your Grade"
-																									className="w-full md:w-21.5rem"
-																									disabled
-																								/>
-																							</td>
-																						</tr>
-																						<tr>
-																							<td>7</td>
-																							<td>
-																								{" "}
-																								<Dropdown
-																									value={secondSub7}
-																									onChange={(e) =>
-																										setsecondSub7(e.value)
-																									}
-																									options={olevelSubjects}
-																									optionLabel="name"
-																									placeholder="Select Your Subject"
-																									className="w-full md:w-21.5rem"
-																									disabled
-																								/>
-																							</td>
-
-																							<td>
-																								<Dropdown
-																									value={secondGrade7}
-																									onChange={(e) =>
-																										setsecondGrade7(e.value)
-																									}
-																									options={olevelGrades}
-																									optionLabel="name"
-																									placeholder="Select Your Grade"
-																									className="w-full md:w-21.5rem"
-																									disabled
-																								/>
-																							</td>
-																						</tr>
-																						<tr>
-																							<td>8</td>
-																							<td>
-																								{" "}
-																								<Dropdown
-																									value={secondSub8}
-																									onChange={(e) =>
-																										setsecondSub8(e.value)
-																									}
-																									options={olevelSubjects}
-																									optionLabel="name"
-																									placeholder="Select Your Subject"
-																									className="w-full md:w-21.5rem"
-																									disabled
-																								/>
-																							</td>
-
-																							<td>
-																								<Dropdown
-																									value={secondGrade8}
-																									onChange={(e) =>
-																										setsecondGrade8(e.value)
-																									}
-																									options={olevelGrades}
-																									optionLabel="name"
-																									placeholder="Select Your Grade"
-																									className="w-full md:w-21.5rem"
-																									disabled
-																								/>
-																							</td>
-																						</tr>
-																						<tr>
-																							<td>9</td>
-																							<td>
-																								{" "}
-																								<Dropdown
-																									value={secondSub9}
-																									onChange={(e) =>
-																										setsecondSub9(e.value)
-																									}
-																									options={olevelSubjects}
-																									optionLabel="name"
-																									placeholder="Select Your Subject"
-																									className="w-full md:w-21.5rem"
-																									disabled
-																								/>
-																							</td>
-
-																							<td>
-																								<Dropdown
-																									value={secondGrade9}
-																									onChange={(e) =>
-																										setsecondGrade9(e.value)
-																									}
-																									options={olevelGrades}
-																									optionLabel="name"
-																									placeholder="Select Your Grade"
-																									className="w-full md:w-21.5rem"
-																									disabled
-																								/>
-																							</td>
-																						</tr>
-																					</tbody>
-																				</table>
-																			</div>
-																		)}
-																	</form>
+																	</div>
 																</div>
 															</div>
 														</div>
 													</div>
 												</div>
 											</div>
-										</div>
-									</div>
-								) : (
-									<></>
-								)}
-								{item?.pageName?.includes("Passport") ? (
-									<>
-										<div className="col-12">
-											<h5 className="form-title">
-												<span>Preview Passport</span>
-											</h5>
-										</div>
-										<div className=" row col-lg-10 offset-lg-1 col-sm-12 offset-sm-1">
-											<div className="col-10">
-												<Toast ref={toast}></Toast>
-
-												<FileUpload
-													ref={fileUploadRef}
-													name="file"
-													url={Constant?.BACK_END_URL + "/api/Passport"}
-													multiple
-													accept="image/*"
-													maxFileSize={1000000}
-													onUpload={onTemplateUpload}
-													onSelect={onTemplateSelect}
-													onError={onTemplateClear}
-													onClear={onTemplateClear}
-													headerTemplate={previewheaderTemplate}
-													itemTemplate={itemTemplate}
-													emptyTemplate={emptyTemplate}
-													chooseOptions={chooseOptions}
-													uploadOptions={uploadOptions}
-													cancelOptions={cancelOptions}
-												/>
-											</div>
-										</div>
-									</>
-								) : (
-									<></>
-								)}
-
-								{item?.pageName?.includes("O-level Result") ||
-								item?.pageName?.includes("Passport") ? (
-									<></>
-								) : (
-									item?.sections?.map((item2, index2) => (
-										<div className="row">
-											<div className="col-12">
-												<h5 className="form-title">
-													<span>Preview {item2?.sectionName}</span>
-												</h5>
-											</div>
+										) : (
+											<></>
+										)}
+										{item?.pageName?.includes("Passport") ? (
 											<>
-												{item2.fieldDetails.map((item3, index3) => (
-													<>
-														<div className="col-lg-4 col-sm-12" key={index3}>
-															<div className="form-group local-forms">
-																{RenderPreviewInputs(item3)}
-															</div>
-														</div>
-													</>
-												))}
+												<div className="col-12">
+													<h5 className="form-title">
+														<span>Preview Passport</span>
+													</h5>
+												</div>
+												<div className=" row col-lg-10 offset-lg-1 col-sm-12 offset-sm-1">
+													<div className="col-10">
+														<Toast ref={toast}></Toast>
+
+														<FileUpload
+															ref={fileUploadRef}
+															name="file"
+															url={Constant?.BACK_END_URL + "/api/Passport"}
+															multiple
+															accept="image/*"
+															maxFileSize={1000000}
+															onUpload={onTemplateUpload}
+															onSelect={onTemplateSelect}
+															onError={onTemplateClear}
+															onClear={onTemplateClear}
+															headerTemplate={previewheaderTemplate}
+															itemTemplate={itemTemplate}
+															emptyTemplate={emptyTemplate}
+															chooseOptions={chooseOptions}
+															uploadOptions={uploadOptions}
+															cancelOptions={cancelOptions}
+														/>
+													</div>
+												</div>
 											</>
-										</div>
-									))
-								)}
-							</div>
-						</>
-					))}
+										) : (
+											<></>
+										)}
+
+										{item?.pageName?.includes("O-level Result") ||
+										item?.pageName?.includes("Passport") ? (
+											<></>
+										) : (
+											item?.sections?.map((item2, index2) => (
+												<div className="row">
+													<div className="col-12">
+														<h5 className="form-title">
+															<span>Preview {item2?.sectionName}</span>
+														</h5>
+													</div>
+													<>
+														{item2.fieldDetails.map((item3, index3) => (
+															<>
+																<div
+																	className="col-lg-4 col-sm-12"
+																	key={index3}>
+																	<div className="form-group local-forms">
+																		{RenderPreviewInputs(item3)}
+																	</div>
+																</div>
+															</>
+														))}
+													</>
+												</div>
+											))
+										)}
+									</div>
+								</>
+							)
+						)
+					)}
 					<div className="col-auto text-end float-end ms-auto download-grp pb-6">
 						<button
 							className="btn btn-outline-primary me-2"

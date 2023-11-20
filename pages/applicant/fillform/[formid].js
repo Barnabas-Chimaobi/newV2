@@ -58,6 +58,7 @@ export default function FillForm() {
 		getForm(router.query.formid);
 	}, [router.query.formid]);
 	const getForm = async (no) => {
+		console.log(no, " invoice nnnnnnnn");
 		if (no !== "undefined" && no !== null && no !== "") {
 			console.log(no, " invoice nnnnnnnn");
 			const formDataObject = await fillFormData({
