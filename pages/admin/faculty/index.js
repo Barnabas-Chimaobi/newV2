@@ -126,7 +126,7 @@ export default function index() {
   };
 
   const deleteFacultyFunc = async (data) => {
-    // console.log(data, "deleteeeeplssss");
+    console.log(data, "deleteeeeplssss");
     try {
       const del = await deleteFaculty({
         variables: {

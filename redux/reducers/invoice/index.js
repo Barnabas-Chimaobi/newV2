@@ -1,25 +1,28 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-
 const initialState = {
-    invoicenumber: '',
-}
-
+	invoicenumber: "",
+	statuses: "",
+};
 
 const invoiceSlice = createSlice({
-  name : "invoice",
-  initialState,
-  reducers: {
-    invoices: (state, {payload}) => {
-      state.invoicenumber = payload
-      return state
-    },
-    // resetUserDetails: (state) => initialState,
-  }
-})
+	name: "invoice",
+	initialState,
+	reducers: {
+		invoices: (state, { payload }) => {
+			state.invoicenumber = payload;
+			return state;
+		},
+		statuses: (state, { payload }) => {
+			state.statuses = payload;
+			return state;
+		},
+		// resetUserDetails: (state) => initialState,
+	},
+});
 
 export const {
-  actions: {invoices}
-} = invoiceSlice
+	actions: { invoices, statuses },
+} = invoiceSlice;
 
-export default invoiceSlice.reducer
+export default invoiceSlice.reducer;

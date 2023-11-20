@@ -302,7 +302,7 @@ export const SAVE_APPLICATIONFORMNUMBER_SETUP = gql`
   }
 `;
 export const SAVE_COURSE = gql`
-  mutation Mutation($name: String!, $code: String!) {
+  mutation SaveCourse($name: String!, $code: String!) {
     saveCourse(name: $name, code: $code) {
       id
       name
@@ -1065,5 +1065,11 @@ export const CREATE_PREFIX = gql`
 export const SAVE_USER = gql`
   mutation SaveUser($newUserDto: UserDtoInput!) {
     saveUser(newUserDto: $newUserDto)
+  }
+`;
+
+export const DELETE_COURSE = gql`
+  mutation DeleteCourse($deleteCourseId: Int!) {
+    deleteCourse(id: $deleteCourseId)
   }
 `;

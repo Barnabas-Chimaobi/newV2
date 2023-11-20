@@ -87,7 +87,7 @@ export default function GenericTable({
   const [product, setProduct] = useState(tableObjectBody);
   const [productObj, setproductObj] = useState(dropDownObjects);
   const [submitted, setSubmitted] = useState(false);
-  console.log(selectedProducts, "selected products");
+  // console.log(selectedProducts, "selected products");
   const [content, setContent] = useState([]);
   const [checked, setChecked] = useState(false);
   const [formObj, setFormObj] = useState({});
@@ -324,7 +324,7 @@ export default function GenericTable({
     }));
   };
   const saveProduct = () => {
-    console.log(product, "Test edit values");
+    // console.log(product, "Test edit values");
     setSubmitted(true);
 
     var status = false;
@@ -599,7 +599,7 @@ export default function GenericTable({
   };
 
   const actionBodyTemplate = (rowData) => {
-    console.log(rowData, "rowdata=====");
+    // console.log(rowData, "rowdata=====");
     if (showOnlyDeleteButton) {
       return (
         <React.Fragment>

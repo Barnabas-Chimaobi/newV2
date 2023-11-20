@@ -4,7 +4,7 @@ import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
 import { Column } from "primereact/column";
 import { isNullableType } from "graphql";
 import Table from "../../../components/table";
-import { SAVE_COURSE } from "@/pages/api/mutations/admin";
+import { SAVE_COURSE, DELETE_COURSE } from "@/pages/api/mutations/admin";
 import { ALL_COURSE } from "@/pages/api/queries/admin";
 
 export default function createCourse() {
@@ -18,24 +18,43 @@ export default function createCourse() {
     { loading: allCourseLoad, error: allCourseError, data: allCourseData },
   ] = useLazyQuery(ALL_COURSE);
 
+  const [
+    deleteCourse,
+    {
+      loading: deleteCourseLoad,
+      error: deleteCourseError,
+      data: deleteCourseData,
+    },
+  ] = useMutation(DELETE_COURSE);
+
   const addNewCourse = async (data) => {
+    // console.log(data, "data=======");
     // console.log("code entered here", courseCode, courseName);
     try {
       const save = await addCourse({
         variables: {
           name: data?.CourseName,
-          code: data?.courseCode,
+          code: data?.CourseCode,
         },
       });
-      // console.log(save, "saveee====");
-      setShowAddModal(false);
-      if (save?.data?.saveCourse?.id > 0) {
-        toast.success("Course added successfully");
-        getAllCourse();
-      }
+      toast.success("Course added successfully");
+      getAllCourse();
     } catch (error) {
-      // console.log(error, "errorss===");
+      console.log(error, "errorss===");
       toast.error(error.message);
+    }
+  };
+
+  const deleteCourseFunc = async (data) => {
+    console.log(data, "coursedata");
+    try {
+      const deletePayLoad = await deleteCourse({
+        variables: {
+          deleteCourseId: data?.Id,
+        },
+      });
+    } catch (err) {
+      toast.error(err.message);
     }
   };
 
@@ -90,6 +109,7 @@ export default function createCourse() {
     return {
       CourseName: item?.name,
       CourseCode: item?.code,
+      Id: item?.id,
     };
   });
 
@@ -117,7 +137,7 @@ export default function createCourse() {
           tableContent={tableRow}
           dropDownObjects={DropDownObjects}
           editFunc={{}}
-          deleteFunc={{}}
+          deleteFunc={deleteCourseFunc}
         />
       </div>
     </div>

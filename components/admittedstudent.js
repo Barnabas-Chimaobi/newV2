@@ -1,3 +1,4 @@
+"use client";
 import React, { useState, useEffect } from "react";
 import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
 import { Chart } from "primereact/chart";
@@ -7,18 +8,28 @@ import { useRouter } from "next/router";
 import { Constant } from "../constant";
 import Encrypt from "./encrypt";
 import {
-  CHECK_ADMISSION_STATUS,
+  // CHECK_ADMISSION_STATUS,
   OLEVEL_GRADE,
   OLEVEL_SUBJECT,
   OLEVEL_TYPE,
 } from "../pages/api/queries/applicant";
 import { GENERATE_INVOICE } from "../pages/api/mutations/applicant";
+import {
+  CHECK_ADMISSION_STATUS,
+  INVOICE,
+  RECEIPT,
+} from "@/pages/api/queries/admin";
 import { Card } from "primereact/card";
 import Spinner from "./spinner";
-import Link from "next/link";
-// import Login from "@/pages/login";
+import { useDispatch } from "react-redux";
+import { statuses } from "@/redux/reducers/invoice";
+import { useSelector } from "react-redux";
 
-export default function Admittedstudent({ formNo, status }) {
+export default function Admittedstudent({}) {
+  const statusState = useSelector((state) => state.invoice.statuses);
+  const status = statusState.status;
+  const formNo = statusState.formNo;
+  const dispatch = useDispatch();
   const router = useRouter();
   const [loadedData, setloadedData] = useState(false);
   // const [admittedApplicatData, setadmittedApplicatData] = useState({});
@@ -27,11 +38,8 @@ export default function Admittedstudent({ formNo, status }) {
   const [olevelTypes, setolevelTypes] = useState("");
   const [firstSitting, setfirstSitting] = useState("");
   const [secondSitting, setsecondSitting] = useState("");
-  // console.log(status?.payments[0]?.personId, "formAndStatus");
-
-  useEffect(() => {
-    // setadmittedApplicatData(status?.data?.checkAdmissionStatus);
-  }, []);
+  const [isSSR, setIsSSR] = useState(true);
+  // console.log(status?.payments[0]?.personId, "formAndStatus")
   const [
     admissionStatus,
     {
@@ -40,6 +48,37 @@ export default function Admittedstudent({ formNo, status }) {
       data: admissionStatusData,
     },
   ] = useLazyQuery(CHECK_ADMISSION_STATUS);
+  const [
+    receipt,
+    { loading: receiptLoad, error: receiptError, data: receiptData },
+  ] = useLazyQuery(RECEIPT);
+  const [
+    invoice,
+    { loading: invoiceLoad, error: invoiceError, data: invoiceData },
+  ] = useLazyQuery(INVOICE);
+
+  const checkStatus = async () => {
+    try {
+      const status = await admissionStatus({
+        variables: {
+          applicationformnumber: formNo,
+        },
+      });
+      let object = {
+        status: status?.data?.checkAdmissionStatus,
+        formNo: formNo,
+      };
+      console.log(status, "status========ss");
+
+      dispatch(statuses(object));
+    } catch (err) {
+      console.log(err, "errr========ss");
+    }
+  };
+
+  useEffect(() => {
+    // setadmittedApplicatData(status?.data?.checkAdmissionStatus);
+  }, []);
 
   const [
     OlevelGrade,
@@ -140,6 +179,22 @@ export default function Admittedstudent({ formNo, status }) {
       data: generateInvoiceFeeData,
     },
   ] = useMutation(GENERATE_INVOICE);
+
+  const invoiceFunc = async (invoiceNumber) => {
+    try {
+      const invoiceResponse = await invoice({
+        variables: {
+          invoicenumber: invoiceNumber,
+        },
+      });
+      console.log(invoiceResponse, "invoice====");
+      // setDetails(invoiceResponse?.data?.invoice);
+      // setloading(false);
+    } catch (error) {
+      console.error("Error fetching invoice:", error);
+    }
+  };
+
   const generateInvoice = async (feetype) => {
     setloadingbutton(true);
     try {
@@ -155,22 +210,52 @@ export default function Admittedstudent({ formNo, status }) {
       });
       // console.log(invoice.data, "Invoiceeeeeeeeeee");
 
+      await invoiceFunc(invoice?.data?.generateInvoice?.invoiceNumber);
+      checkStatus();
+      setActivePage();
       setloadingbutton(false);
-      router.push(
-        Constant.BASE_URL +
-          `/common/invoice/` +
-          Encrypt(invoice?.data?.generateInvoice?.invoiceNumber)
-      );
+      // router.push(
+      // 	Constant.BASE_URL +
+      // 		`/common/invoice/` +
+      // 		Encrypt(invoice?.data?.generateInvoice?.invoiceNumber)
+      // );
+      let newUrl = `../../common/invoice/ ${Encrypt(
+        invoice?.data?.generateInvoice?.invoiceNumber
+      )}`;
+      // console.log(invoice.data, "data==invoice=====");
+      window.open(newUrl, "_blank");
+      window.location.reload();
     } catch (error) {
       // console.error("Error fetching form:", error);
       setloadingbutton(false);
     }
   };
 
-  const generateReceipt = async (invoiceNo) => {
+  const receiptFunc = async (invoice) => {
     try {
-      router.push(Constant.BASE_URL + `/common/receipt/` + Encrypt(invoiceNo));
+      const receiptResponse = await receipt({
+        variables: {
+          invoicenumber: invoice,
+        },
+      });
+      console.log(receiptResponse.data, "recepp=========");
+      // setDetails(receiptResponse?.data?.receipt);
+      // setloading(false);
+    } catch (error) {
+      console.error("Error Receipt invoice:", error);
+    }
+  };
+
+  const generateReceipt = async (invoiceNo) => {
+    await receiptFunc(invoiceNo);
+    checkStatus();
+    setActivePage();
+    try {
+      let newUrl = `/common/receipt/ ${Encrypt(invoiceNo)}`;
+      window.open(newUrl, "_blank");
+      // router.push(Constant.BASE_URL + `/common/receipt/` + Encrypt(invoiceNo));
       console.log(invoiceNo, "invnooo");
+      window.location.reload();
     } catch (error) {
       // console.error("Error fetching form:", error);
     }
@@ -191,22 +276,39 @@ export default function Admittedstudent({ formNo, status }) {
 
   const setActivePage = (pageNo) => {
     clearActiveTabsAndPages();
-    if (pageNo === 1) {
+    if (
+      status?.applicantStatus == "Offered Admission" ||
+      status?.applicantStatus == "Printed Admission" ||
+      status?.applicantStatus == "Generated Acceptance Invoice"
+    ) {
       setTabOne("active");
       setpageOne("show active");
-    } else if (pageNo === 2) {
-      setTabTwo("active");
-      setpageTwo("show active");
-    } else if (pageNo === 3) {
+    } else if (
+      status?.applicantStatus == "Generated Acceptance Receipt" ||
+      status?.applicantStatus == "Generated School Fees Invoices"
+    ) {
       setTabThree("active");
       setpageThree("show active");
-    } else if (pageNo === 4) {
+    } else if (status?.applicantStatus == "Generated School Fees Receipt") {
       setTabFour("active");
-      setTabFour("show active");
-    } else if (pageNo === 5) {
-      setTabFive("active");
-      setpageFive("show active");
+      setpageFour("show active");
     }
+    // if (pageNo === 1) {
+    // 	setTabOne("active");
+    // 	setpageOne("show active");
+    // } else if (pageNo === 2) {
+    // 	setTabTwo("active");
+    // 	setpageTwo("show active");
+    // } else if (pageNo === 3) {
+    // 	setTabThree("active");
+    // 	setpageThree("show active");
+    // } else if (pageNo === 4) {
+    // 	setTabFour("active");
+    // 	setTabFour("show active");
+    // } else if (pageNo === 5) {
+    // 	setTabFive("active");
+    // 	setpageFive("show active");
+    // }
   };
 
   const styles = {
@@ -226,265 +328,1187 @@ export default function Admittedstudent({ formNo, status }) {
     },
   };
 
+  useEffect(() => {
+    setActivePage();
+    setIsSSR(false);
+  }, []);
+
   return (
     <>
       <Header>
-        <div className="Homepage-wrapper">
-          <div className="content container-fluid">
-            <div className="row">
-              <div className="col-lg-10 offset-lg-1 col-sm-12 offset-sm-1">
-                <div className="card bg-white">
-                  <div className="card-header">
-                    <h5 className="card-title">Admissions</h5>
-                  </div>
-                  <div className="card-body">
-                    <div className="row">
-                      <div className="col-lg-8">
-                        <div className="student-personals-grp">
-                          <div className="card">
-                            <div className="card-body">
-                              <div className="heading-detail">
-                                <h4>
-                                  Applicant Details : Current Status(
-                                  {status?.applicantStatus})
-                                </h4>
-                              </div>
-                              <div className="row">
-                                <div className="personal-activity col-lg-4 mb-5">
-                                  <div className="personal-icons">
-                                    <i className="feather-user" />
-                                  </div>
-                                  <div className="views-personal">
-                                    <h4>Full Name</h4>
-                                    <h5>{status?.fullName}</h5>
-                                  </div>
+        {!isSSR && (
+          <div className="Homepage-wrapper">
+            <div className="content container-fluid">
+              <div className="row">
+                <div className="col-lg-10 offset-lg-1 col-sm-12 offset-sm-1">
+                  <div className="card bg-white">
+                    <div className="card-header">
+                      <h5 className="card-title">Admissions</h5>
+                    </div>
+                    <div className="card-body">
+                      <div className="row">
+                        <div className="col-lg-8">
+                          <div className="student-personals-grp">
+                            <div className="card">
+                              <div className="card-body">
+                                <div className="heading-detail">
+                                  <h4>
+                                    Applicant Details : Current Status(
+                                    {status?.applicantStatus})
+                                  </h4>
                                 </div>
-                                <div className="personal-activity col-lg-4 mb-5">
-                                  <div className="personal-icons">
-                                    <img
-                                      src="/assets/img/icons/buliding-icon.svg"
-                                      alt=""
-                                    />
-                                  </div>
-                                  <div className="views-personal">
-                                    <h4>Programme </h4>
-                                    <h5>{status?.programmeName}</h5>
-                                  </div>
-                                </div>
-                                <div className="personal-activity col-lg-4 mb-5">
-                                  <div className="personal-icons">
-                                    <i className="feather-phone-call" />
-                                  </div>
-                                  <div className="views-personal">
-                                    <h4>Department </h4>
-                                    <h5>{status?.courseOfStudy}</h5>
-                                  </div>
-                                </div>
-                                <div className="personal-activity col-lg-4 mb-5">
-                                  <div className="personal-icons">
-                                    <i className="feather-mail" />
-                                  </div>
-                                  <div className="views-personal">
-                                    <h4>Department Option</h4>
-                                    <h5>{status?.courseOption}</h5>
-                                  </div>
-                                </div>
-                                <div className="personal-activity col-lg-4 mb-5">
-                                  <div className="personal-icons">
-                                    <i className="feather-user" />
-                                  </div>
-                                  <div className="views-personal">
-                                    <h4>Form Number</h4>
-                                    <h5> {status?.applicationFormNumber}</h5>
-                                  </div>
-                                </div>
-                                {status?.matricNumber === "" ? (
-                                  <></>
-                                ) : (
+                                <div className="row">
                                   <div className="personal-activity col-lg-4 mb-5">
                                     <div className="personal-icons">
-                                      <i className="feather-calendar" />
+                                      <i className="feather-user" />
                                     </div>
                                     <div className="views-personal">
-                                      <h4>Matriculation Number</h4>
-                                      <h5>{status?.matricNumber}</h5>
+                                      <h4>Full Name</h4>
+                                      <h5>{status?.fullName}</h5>
                                     </div>
                                   </div>
-                                )}
-                                <div className="personal-activity col-lg-4 mb-5 ">
-                                  <div className="personal-icons">
-                                    <i className="feather-italic" />
+                                  <div className="personal-activity col-lg-4 mb-5">
+                                    <div className="personal-icons">
+                                      <img
+                                        src="/assets/img/icons/buliding-icon.svg"
+                                        alt=""
+                                      />
+                                    </div>
+                                    <div className="views-personal">
+                                      <h4>Programme </h4>
+                                      <h5>{status?.programmeName}</h5>
+                                    </div>
                                   </div>
-                                  <div className="views-personal">
-                                    <h4>Faculty</h4>
-                                    <h5>{status?.faculty}</h5>
+                                  <div className="personal-activity col-lg-4 mb-5">
+                                    <div className="personal-icons">
+                                      <i className="feather-phone-call" />
+                                    </div>
+                                    <div className="views-personal">
+                                      <h4>Department </h4>
+                                      <h5>{status?.courseOfStudy}</h5>
+                                    </div>
+                                  </div>
+                                  <div className="personal-activity col-lg-4 mb-5">
+                                    <div className="personal-icons">
+                                      <i className="feather-mail" />
+                                    </div>
+                                    <div className="views-personal">
+                                      <h4>Department Option</h4>
+                                      <h5>{status?.courseOption}</h5>
+                                    </div>
+                                  </div>
+                                  <div className="personal-activity col-lg-4 mb-5">
+                                    <div className="personal-icons">
+                                      <i className="feather-user" />
+                                    </div>
+                                    <div className="views-personal">
+                                      <h4>Form Number</h4>
+                                      <h5> {status?.applicationFormNumber}</h5>
+                                    </div>
+                                  </div>
+                                  {status?.matricNumber === "" ? (
+                                    <></>
+                                  ) : (
+                                    <div className="personal-activity col-lg-4 mb-5">
+                                      <div className="personal-icons">
+                                        <i className="feather-calendar" />
+                                      </div>
+                                      <div className="views-personal">
+                                        <h4>Matriculation Number</h4>
+                                        <h5>{status?.matricNumber}</h5>
+                                      </div>
+                                    </div>
+                                  )}
+                                  <div className="personal-activity col-lg-4 mb-5 ">
+                                    <div className="personal-icons">
+                                      <i className="feather-italic" />
+                                    </div>
+                                    <div className="views-personal">
+                                      <h4>Faculty</h4>
+                                      <h5>{status?.faculty}</h5>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                      <div className="col-lg-3">
-                        <div className="student-personals-grp">
-                          <div className="card flex justify-content-center">
-                            <div className="card-body">
-                              {loadedData ? (
-                                <Chart
-                                  type="doughnut"
-                                  data={chartData}
-                                  options={chartOptions}
-                                  className="w-15rem md:w-18rem h-18rem md:h-15rem"
-                                />
-                              ) : (
-                                <></>
-                              )}
+                        <div className="col-lg-3">
+                          <div className="student-personals-grp">
+                            <div className="card flex justify-content-center">
+                              <div className="card-body">
+                                {loadedData ? (
+                                  <Chart
+                                    type="doughnut"
+                                    data={chartData}
+                                    options={chartOptions}
+                                    className="w-15rem md:w-18rem h-18rem md:h-15rem"
+                                  />
+                                ) : (
+                                  <></>
+                                )}
+                              </div>{" "}
                             </div>{" "}
-                          </div>{" "}
+                          </div>
                         </div>
                       </div>
-                    </div>
 
-                    <ul className="nav nav-tabs nav-tabs-solid nav-tabs-rounded">
-                      <li className="nav-item">
-                        <a
-                          className={`nav-link ${
-                            tabOne !== "" ? "active" : ""
+                      <ul className="nav nav-tabs nav-tabs-solid nav-tabs-rounded">
+                        <li className="nav-item">
+                          <a
+                            className={`nav-link ${
+                              tabOne !== "" ? "active" : ""
+                            }`}
+                            href="#solid-rounded-tab1"
+                            data-bs-toggle="tab"
+                            // onClick={() => setActivePage(1)}
+                          >
+                            Offereds Admission
+                          </a>
+                        </li>
+                        <li className="nav-item">
+                          <a
+                            className={`nav-link ${
+                              tabTwo !== "" ? "active" : ""
+                            }`}
+                            href="#solid-rounded-tab2"
+                            data-bs-toggle={tabTwo?.length != 0 ? "tab" : ""}
+                            // onClick={() => setActivePage(2)}
+                          >
+                            Olevel Verification
+                          </a>
+                        </li>
+                        <li className="nav-item">
+                          <a
+                            className={`nav-link ${
+                              tabThree !== "" ? "active" : ""
+                            }`}
+                            href="#solid-rounded-tab3"
+                            data-bs-toggle="tab"
+                            // onClick={() => setActivePage(3)}
+                          >
+                            Manage Fees
+                          </a>
+                        </li>
+                        <li className="nav-item">
+                          <a
+                            className={`nav-link ${
+                              tabFour !== "" ? "active" : ""
+                            }`}
+                            href="#solid-rounded-tab4"
+                            data-bs-toggle="tab"
+                            // onClick={() => setActivePage(4)}
+                          >
+                            Login As A Student
+                          </a>
+                        </li>
+                        {/* <li className="nav-item">
+												<a
+													className={`nav-link ${
+														tabFive !== "" ? "active" : ""
+													}`}
+													href="#solid-rounded-tab5"
+													data-bs-toggle="tab"
+													onClick={() => setActivePage(5)}></a>
+											</li> */}
+                      </ul>
+                      <div className="tab-content">
+                        <div
+                          className={`tab-pane  ${
+                            pageOne !== "" ? "show active" : ""
                           }`}
-                          href="#solid-rounded-tab1"
-                          data-bs-toggle="tab"
-                          onClick={() => setActivePage(1)}
+                          id="solid-rounded-tab1"
                         >
-                          Offered Admission
-                        </a>
-                      </li>
-                      <li className="nav-item">
-                        <a
-                          className={`nav-link ${
-                            tabTwo !== "" ? "active" : ""
+                          <div className="row">
+                            <div className="col-sm-12">
+                              <div className="card student-personals-grp">
+                                <div className="card-body">
+                                  <div className="">
+                                    <>
+                                      <Card title="">
+                                        <div className="card flex-fill bg-white">
+                                          <div className="card-header">
+                                            <h5 className="card-title mb-0">
+                                              (1). Admission Slip
+                                            </h5>
+                                          </div>
+                                          <div className="card-body">
+                                            <div
+                                              className="bg-primary p-3 px-3"
+                                              style={{
+                                                marginBottom: 5,
+                                                color: "#fff",
+                                                textAlign: "justify",
+                                              }}
+                                            >
+                                              <p style={{ fontWeight: "bold" }}>
+                                                Congratulations{" "}
+                                                <b>{status?.fullName}!</b> You
+                                                have been given a Provisional
+                                                Admission into{" "}
+                                                {Constant.SCHOOL_NAME}
+                                              </p>
+                                              <small>
+                                                This marks the first step of
+                                                your admission process. Please
+                                                follow the instructions below.
+                                                <cite title="Source Title" />
+                                              </small>
+                                            </div>
+                                            <div class="row mb-1 ">
+                                              <div class="col-md-12">
+                                                <strong>
+                                                  Print Admission Slip by
+                                                  clicking 'Print Admission
+                                                  Slip' Button{" "}
+                                                </strong>
+                                              </div>
+                                              <div class="col-md-4 mt-3">
+                                                <a
+                                                  href={
+                                                    Constant.BASE_URL +
+                                                    `/common/admissionslip/` +
+                                                    status?.applicationFormNumber?.replace(
+                                                      /\//g,
+                                                      "-"
+                                                    )
+                                                  }
+                                                  class="btn btn-outline-primary me-2 mb-2 "
+                                                >
+                                                  <i class="fas fa-download"></i>{" "}
+                                                  Print Admission Slip
+                                                </a>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+
+                                        <div className="card flex-fill bg-white">
+                                          <div className="card-header">
+                                            <h5 className="card-title mb-0">
+                                              (2). Pay Acceptance Fees
+                                            </h5>
+                                            <h5 className="card-title mb-0">
+                                              Acceptance Fees Invoice Number:{" "}
+                                              <>
+                                                {
+                                                  selectedInvoice(2)[0]
+                                                    ?.invoiceNumber
+                                                }
+                                              </>
+                                            </h5>
+                                          </div>
+                                          <div className="card-body">
+                                            <p className="card-text">
+                                              Click the Generate Invoice button
+                                              to generate an invoice for your
+                                              Acceptance fees. Afterward, you
+                                              can print your receipt.
+                                            </p>
+                                            <div class="row ">
+                                              {loadingbutton ? (
+                                                <button
+                                                  className="btn btn-primary col-lg-3 col-sm-12 mb-3 mr-2"
+                                                  type="button"
+                                                  disabled
+                                                >
+                                                  <span
+                                                    className="spinner-grow spinner-grow-sm me-1"
+                                                    role="status"
+                                                    aria-hidden="true"
+                                                  ></span>
+                                                  Generating Invoice...
+                                                </button>
+                                              ) : (
+                                                <button
+                                                  type="button"
+                                                  className="btn btn-primary col-lg-3 col-sm-12 mb-3 mr-2"
+                                                  onClick={() =>
+                                                    generateInvoice(2)
+                                                  }
+                                                >
+                                                  Generate Invoice
+                                                </button>
+                                              )}
+
+                                              {/* <a className="btn btn-primary  col-lg-3 col-sm-12 mb-3 " href="#">
+                                                                                                Print Receipt
+                                                                                            </a> */}
+                                              <button
+                                                type="button"
+                                                className="btn btn-primary col-lg-3 col-sm-12 mb-3 "
+                                                onClick={() =>
+                                                  generateReceipt(
+                                                    selectedInvoice(2)[0]
+                                                      ?.invoiceNumber
+                                                  )
+                                                }
+                                              >
+                                                Print Receipt
+                                              </button>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </Card>
+
+                                      <footer>
+                                        <p>
+                                          For assistance, contact our admissions
+                                          office.
+                                        </p>
+                                      </footer>
+                                    </>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          className={`tab-pane  ${
+                            pageTwo !== "" ? "show active" : ""
                           }`}
-                          href="#solid-rounded-tab2"
-                          data-bs-toggle="tab"
-                          onClick={() => setActivePage(2)}
+                          id="solid-rounded-tab2"
                         >
-                          Olevel Verification
-                        </a>
-                      </li>
-                      <li className="nav-item">
-                        <a
-                          className={`nav-link ${
-                            tabThree !== "" ? "active" : ""
-                          }`}
-                          href="#solid-rounded-tab3"
-                          data-bs-toggle="tab"
-                          onClick={() => setActivePage(3)}
-                        >
-                          Manage Fees
-                        </a>
-                      </li>
-                      <li className="nav-item">
-                        <a
-                          className={`nav-link ${
-                            tabFour !== "" ? "active" : ""
-                          }`}
-                          href="#solid-rounded-tab4"
-                          data-bs-toggle="tab"
-                          onClick={() => setActivePage(4)}
-                        >
-                          Login As A Student
-                        </a>
-                      </li>
-                      <li className="nav-item">
-                        <a
-                          className={`nav-link ${
-                            tabFive !== "" ? "active" : ""
-                          }`}
-                          href="#solid-rounded-tab5"
-                          data-bs-toggle="tab"
-                          onClick={() => setActivePage(5)}
-                        ></a>
-                      </li>
-                    </ul>
-                    <div className="tab-content">
-                      <div
-                        className={`tab-pane  ${
-                          pageOne !== "" ? "show active" : ""
-                        }`}
-                        id="solid-rounded-tab1"
-                      >
-                        <div className="row">
-                          <div className="col-sm-12">
-                            <div className="card student-personals-grp">
-                              <div className="card-body">
-                                <div className="">
-                                  <>
-                                    <Card title="">
-                                      <div className="card flex-fill bg-white">
+                          <div className="row">
+                            <div className="col-sm-12">
+                              <div className="card">
+                                <div className="card-body">
+                                  <div className="row">
+                                    <div className="col-md-6">
+                                      <div className="card">
                                         <div className="card-header">
-                                          <h5 className="card-title mb-0">
-                                            (1). Admission Slip
+                                          <h5 className="card-title">
+                                            First Sitting Olevel Details
                                           </h5>
                                         </div>
                                         <div className="card-body">
-                                          <div
-                                            className="bg-primary p-3 px-3"
-                                            style={{
-                                              marginBottom: 5,
-                                              color: "#fff",
-                                              textAlign: "justify",
-                                            }}
-                                          >
-                                            <p style={{ fontWeight: "bold" }}>
-                                              Congratulations{" "}
-                                              <b>{status?.fullName}!</b> You
-                                              have been given a Provisional
-                                              Admission into{" "}
-                                              {Constant.SCHOOL_NAME}
-                                            </p>
-                                            <small>
-                                              This marks the first step of your
-                                              admission process. Please follow
-                                              the instructions below.
-                                              <cite title="Source Title" />
-                                            </small>
-                                          </div>
-                                          <div class="row mb-1 ">
-                                            <div class="col-md-12">
-                                              <strong>
-                                                Print Admission Slip by clicking
-                                                'Print Admission Slip' Button{" "}
-                                              </strong>
-                                            </div>
-                                            <div class="col-md-4 mt-3">
-                                              <a
-                                                href={
-                                                  Constant.BASE_URL +
-                                                  `/common/admissionslip/` +
-                                                  status?.applicationFormNumber?.replace(
-                                                    /\//g,
-                                                    "-"
-                                                  )
+                                          <form action="#">
+                                            <div className="form-group">
+                                              <label>Exam Number</label>
+                                              <input
+                                                type="text"
+                                                className="form-control"
+                                                disabled
+                                                readOnly
+                                                value={
+                                                  firstSitting?.examNumber ===
+                                                    null ||
+                                                  firstSitting?.examNumber ===
+                                                    "0"
+                                                    ? "Exam Number"
+                                                    : firstSitting?.examNumber
                                                 }
-                                                class="btn btn-outline-primary me-2 mb-2 "
-                                              >
-                                                <i class="fas fa-download"></i>{" "}
-                                                Print Admission Slip
-                                              </a>
+                                              />
                                             </div>
-                                          </div>
+                                            <div className="form-group">
+                                              <label>Olevel Type</label>
+                                              <input
+                                                type="text"
+                                                className="form-control"
+                                                disabled
+                                                readOnly
+                                                value={
+                                                  firstSitting?.olevelType ===
+                                                  null
+                                                    ? "Olevel Type"
+                                                    : firstSitting?.olevelType
+                                                }
+                                              />
+                                            </div>
+                                            <div className="form-group">
+                                              <label>Exam Year</label>
+                                              <input
+                                                type="email"
+                                                className="form-control"
+                                                disabled
+                                                readOnly
+                                                value={
+                                                  firstSitting?.examYear ===
+                                                    null ||
+                                                  firstSitting?.examYear === 0
+                                                    ? "Exam Year"
+                                                    : firstSitting?.examYear
+                                                }
+                                              />
+                                            </div>
+
+                                            {olevelSubjects === null &&
+                                            olevelGrades === null ? (
+                                              <></>
+                                            ) : (
+                                              <div className="table-responsive">
+                                                <table className="table table-bordered mb-1">
+                                                  <thead>
+                                                    <tr>
+                                                      <th>S/N</th>
+                                                      <th>Subject</th>
+                                                      <th>Grade</th>
+                                                    </tr>
+                                                  </thead>
+                                                  <tbody>
+                                                    <tr>
+                                                      <td>1</td>
+                                                      <td>
+                                                        {" "}
+                                                        <Dropdown
+                                                          value={firstSub1}
+                                                          onChange={(e) =>
+                                                            setfirstSub1(
+                                                              e.value
+                                                            )
+                                                          }
+                                                          options={
+                                                            olevelSubjects
+                                                          }
+                                                          optionLabel="name"
+                                                          placeholder="Select Your Subject"
+                                                          className="w-full md:w-21.5rem"
+                                                        />
+                                                      </td>
+
+                                                      <td>
+                                                        <Dropdown
+                                                          value={firstGrade1}
+                                                          onChange={(e) =>
+                                                            setfirstGrade1(
+                                                              e.value
+                                                            )
+                                                          }
+                                                          options={olevelGrades}
+                                                          optionLabel="name"
+                                                          placeholder="Select Your Grade"
+                                                          className="w-full md:w-21.5rem"
+                                                        />
+                                                      </td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td>2</td>
+                                                      <td>
+                                                        {" "}
+                                                        <Dropdown
+                                                          value={firstSub2}
+                                                          onChange={(e) =>
+                                                            setfirstSub2(
+                                                              e.value
+                                                            )
+                                                          }
+                                                          options={
+                                                            olevelSubjects
+                                                          }
+                                                          optionLabel="name"
+                                                          placeholder="Select Your Subject"
+                                                          className="w-full md:w-21.5rem"
+                                                        />
+                                                      </td>
+
+                                                      <td>
+                                                        <Dropdown
+                                                          value={firstGrade2}
+                                                          onChange={(e) =>
+                                                            setfirstGrade2(
+                                                              e.value
+                                                            )
+                                                          }
+                                                          options={olevelGrades}
+                                                          optionLabel="name"
+                                                          placeholder="Select Your Grade"
+                                                          className="w-full md:w-21.5rem"
+                                                        />
+                                                      </td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td>3</td>
+                                                      <td>
+                                                        {" "}
+                                                        <Dropdown
+                                                          value={firstSub3}
+                                                          onChange={(e) =>
+                                                            setfirstSub3(
+                                                              e.value
+                                                            )
+                                                          }
+                                                          options={
+                                                            olevelSubjects
+                                                          }
+                                                          optionLabel="name"
+                                                          placeholder="Select Your Subject"
+                                                          className="w-full md:w-21.5rem"
+                                                        />
+                                                      </td>
+
+                                                      <td>
+                                                        <Dropdown
+                                                          value={firstGrade3}
+                                                          onChange={(e) =>
+                                                            setfirstGrade3(
+                                                              e.value
+                                                            )
+                                                          }
+                                                          options={olevelGrades}
+                                                          optionLabel="name"
+                                                          placeholder="Select Your Grade"
+                                                          className="w-full md:w-21.5rem"
+                                                        />
+                                                      </td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td>4</td>
+                                                      <td>
+                                                        {" "}
+                                                        <Dropdown
+                                                          value={firstSub4}
+                                                          onChange={(e) =>
+                                                            setfirstSub4(
+                                                              e.value
+                                                            )
+                                                          }
+                                                          options={
+                                                            olevelSubjects
+                                                          }
+                                                          optionLabel="name"
+                                                          placeholder="Select Your Subject"
+                                                          className="w-full md:w-21.5rem"
+                                                        />
+                                                      </td>
+
+                                                      <td>
+                                                        <Dropdown
+                                                          value={firstGrade4}
+                                                          onChange={(e) =>
+                                                            setfirstGrade4(
+                                                              e.value
+                                                            )
+                                                          }
+                                                          options={olevelGrades}
+                                                          optionLabel="name"
+                                                          placeholder="Select Your Grade"
+                                                          className="w-full md:w-21.5rem"
+                                                        />
+                                                      </td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td>5</td>
+                                                      <td>
+                                                        {" "}
+                                                        <Dropdown
+                                                          value={firstSub5}
+                                                          onChange={(e) =>
+                                                            setfirstSub5(
+                                                              e.value
+                                                            )
+                                                          }
+                                                          options={
+                                                            olevelSubjects
+                                                          }
+                                                          optionLabel="name"
+                                                          placeholder="Select Your Subject"
+                                                          className="w-full md:w-21.5rem"
+                                                        />
+                                                      </td>
+
+                                                      <td>
+                                                        <Dropdown
+                                                          value={firstGrade5}
+                                                          onChange={(e) =>
+                                                            setfirstGrade5(
+                                                              e.value
+                                                            )
+                                                          }
+                                                          options={olevelGrades}
+                                                          optionLabel="name"
+                                                          placeholder="Select Your Grade"
+                                                          className="w-full md:w-21.5rem"
+                                                        />
+                                                      </td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td>6</td>
+                                                      <td>
+                                                        {" "}
+                                                        <Dropdown
+                                                          value={firstSub6}
+                                                          onChange={(e) =>
+                                                            setfirstSub6(
+                                                              e.value
+                                                            )
+                                                          }
+                                                          options={
+                                                            olevelSubjects
+                                                          }
+                                                          optionLabel="name"
+                                                          placeholder="Select Your Subject"
+                                                          className="w-full md:w-21.5rem"
+                                                        />
+                                                      </td>
+
+                                                      <td>
+                                                        <Dropdown
+                                                          value={firstGrade6}
+                                                          onChange={(e) =>
+                                                            setfirstGrade6(
+                                                              e.value
+                                                            )
+                                                          }
+                                                          options={olevelGrades}
+                                                          optionLabel="name"
+                                                          placeholder="Select Your Grade"
+                                                          className="w-full md:w-21.5rem"
+                                                        />
+                                                      </td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td>7</td>
+                                                      <td>
+                                                        {" "}
+                                                        <Dropdown
+                                                          value={firstSub7}
+                                                          onChange={(e) =>
+                                                            setfirstSub7(
+                                                              e.value
+                                                            )
+                                                          }
+                                                          options={
+                                                            olevelSubjects
+                                                          }
+                                                          optionLabel="name"
+                                                          placeholder="Select Your Subject"
+                                                          className="w-full md:w-21.5rem"
+                                                        />
+                                                      </td>
+
+                                                      <td>
+                                                        <Dropdown
+                                                          value={firstGrade7}
+                                                          onChange={(e) =>
+                                                            setfirstGrade7(
+                                                              e.value
+                                                            )
+                                                          }
+                                                          options={olevelGrades}
+                                                          optionLabel="name"
+                                                          placeholder="Select Your Grade"
+                                                          className="w-full md:w-21.5rem"
+                                                        />
+                                                      </td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td>8</td>
+                                                      <td>
+                                                        {" "}
+                                                        <Dropdown
+                                                          value={firstSub8}
+                                                          onChange={(e) =>
+                                                            setfirstSub8(
+                                                              e.value
+                                                            )
+                                                          }
+                                                          options={
+                                                            olevelSubjects
+                                                          }
+                                                          optionLabel="name"
+                                                          placeholder="Select Your Subject"
+                                                          className="w-full md:w-21.5rem"
+                                                        />
+                                                      </td>
+
+                                                      <td>
+                                                        <Dropdown
+                                                          value={firstGrade8}
+                                                          onChange={(e) =>
+                                                            setfirstGrade8(
+                                                              e.value
+                                                            )
+                                                          }
+                                                          options={olevelGrades}
+                                                          optionLabel="name"
+                                                          placeholder="Select Your Grade"
+                                                          className="w-full md:w-21.5rem"
+                                                        />
+                                                      </td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td>9</td>
+                                                      <td>
+                                                        {" "}
+                                                        <Dropdown
+                                                          value={firstSub9}
+                                                          onChange={(e) =>
+                                                            setfirstSub9(
+                                                              e.value
+                                                            )
+                                                          }
+                                                          options={
+                                                            olevelSubjects
+                                                          }
+                                                          optionLabel="name"
+                                                          placeholder="Select Your Subject"
+                                                          className="w-full md:w-21.5rem"
+                                                        />
+                                                      </td>
+
+                                                      <td>
+                                                        <Dropdown
+                                                          value={firstGrade9}
+                                                          onChange={(e) =>
+                                                            setfirstGrade9(
+                                                              e.value
+                                                            )
+                                                          }
+                                                          options={olevelGrades}
+                                                          optionLabel="name"
+                                                          placeholder="Select Your Grade"
+                                                          className="w-full md:w-21.5rem"
+                                                        />
+                                                      </td>
+                                                    </tr>
+                                                  </tbody>
+                                                </table>
+                                              </div>
+                                            )}
+
+                                            <div className="text-end">
+                                              <button
+                                                type="submit"
+                                                className="btn btn-primary"
+                                              >
+                                                Submit
+                                              </button>
+                                            </div>
+                                          </form>
                                         </div>
                                       </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                      <div className="card">
+                                        <div className="card-header">
+                                          <h5 className="card-title">
+                                            Second Sitting Olevel Details
+                                          </h5>
+                                        </div>
+                                        <div className="card-body">
+                                          <form action="#">
+                                            <div className="form-group">
+                                              <label>Exam Number</label>
+                                              <input
+                                                type="text"
+                                                className="form-control"
+                                                disabled
+                                                readOnly
+                                                value={
+                                                  secondSitting?.examNumber ===
+                                                    null ||
+                                                  secondSitting?.examNumber ===
+                                                    "0"
+                                                    ? "Exam Number"
+                                                    : secondSitting?.examNumber
+                                                }
+                                              />
+                                            </div>
+                                            <div className="form-group">
+                                              <label>Olevel Type</label>
+                                              <input
+                                                type="text"
+                                                className="form-control"
+                                                disabled
+                                                readOnly
+                                                value={
+                                                  secondSitting?.olevelType ===
+                                                  null
+                                                    ? "Olevel Type"
+                                                    : secondSitting?.olevelType
+                                                }
+                                              />
+                                            </div>
+                                            <div className="form-group">
+                                              <label>Exam Year</label>
+                                              <input
+                                                type="email"
+                                                className="form-control"
+                                                disabled
+                                                readOnly
+                                                value={
+                                                  secondSitting?.examYear ===
+                                                    null ||
+                                                  secondSitting?.examYear === 0
+                                                    ? "Exam Year"
+                                                    : secondSitting?.examYear
+                                                }
+                                              />
+                                            </div>
+                                            {olevelSubjects === null &&
+                                            olevelGrades === null ? (
+                                              <></>
+                                            ) : (
+                                              <div className="table-responsive">
+                                                <table className="table table-bordered mb-1">
+                                                  <thead>
+                                                    <tr>
+                                                      <th>S/N</th>
+                                                      <th>Subject</th>
+                                                      <th>Grade</th>
+                                                    </tr>
+                                                  </thead>
+                                                  <tbody>
+                                                    <tr>
+                                                      <td>1</td>
+                                                      <td>
+                                                        {" "}
+                                                        <Dropdown
+                                                          value={secondSub1}
+                                                          onChange={(e) =>
+                                                            setsecondSub1(
+                                                              e.value
+                                                            )
+                                                          }
+                                                          options={
+                                                            olevelSubjects
+                                                          }
+                                                          optionLabel="name"
+                                                          placeholder="Select Your Subject"
+                                                          className="w-full md:w-21.5rem"
+                                                        />
+                                                      </td>
 
+                                                      <td>
+                                                        <Dropdown
+                                                          value={secondGrade1}
+                                                          onChange={(e) =>
+                                                            setsecondGrade1(
+                                                              e.value
+                                                            )
+                                                          }
+                                                          options={olevelGrades}
+                                                          optionLabel="name"
+                                                          placeholder="Select Your Grade"
+                                                          className="w-full md:w-21.5rem"
+                                                        />
+                                                      </td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td>2</td>
+                                                      <td>
+                                                        {" "}
+                                                        <Dropdown
+                                                          value={secondSub2}
+                                                          onChange={(e) =>
+                                                            setsecondSub2(
+                                                              e.value
+                                                            )
+                                                          }
+                                                          options={
+                                                            olevelSubjects
+                                                          }
+                                                          optionLabel="name"
+                                                          placeholder="Select Your Subject"
+                                                          className="w-full md:w-21.5rem"
+                                                        />
+                                                      </td>
+
+                                                      <td>
+                                                        <Dropdown
+                                                          value={secondGrade2}
+                                                          onChange={(e) =>
+                                                            setsecondGrade2(
+                                                              e.value
+                                                            )
+                                                          }
+                                                          options={olevelGrades}
+                                                          optionLabel="name"
+                                                          placeholder="Select Your Grade"
+                                                          className="w-full md:w-21.5rem"
+                                                        />
+                                                      </td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td>3</td>
+                                                      <td>
+                                                        {" "}
+                                                        <Dropdown
+                                                          value={secondSub3}
+                                                          onChange={(e) =>
+                                                            setsecondSub3(
+                                                              e.value
+                                                            )
+                                                          }
+                                                          options={
+                                                            olevelSubjects
+                                                          }
+                                                          optionLabel="name"
+                                                          placeholder="Select Your Subject"
+                                                          className="w-full md:w-21.5rem"
+                                                        />
+                                                      </td>
+
+                                                      <td>
+                                                        <Dropdown
+                                                          value={secondGrade3}
+                                                          onChange={(e) =>
+                                                            setsecondGrade3(
+                                                              e.value
+                                                            )
+                                                          }
+                                                          options={olevelGrades}
+                                                          optionLabel="name"
+                                                          placeholder="Select Your Grade"
+                                                          className="w-full md:w-21.5rem"
+                                                        />
+                                                      </td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td>4</td>
+                                                      <td>
+                                                        {" "}
+                                                        <Dropdown
+                                                          value={secondSub4}
+                                                          onChange={(e) =>
+                                                            setsecondSub4(
+                                                              e.value
+                                                            )
+                                                          }
+                                                          options={
+                                                            olevelSubjects
+                                                          }
+                                                          optionLabel="name"
+                                                          placeholder="Select Your Subject"
+                                                          className="w-full md:w-21.5rem"
+                                                        />
+                                                      </td>
+
+                                                      <td>
+                                                        <Dropdown
+                                                          value={secondGrade4}
+                                                          onChange={(e) =>
+                                                            setsecondGrade4(
+                                                              e.value
+                                                            )
+                                                          }
+                                                          options={olevelGrades}
+                                                          optionLabel="name"
+                                                          placeholder="Select Your Grade"
+                                                          className="w-full md:w-21.5rem"
+                                                        />
+                                                      </td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td>5</td>
+                                                      <td>
+                                                        {" "}
+                                                        <Dropdown
+                                                          value={secondSub5}
+                                                          onChange={(e) =>
+                                                            setsecondSub5(
+                                                              e.value
+                                                            )
+                                                          }
+                                                          options={
+                                                            olevelSubjects
+                                                          }
+                                                          optionLabel="name"
+                                                          placeholder="Select Your Subject"
+                                                          className="w-full md:w-21.5rem"
+                                                        />
+                                                      </td>
+
+                                                      <td>
+                                                        <Dropdown
+                                                          value={secondGrade5}
+                                                          onChange={(e) =>
+                                                            setsecondGrade5(
+                                                              e.value
+                                                            )
+                                                          }
+                                                          options={olevelGrades}
+                                                          optionLabel="name"
+                                                          placeholder="Select Your Grade"
+                                                          className="w-full md:w-21.5rem"
+                                                        />
+                                                      </td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td>6</td>
+                                                      <td>
+                                                        {" "}
+                                                        <Dropdown
+                                                          value={secondSub6}
+                                                          onChange={(e) =>
+                                                            setsecondSub6(
+                                                              e.value
+                                                            )
+                                                          }
+                                                          options={
+                                                            olevelSubjects
+                                                          }
+                                                          optionLabel="name"
+                                                          placeholder="Select Your Subject"
+                                                          className="w-full md:w-21.5rem"
+                                                        />
+                                                      </td>
+
+                                                      <td>
+                                                        <Dropdown
+                                                          value={secondGrade6}
+                                                          onChange={(e) =>
+                                                            setsecondGrade6(
+                                                              e.value
+                                                            )
+                                                          }
+                                                          options={olevelGrades}
+                                                          optionLabel="name"
+                                                          placeholder="Select Your Grade"
+                                                          className="w-full md:w-21.5rem"
+                                                        />
+                                                      </td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td>7</td>
+                                                      <td>
+                                                        {" "}
+                                                        <Dropdown
+                                                          value={secondSub7}
+                                                          onChange={(e) =>
+                                                            setsecondSub7(
+                                                              e.value
+                                                            )
+                                                          }
+                                                          options={
+                                                            olevelSubjects
+                                                          }
+                                                          optionLabel="name"
+                                                          placeholder="Select Your Subject"
+                                                          className="w-full md:w-21.5rem"
+                                                        />
+                                                      </td>
+
+                                                      <td>
+                                                        <Dropdown
+                                                          value={secondGrade7}
+                                                          onChange={(e) =>
+                                                            setsecondGrade7(
+                                                              e.value
+                                                            )
+                                                          }
+                                                          options={olevelGrades}
+                                                          optionLabel="name"
+                                                          placeholder="Select Your Grade"
+                                                          className="w-full md:w-21.5rem"
+                                                        />
+                                                      </td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td>8</td>
+                                                      <td>
+                                                        {" "}
+                                                        <Dropdown
+                                                          value={secondSub8}
+                                                          onChange={(e) =>
+                                                            setsecondSub8(
+                                                              e.value
+                                                            )
+                                                          }
+                                                          options={
+                                                            olevelSubjects
+                                                          }
+                                                          optionLabel="name"
+                                                          placeholder="Select Your Subject"
+                                                          className="w-full md:w-21.5rem"
+                                                        />
+                                                      </td>
+
+                                                      <td>
+                                                        <Dropdown
+                                                          value={secondGrade8}
+                                                          onChange={(e) =>
+                                                            setsecondGrade8(
+                                                              e.value
+                                                            )
+                                                          }
+                                                          options={olevelGrades}
+                                                          optionLabel="name"
+                                                          placeholder="Select Your Grade"
+                                                          className="w-full md:w-21.5rem"
+                                                        />
+                                                      </td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td>9</td>
+                                                      <td>
+                                                        {" "}
+                                                        <Dropdown
+                                                          value={secondSub9}
+                                                          onChange={(e) =>
+                                                            setsecondSub9(
+                                                              e.value
+                                                            )
+                                                          }
+                                                          options={
+                                                            olevelSubjects
+                                                          }
+                                                          optionLabel="name"
+                                                          placeholder="Select Your Subject"
+                                                          className="w-full md:w-21.5rem"
+                                                        />
+                                                      </td>
+
+                                                      <td>
+                                                        <Dropdown
+                                                          value={secondGrade9}
+                                                          onChange={(e) =>
+                                                            setsecondGrade9(
+                                                              e.value
+                                                            )
+                                                          }
+                                                          options={olevelGrades}
+                                                          optionLabel="name"
+                                                          placeholder="Select Your Grade"
+                                                          className="w-full md:w-21.5rem"
+                                                        />
+                                                      </td>
+                                                    </tr>
+                                                  </tbody>
+                                                </table>
+                                              </div>
+                                            )}
+                                            <div className="text-end">
+                                              <button
+                                                type="submit"
+                                                className="btn btn-primary"
+                                              >
+                                                Submit
+                                              </button>
+                                            </div>
+                                          </form>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          className={`tab-pane  ${
+                            pageThree !== "" ? "show active" : ""
+                          }`}
+                          id="solid-rounded-tab3"
+                        >
+                          <div className="row">
+                            <div className="col-sm-12">
+                              <div className="card card-table comman-shadow">
+                                <div className="card-body">
+                                  <div className="col-md-12 col-lg-9 d-flex">
+                                    <Card title="Manage Fees">
                                       <div className="card flex-fill bg-white">
                                         <div className="card-header">
                                           <h5 className="card-title mb-0">
-                                            (2). Pay Acceptance Fees
+                                            (3). Pay School Fees
                                           </h5>
                                           <h5 className="card-title mb-0">
-                                            Acceptance Fees Invoice Number:{" "}
+                                            School Fees Invoice Number:{" "}
                                             <>
                                               {
-                                                selectedInvoice(2)[0]
+                                                selectedInvoice(3)[0]
                                                   ?.invoiceNumber
                                               }
                                             </>
@@ -493,9 +1517,9 @@ export default function Admittedstudent({ formNo, status }) {
                                         <div className="card-body">
                                           <p className="card-text">
                                             Click the Generate Invoice button to
-                                            generate an invoice for your
-                                            Acceptance fees. Afterward, you can
-                                            print your receipt.
+                                            generate an invoice for your school
+                                            fees. Afterward, you can print your
+                                            receipt.
                                           </p>
                                           <div class="row ">
                                             {loadingbutton ? (
@@ -516,22 +1540,19 @@ export default function Admittedstudent({ formNo, status }) {
                                                 type="button"
                                                 className="btn btn-primary col-lg-3 col-sm-12 mb-3 mr-2"
                                                 onClick={() =>
-                                                  generateInvoice(2)
+                                                  generateInvoice(3)
                                                 }
                                               >
                                                 Generate Invoice
                                               </button>
                                             )}
 
-                                            {/* <a className="btn btn-primary  col-lg-3 col-sm-12 mb-3 " href="#">
-                                                                                                Print Receipt
-                                                                                            </a> */}
                                             <button
                                               type="button"
                                               className="btn btn-primary col-lg-3 col-sm-12 mb-3 "
                                               onClick={() =>
                                                 generateReceipt(
-                                                  selectedInvoice(2)[0]
+                                                  selectedInvoice(3)[0]
                                                     ?.invoiceNumber
                                                 )
                                               }
@@ -542,904 +1563,53 @@ export default function Admittedstudent({ formNo, status }) {
                                         </div>
                                       </div>
                                     </Card>
-
-                                    <footer>
-                                      <p>
-                                        For assistance, contact our admissions
-                                        office.
-                                      </p>
-                                    </footer>
-                                  </>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        className={`tab-pane  ${
-                          pageTwo !== "" ? "show active" : ""
-                        }`}
-                        id="solid-rounded-tab2"
-                      >
-                        <div className="row">
-                          <div className="col-sm-12">
-                            <div className="card">
-                              <div className="card-body">
-                                <div className="row">
-                                  <div className="col-md-6">
-                                    <div className="card">
-                                      <div className="card-header">
-                                        <h5 className="card-title">
-                                          First Sitting Olevel Details
-                                        </h5>
-                                      </div>
-                                      <div className="card-body">
-                                        <form action="#">
-                                          <div className="form-group">
-                                            <label>Exam Number</label>
-                                            <input
-                                              type="text"
-                                              className="form-control"
-                                              disabled
-                                              readOnly
-                                              value={
-                                                firstSitting?.examNumber ===
-                                                  null ||
-                                                firstSitting?.examNumber === "0"
-                                                  ? "Exam Number"
-                                                  : firstSitting?.examNumber
-                                              }
-                                            />
-                                          </div>
-                                          <div className="form-group">
-                                            <label>Olevel Type</label>
-                                            <input
-                                              type="text"
-                                              className="form-control"
-                                              disabled
-                                              readOnly
-                                              value={
-                                                firstSitting?.olevelType ===
-                                                null
-                                                  ? "Olevel Type"
-                                                  : firstSitting?.olevelType
-                                              }
-                                            />
-                                          </div>
-                                          <div className="form-group">
-                                            <label>Exam Year</label>
-                                            <input
-                                              type="email"
-                                              className="form-control"
-                                              disabled
-                                              readOnly
-                                              value={
-                                                firstSitting?.examYear ===
-                                                  null ||
-                                                firstSitting?.examYear === 0
-                                                  ? "Exam Year"
-                                                  : firstSitting?.examYear
-                                              }
-                                            />
-                                          </div>
-
-                                          {olevelSubjects === null &&
-                                          olevelGrades === null ? (
-                                            <></>
-                                          ) : (
-                                            <div className="table-responsive">
-                                              <table className="table table-bordered mb-1">
-                                                <thead>
-                                                  <tr>
-                                                    <th>S/N</th>
-                                                    <th>Subject</th>
-                                                    <th>Grade</th>
-                                                  </tr>
-                                                </thead>
-                                                <tbody>
-                                                  <tr>
-                                                    <td>1</td>
-                                                    <td>
-                                                      {" "}
-                                                      <Dropdown
-                                                        value={firstSub1}
-                                                        onChange={(e) =>
-                                                          setfirstSub1(e.value)
-                                                        }
-                                                        options={olevelSubjects}
-                                                        optionLabel="name"
-                                                        placeholder="Select Your Subject"
-                                                        className="w-full md:w-21.5rem"
-                                                      />
-                                                    </td>
-
-                                                    <td>
-                                                      <Dropdown
-                                                        value={firstGrade1}
-                                                        onChange={(e) =>
-                                                          setfirstGrade1(
-                                                            e.value
-                                                          )
-                                                        }
-                                                        options={olevelGrades}
-                                                        optionLabel="name"
-                                                        placeholder="Select Your Grade"
-                                                        className="w-full md:w-21.5rem"
-                                                      />
-                                                    </td>
-                                                  </tr>
-                                                  <tr>
-                                                    <td>2</td>
-                                                    <td>
-                                                      {" "}
-                                                      <Dropdown
-                                                        value={firstSub2}
-                                                        onChange={(e) =>
-                                                          setfirstSub2(e.value)
-                                                        }
-                                                        options={olevelSubjects}
-                                                        optionLabel="name"
-                                                        placeholder="Select Your Subject"
-                                                        className="w-full md:w-21.5rem"
-                                                      />
-                                                    </td>
-
-                                                    <td>
-                                                      <Dropdown
-                                                        value={firstGrade2}
-                                                        onChange={(e) =>
-                                                          setfirstGrade2(
-                                                            e.value
-                                                          )
-                                                        }
-                                                        options={olevelGrades}
-                                                        optionLabel="name"
-                                                        placeholder="Select Your Grade"
-                                                        className="w-full md:w-21.5rem"
-                                                      />
-                                                    </td>
-                                                  </tr>
-                                                  <tr>
-                                                    <td>3</td>
-                                                    <td>
-                                                      {" "}
-                                                      <Dropdown
-                                                        value={firstSub3}
-                                                        onChange={(e) =>
-                                                          setfirstSub3(e.value)
-                                                        }
-                                                        options={olevelSubjects}
-                                                        optionLabel="name"
-                                                        placeholder="Select Your Subject"
-                                                        className="w-full md:w-21.5rem"
-                                                      />
-                                                    </td>
-
-                                                    <td>
-                                                      <Dropdown
-                                                        value={firstGrade3}
-                                                        onChange={(e) =>
-                                                          setfirstGrade3(
-                                                            e.value
-                                                          )
-                                                        }
-                                                        options={olevelGrades}
-                                                        optionLabel="name"
-                                                        placeholder="Select Your Grade"
-                                                        className="w-full md:w-21.5rem"
-                                                      />
-                                                    </td>
-                                                  </tr>
-                                                  <tr>
-                                                    <td>4</td>
-                                                    <td>
-                                                      {" "}
-                                                      <Dropdown
-                                                        value={firstSub4}
-                                                        onChange={(e) =>
-                                                          setfirstSub4(e.value)
-                                                        }
-                                                        options={olevelSubjects}
-                                                        optionLabel="name"
-                                                        placeholder="Select Your Subject"
-                                                        className="w-full md:w-21.5rem"
-                                                      />
-                                                    </td>
-
-                                                    <td>
-                                                      <Dropdown
-                                                        value={firstGrade4}
-                                                        onChange={(e) =>
-                                                          setfirstGrade4(
-                                                            e.value
-                                                          )
-                                                        }
-                                                        options={olevelGrades}
-                                                        optionLabel="name"
-                                                        placeholder="Select Your Grade"
-                                                        className="w-full md:w-21.5rem"
-                                                      />
-                                                    </td>
-                                                  </tr>
-                                                  <tr>
-                                                    <td>5</td>
-                                                    <td>
-                                                      {" "}
-                                                      <Dropdown
-                                                        value={firstSub5}
-                                                        onChange={(e) =>
-                                                          setfirstSub5(e.value)
-                                                        }
-                                                        options={olevelSubjects}
-                                                        optionLabel="name"
-                                                        placeholder="Select Your Subject"
-                                                        className="w-full md:w-21.5rem"
-                                                      />
-                                                    </td>
-
-                                                    <td>
-                                                      <Dropdown
-                                                        value={firstGrade5}
-                                                        onChange={(e) =>
-                                                          setfirstGrade5(
-                                                            e.value
-                                                          )
-                                                        }
-                                                        options={olevelGrades}
-                                                        optionLabel="name"
-                                                        placeholder="Select Your Grade"
-                                                        className="w-full md:w-21.5rem"
-                                                      />
-                                                    </td>
-                                                  </tr>
-                                                  <tr>
-                                                    <td>6</td>
-                                                    <td>
-                                                      {" "}
-                                                      <Dropdown
-                                                        value={firstSub6}
-                                                        onChange={(e) =>
-                                                          setfirstSub6(e.value)
-                                                        }
-                                                        options={olevelSubjects}
-                                                        optionLabel="name"
-                                                        placeholder="Select Your Subject"
-                                                        className="w-full md:w-21.5rem"
-                                                      />
-                                                    </td>
-
-                                                    <td>
-                                                      <Dropdown
-                                                        value={firstGrade6}
-                                                        onChange={(e) =>
-                                                          setfirstGrade6(
-                                                            e.value
-                                                          )
-                                                        }
-                                                        options={olevelGrades}
-                                                        optionLabel="name"
-                                                        placeholder="Select Your Grade"
-                                                        className="w-full md:w-21.5rem"
-                                                      />
-                                                    </td>
-                                                  </tr>
-                                                  <tr>
-                                                    <td>7</td>
-                                                    <td>
-                                                      {" "}
-                                                      <Dropdown
-                                                        value={firstSub7}
-                                                        onChange={(e) =>
-                                                          setfirstSub7(e.value)
-                                                        }
-                                                        options={olevelSubjects}
-                                                        optionLabel="name"
-                                                        placeholder="Select Your Subject"
-                                                        className="w-full md:w-21.5rem"
-                                                      />
-                                                    </td>
-
-                                                    <td>
-                                                      <Dropdown
-                                                        value={firstGrade7}
-                                                        onChange={(e) =>
-                                                          setfirstGrade7(
-                                                            e.value
-                                                          )
-                                                        }
-                                                        options={olevelGrades}
-                                                        optionLabel="name"
-                                                        placeholder="Select Your Grade"
-                                                        className="w-full md:w-21.5rem"
-                                                      />
-                                                    </td>
-                                                  </tr>
-                                                  <tr>
-                                                    <td>8</td>
-                                                    <td>
-                                                      {" "}
-                                                      <Dropdown
-                                                        value={firstSub8}
-                                                        onChange={(e) =>
-                                                          setfirstSub8(e.value)
-                                                        }
-                                                        options={olevelSubjects}
-                                                        optionLabel="name"
-                                                        placeholder="Select Your Subject"
-                                                        className="w-full md:w-21.5rem"
-                                                      />
-                                                    </td>
-
-                                                    <td>
-                                                      <Dropdown
-                                                        value={firstGrade8}
-                                                        onChange={(e) =>
-                                                          setfirstGrade8(
-                                                            e.value
-                                                          )
-                                                        }
-                                                        options={olevelGrades}
-                                                        optionLabel="name"
-                                                        placeholder="Select Your Grade"
-                                                        className="w-full md:w-21.5rem"
-                                                      />
-                                                    </td>
-                                                  </tr>
-                                                  <tr>
-                                                    <td>9</td>
-                                                    <td>
-                                                      {" "}
-                                                      <Dropdown
-                                                        value={firstSub9}
-                                                        onChange={(e) =>
-                                                          setfirstSub9(e.value)
-                                                        }
-                                                        options={olevelSubjects}
-                                                        optionLabel="name"
-                                                        placeholder="Select Your Subject"
-                                                        className="w-full md:w-21.5rem"
-                                                      />
-                                                    </td>
-
-                                                    <td>
-                                                      <Dropdown
-                                                        value={firstGrade9}
-                                                        onChange={(e) =>
-                                                          setfirstGrade9(
-                                                            e.value
-                                                          )
-                                                        }
-                                                        options={olevelGrades}
-                                                        optionLabel="name"
-                                                        placeholder="Select Your Grade"
-                                                        className="w-full md:w-21.5rem"
-                                                      />
-                                                    </td>
-                                                  </tr>
-                                                </tbody>
-                                              </table>
-                                            </div>
-                                          )}
-
-                                          <div className="text-end">
-                                            <button
-                                              type="submit"
-                                              className="btn btn-primary"
-                                            >
-                                              Submit
-                                            </button>
-                                          </div>
-                                        </form>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div className="col-md-6">
-                                    <div className="card">
-                                      <div className="card-header">
-                                        <h5 className="card-title">
-                                          Second Sitting Olevel Details
-                                        </h5>
-                                      </div>
-                                      <div className="card-body">
-                                        <form action="#">
-                                          <div className="form-group">
-                                            <label>Exam Number</label>
-                                            <input
-                                              type="text"
-                                              className="form-control"
-                                              disabled
-                                              readOnly
-                                              value={
-                                                secondSitting?.examNumber ===
-                                                  null ||
-                                                secondSitting?.examNumber ===
-                                                  "0"
-                                                  ? "Exam Number"
-                                                  : secondSitting?.examNumber
-                                              }
-                                            />
-                                          </div>
-                                          <div className="form-group">
-                                            <label>Olevel Type</label>
-                                            <input
-                                              type="text"
-                                              className="form-control"
-                                              disabled
-                                              readOnly
-                                              value={
-                                                secondSitting?.olevelType ===
-                                                null
-                                                  ? "Olevel Type"
-                                                  : secondSitting?.olevelType
-                                              }
-                                            />
-                                          </div>
-                                          <div className="form-group">
-                                            <label>Exam Year</label>
-                                            <input
-                                              type="email"
-                                              className="form-control"
-                                              disabled
-                                              readOnly
-                                              value={
-                                                secondSitting?.examYear ===
-                                                  null ||
-                                                secondSitting?.examYear === 0
-                                                  ? "Exam Year"
-                                                  : secondSitting?.examYear
-                                              }
-                                            />
-                                          </div>
-                                          {olevelSubjects === null &&
-                                          olevelGrades === null ? (
-                                            <></>
-                                          ) : (
-                                            <div className="table-responsive">
-                                              <table className="table table-bordered mb-1">
-                                                <thead>
-                                                  <tr>
-                                                    <th>S/N</th>
-                                                    <th>Subject</th>
-                                                    <th>Grade</th>
-                                                  </tr>
-                                                </thead>
-                                                <tbody>
-                                                  <tr>
-                                                    <td>1</td>
-                                                    <td>
-                                                      {" "}
-                                                      <Dropdown
-                                                        value={secondSub1}
-                                                        onChange={(e) =>
-                                                          setsecondSub1(e.value)
-                                                        }
-                                                        options={olevelSubjects}
-                                                        optionLabel="name"
-                                                        placeholder="Select Your Subject"
-                                                        className="w-full md:w-21.5rem"
-                                                      />
-                                                    </td>
-
-                                                    <td>
-                                                      <Dropdown
-                                                        value={secondGrade1}
-                                                        onChange={(e) =>
-                                                          setsecondGrade1(
-                                                            e.value
-                                                          )
-                                                        }
-                                                        options={olevelGrades}
-                                                        optionLabel="name"
-                                                        placeholder="Select Your Grade"
-                                                        className="w-full md:w-21.5rem"
-                                                      />
-                                                    </td>
-                                                  </tr>
-                                                  <tr>
-                                                    <td>2</td>
-                                                    <td>
-                                                      {" "}
-                                                      <Dropdown
-                                                        value={secondSub2}
-                                                        onChange={(e) =>
-                                                          setsecondSub2(e.value)
-                                                        }
-                                                        options={olevelSubjects}
-                                                        optionLabel="name"
-                                                        placeholder="Select Your Subject"
-                                                        className="w-full md:w-21.5rem"
-                                                      />
-                                                    </td>
-
-                                                    <td>
-                                                      <Dropdown
-                                                        value={secondGrade2}
-                                                        onChange={(e) =>
-                                                          setsecondGrade2(
-                                                            e.value
-                                                          )
-                                                        }
-                                                        options={olevelGrades}
-                                                        optionLabel="name"
-                                                        placeholder="Select Your Grade"
-                                                        className="w-full md:w-21.5rem"
-                                                      />
-                                                    </td>
-                                                  </tr>
-                                                  <tr>
-                                                    <td>3</td>
-                                                    <td>
-                                                      {" "}
-                                                      <Dropdown
-                                                        value={secondSub3}
-                                                        onChange={(e) =>
-                                                          setsecondSub3(e.value)
-                                                        }
-                                                        options={olevelSubjects}
-                                                        optionLabel="name"
-                                                        placeholder="Select Your Subject"
-                                                        className="w-full md:w-21.5rem"
-                                                      />
-                                                    </td>
-
-                                                    <td>
-                                                      <Dropdown
-                                                        value={secondGrade3}
-                                                        onChange={(e) =>
-                                                          setsecondGrade3(
-                                                            e.value
-                                                          )
-                                                        }
-                                                        options={olevelGrades}
-                                                        optionLabel="name"
-                                                        placeholder="Select Your Grade"
-                                                        className="w-full md:w-21.5rem"
-                                                      />
-                                                    </td>
-                                                  </tr>
-                                                  <tr>
-                                                    <td>4</td>
-                                                    <td>
-                                                      {" "}
-                                                      <Dropdown
-                                                        value={secondSub4}
-                                                        onChange={(e) =>
-                                                          setsecondSub4(e.value)
-                                                        }
-                                                        options={olevelSubjects}
-                                                        optionLabel="name"
-                                                        placeholder="Select Your Subject"
-                                                        className="w-full md:w-21.5rem"
-                                                      />
-                                                    </td>
-
-                                                    <td>
-                                                      <Dropdown
-                                                        value={secondGrade4}
-                                                        onChange={(e) =>
-                                                          setsecondGrade4(
-                                                            e.value
-                                                          )
-                                                        }
-                                                        options={olevelGrades}
-                                                        optionLabel="name"
-                                                        placeholder="Select Your Grade"
-                                                        className="w-full md:w-21.5rem"
-                                                      />
-                                                    </td>
-                                                  </tr>
-                                                  <tr>
-                                                    <td>5</td>
-                                                    <td>
-                                                      {" "}
-                                                      <Dropdown
-                                                        value={secondSub5}
-                                                        onChange={(e) =>
-                                                          setsecondSub5(e.value)
-                                                        }
-                                                        options={olevelSubjects}
-                                                        optionLabel="name"
-                                                        placeholder="Select Your Subject"
-                                                        className="w-full md:w-21.5rem"
-                                                      />
-                                                    </td>
-
-                                                    <td>
-                                                      <Dropdown
-                                                        value={secondGrade5}
-                                                        onChange={(e) =>
-                                                          setsecondGrade5(
-                                                            e.value
-                                                          )
-                                                        }
-                                                        options={olevelGrades}
-                                                        optionLabel="name"
-                                                        placeholder="Select Your Grade"
-                                                        className="w-full md:w-21.5rem"
-                                                      />
-                                                    </td>
-                                                  </tr>
-                                                  <tr>
-                                                    <td>6</td>
-                                                    <td>
-                                                      {" "}
-                                                      <Dropdown
-                                                        value={secondSub6}
-                                                        onChange={(e) =>
-                                                          setsecondSub6(e.value)
-                                                        }
-                                                        options={olevelSubjects}
-                                                        optionLabel="name"
-                                                        placeholder="Select Your Subject"
-                                                        className="w-full md:w-21.5rem"
-                                                      />
-                                                    </td>
-
-                                                    <td>
-                                                      <Dropdown
-                                                        value={secondGrade6}
-                                                        onChange={(e) =>
-                                                          setsecondGrade6(
-                                                            e.value
-                                                          )
-                                                        }
-                                                        options={olevelGrades}
-                                                        optionLabel="name"
-                                                        placeholder="Select Your Grade"
-                                                        className="w-full md:w-21.5rem"
-                                                      />
-                                                    </td>
-                                                  </tr>
-                                                  <tr>
-                                                    <td>7</td>
-                                                    <td>
-                                                      {" "}
-                                                      <Dropdown
-                                                        value={secondSub7}
-                                                        onChange={(e) =>
-                                                          setsecondSub7(e.value)
-                                                        }
-                                                        options={olevelSubjects}
-                                                        optionLabel="name"
-                                                        placeholder="Select Your Subject"
-                                                        className="w-full md:w-21.5rem"
-                                                      />
-                                                    </td>
-
-                                                    <td>
-                                                      <Dropdown
-                                                        value={secondGrade7}
-                                                        onChange={(e) =>
-                                                          setsecondGrade7(
-                                                            e.value
-                                                          )
-                                                        }
-                                                        options={olevelGrades}
-                                                        optionLabel="name"
-                                                        placeholder="Select Your Grade"
-                                                        className="w-full md:w-21.5rem"
-                                                      />
-                                                    </td>
-                                                  </tr>
-                                                  <tr>
-                                                    <td>8</td>
-                                                    <td>
-                                                      {" "}
-                                                      <Dropdown
-                                                        value={secondSub8}
-                                                        onChange={(e) =>
-                                                          setsecondSub8(e.value)
-                                                        }
-                                                        options={olevelSubjects}
-                                                        optionLabel="name"
-                                                        placeholder="Select Your Subject"
-                                                        className="w-full md:w-21.5rem"
-                                                      />
-                                                    </td>
-
-                                                    <td>
-                                                      <Dropdown
-                                                        value={secondGrade8}
-                                                        onChange={(e) =>
-                                                          setsecondGrade8(
-                                                            e.value
-                                                          )
-                                                        }
-                                                        options={olevelGrades}
-                                                        optionLabel="name"
-                                                        placeholder="Select Your Grade"
-                                                        className="w-full md:w-21.5rem"
-                                                      />
-                                                    </td>
-                                                  </tr>
-                                                  <tr>
-                                                    <td>9</td>
-                                                    <td>
-                                                      {" "}
-                                                      <Dropdown
-                                                        value={secondSub9}
-                                                        onChange={(e) =>
-                                                          setsecondSub9(e.value)
-                                                        }
-                                                        options={olevelSubjects}
-                                                        optionLabel="name"
-                                                        placeholder="Select Your Subject"
-                                                        className="w-full md:w-21.5rem"
-                                                      />
-                                                    </td>
-
-                                                    <td>
-                                                      <Dropdown
-                                                        value={secondGrade9}
-                                                        onChange={(e) =>
-                                                          setsecondGrade9(
-                                                            e.value
-                                                          )
-                                                        }
-                                                        options={olevelGrades}
-                                                        optionLabel="name"
-                                                        placeholder="Select Your Grade"
-                                                        className="w-full md:w-21.5rem"
-                                                      />
-                                                    </td>
-                                                  </tr>
-                                                </tbody>
-                                              </table>
-                                            </div>
-                                          )}
-                                          <div className="text-end">
-                                            <button
-                                              type="submit"
-                                              className="btn btn-primary"
-                                            >
-                                              Submit
-                                            </button>
-                                          </div>
-                                        </form>
-                                      </div>
-                                    </div>
                                   </div>
                                 </div>
                               </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                      <div
-                        className={`tab-pane  ${
-                          pageThree !== "" ? "show active" : ""
-                        }`}
-                        id="solid-rounded-tab3"
-                      >
-                        <div className="row">
-                          <div className="col-sm-12">
-                            <div className="card card-table comman-shadow">
-                              <div className="card-body">
-                                <div className="col-md-12 col-lg-9 d-flex">
-                                  <Card title="Manage Fees">
-                                    <div className="card flex-fill bg-white">
-                                      <div className="card-header">
-                                        <h5 className="card-title mb-0">
-                                          (3). Pay School Fees
-                                        </h5>
-                                        <h5 className="card-title mb-0">
-                                          School Fees Invoice Number:{" "}
-                                          <>
-                                            {
-                                              selectedInvoice(3)[0]
-                                                ?.invoiceNumber
-                                            }
-                                          </>
-                                        </h5>
-                                      </div>
-                                      <div className="card-body">
-                                        <p className="card-text">
-                                          Click the Generate Invoice button to
-                                          generate an invoice for your school
-                                          fees. Afterward, you can print your
-                                          receipt.
-                                        </p>
-                                        <div class="row ">
-                                          {loadingbutton ? (
-                                            <button
-                                              className="btn btn-primary col-lg-3 col-sm-12 mb-3 mr-2"
-                                              type="button"
-                                              disabled
-                                            >
-                                              <span
-                                                className="spinner-grow spinner-grow-sm me-1"
-                                                role="status"
-                                                aria-hidden="true"
-                                              ></span>
-                                              Generating Invoice...
-                                            </button>
-                                          ) : (
-                                            <button
-                                              type="button"
-                                              className="btn btn-primary col-lg-3 col-sm-12 mb-3 mr-2"
-                                              onClick={() => generateInvoice(3)}
-                                            >
-                                              Generate Invoice
-                                            </button>
-                                          )}
-
-                                          <button
-                                            type="button"
-                                            className="btn btn-primary col-lg-3 col-sm-12 mb-3 "
-                                            onClick={() =>
-                                              generateReceipt(
-                                                selectedInvoice(3)[0]
-                                                  ?.invoiceNumber
-                                              )
-                                            }
-                                          >
-                                            Print Receipt
-                                          </button>
-                                        </div>
-                                      </div>
+                        {pageFour?.length != 0 ? (
+                          <div
+                            className={`tab-pane  ${
+                              pageFour?.length !== 0 ? "show active" : ""
+                            }`}
+                            id="solid-rounded-tab4"
+                          >
+                            <div className="row">
+                              <div className="col-sm-12">
+                                <div className="card">
+                                  <div className="card-body ">
+                                    <p>
+                                      please click the button below to log in
+                                      with your generated matriculation number
+                                    </p>
+                                    <div className="">
+                                      <button
+                                        onClick={() => router.push("../login")}
+                                        className="btn btn-primary col-lg-3 col-sm-12 mb-3 mr-2 mt-4"
+                                        type="button"
+                                      >
+                                        Login as a Student
+                                      </button>
                                     </div>
-                                  </Card>
+                                  </div>
                                 </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                      </div>
-                      <div
-                        className={`tab-pane  ${
-                          pageFour !== "" ? "show active" : ""
-                        }`}
-                        id="solid-rounded-tab4"
-                      >
-                        <div className="row">
-                          <div className="col-sm-12">
-                            <div className="card">
-                              <div className="card-body">
-                                <div className="col-md-12 col-lg-9 d-flex">
-                                  <Card title="Login As A Student">
-                                    <div className="card flex-fill bg-white">
-                                      <div className="card-header">
-                                        <h5 className="card-title mb-0">
-                                          This marks the end of your Admission
-                                          Process
-                                        </h5>
-                                      </div>
-                                      <div className="card-body">
-                                        <p className="card-text">
-                                          Login as a student using your
-                                          matriculation Number as username and
-                                          password of 1234567
-                                        </p>
-                                        <div class="row ">
-                                          <Link href="/login">
-                                            <button
-                                              type="button"
-                                              className="btn btn-primary col-lg-3 col-sm-12 mb-3 mr-2"
-                                            >
-                                              Login
-                                            </button>
-                                          </Link>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </Card>
-                                </div>
+                        ) : null}
+                        <div
+                          className={`tab-pane  ${
+                            pageFive !== "" ? "show active" : ""
+                          }`}
+                          id="solid-rounded-tab5"
+                        >
+                          <div className="row">
+                            <div className="col-sm-12">
+                              <div className="card">
+                                <div className="card-body"></div>
                               </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        className={`tab-pane  ${
-                          pageFive !== "" ? "show active" : ""
-                        }`}
-                        id="solid-rounded-tab5"
-                      >
-                        <div className="row">
-                          <div className="col-sm-12">
-                            <div className="card">
-                              <div className="card-body"></div>
                             </div>
                           </div>
                         </div>
@@ -1450,7 +1620,7 @@ export default function Admittedstudent({ formNo, status }) {
               </div>
             </div>
           </div>
-        </div>
+        )}
       </Header>
     </>
   );

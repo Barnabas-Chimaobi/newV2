@@ -17,6 +17,7 @@ import Link from "next/link";
 
 export default function index() {
   const [isLoading, setIsLoading] = useState(false);
+  const [tableData, setTableData] = useState([]);
 
   const [
     allMenu,
@@ -84,7 +85,7 @@ export default function index() {
   };
 
   const updateMenuFunc = async (data) => {
-    // console.log(data, "data========updatee");
+    console.log(data, "data========updatee");
     try {
       const updateMenuResponse = await updateMenu({
         variables: {
@@ -97,10 +98,6 @@ export default function index() {
         },
       });
       allMenu();
-      if (updateMenuResponse?.data?.updateMenu?.id > 0) {
-        toast.success("Menu has been updated");
-        allMenu();
-      }
     } catch (err) {
       toast.error(err.message);
     }
@@ -124,9 +121,20 @@ export default function index() {
   });
 
   // console.log(menuGroupList, "console=======");
+  let pathToUseOutside = [];
+
+  const splitPath = (path) => {
+    const components = path.split("/");
+    const controller = components[1];
+    const action = components[2];
+    return { action, controller };
+  };
 
   const tableRow = allMenuData?.allMenu?.map((item) => {
-    console.log(item, "itemmmm");
+    const path = item?.path;
+    pathToUseOutside = [...pathToUseOutside, path];
+    const { action, controller } = splitPath(path);
+    pathToUseOutside = path;
     return {
       Name: item?.name,
       Path: item?.path,
@@ -134,6 +142,12 @@ export default function index() {
       Id: item?.id,
     };
   });
+
+  console.log(pathToUseOutside, "pathhhhhhh");
+
+  const paths = tableData.map((item) => item?.Path);
+
+  const pathComponents = paths.map((path) => splitPath(path));
 
   const iconList = [
     { Name: "Home ", Icon: "pi-home" },
