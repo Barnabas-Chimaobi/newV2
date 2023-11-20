@@ -16,21 +16,6 @@ export default function createDepartment() {
   const [getfacultyList, setGetFaculty] = useState([]);
   const [isLoading, setIsLoading] = useState(true); // Initially set loading to true
 
-  useEffect(() => {
-    // Fetch the faculty data here
-    getFaculty()
-      .then((data) => {
-        setGetFaculty(data);
-        setIsLoading(false); // Set loading to false after data is fetched
-      })
-      .catch((error) => {
-        // console.error("Error fetching faculty data:", error);
-        setIsLoading(false); // Set loading to false in case of an error
-        toast.error("Error occured");
-      });
-    allDepartment();
-  }, []);
-
   const headers = [
     {
       field: "Name",
@@ -39,7 +24,7 @@ export default function createDepartment() {
       style: { minWidth: "12rem", backgroundColor: "white" },
     },
     {
-      field: "deptCode",
+      field: "DeptCode",
       header: "Dept Code",
       sortable: true,
       style: { minWidth: "16rem", backgroundColor: "white" },
@@ -83,35 +68,37 @@ export default function createDepartment() {
     { loading: departmentLoading, error: error, data: departmentData },
   ] = useLazyQuery(ALL_DEPARTMENT);
 
+  // console.log(departmentData, "deptdata");
+
   const saveDeptFunc = async (data) => {
     try {
-      // console.log(data, "saveParaammmm");
+      console.log(data, "saveParaammmm");
       const saveResponse = await saveDept({
         variables: {
           name: data?.Name,
-          facultyid: data?.Faculty?.id,
-          deptCode: data?.deptCode,
+          facultyid: data?.Faculty?.Id,
+          deptCode: data?.DeptCode,
         },
       });
       //console.log(saveResponse, "saveresponse");
-      await allDepartment();
+      allDepartment();
     } catch (err) {
       toast.error(err.message);
     }
   };
 
   const editDept = async (data) => {
+    console.log(data, "editdataaa");
     try {
-      // console.log(data, "editdataaa");
       const editResponse = await updateDepart({
         variables: {
           updateDepartmentId: data?.Id,
           name: data?.Name,
-          facultyId: data?.Faculty?.id,
+          facultyId: data?.Faculty?.Id,
         },
       });
       //console.log(editResponse, "responseedit");
-      await allDepartment();
+      allDepartment();
     } catch (err) {
       toast.error(err.message);
     }
@@ -131,7 +118,22 @@ export default function createDepartment() {
     }
   };
 
-  console.log(FacultyListItem, "falcuty drip dhdjdkl");
+  useEffect(() => {
+    // Fetch the faculty data here
+    getFaculty()
+      .then((data) => {
+        setGetFaculty(data);
+        setIsLoading(false); // Set loading to false after data is fetched
+      })
+      .catch((error) => {
+        // console.error("Error fetching faculty data:", error);
+        setIsLoading(false); // Set loading to false in case of an error
+        toast.error("Error occured");
+      });
+    allDepartment();
+  }, []);
+
+  // console.log(FacultyListItem, "falcuty drip dhdjdkl");
   const generateColumnTemplates = (headers) => {
     return headers.map((header) => (
       <Column
@@ -146,7 +148,7 @@ export default function createDepartment() {
 
   const TableObj = {
     Name: "",
-    deptCode: "",
+    DeptCode: "",
     Faculty: "",
     FacultyId: "",
     Id: "",
@@ -158,28 +160,28 @@ export default function createDepartment() {
       Type: "Text",
       List: null,
       Description: "",
-      id: "",
+      Id: "",
     },
     {
-      Name: "deptCode",
+      Name: "DeptCode",
       Type: "Text",
       List: null,
       Description: "",
-      id: "",
+      Id: "",
     },
     {
       Name: "Faculty",
       Type: "Dropdown",
       List: FacultyListItem,
       Description: "",
-      id: "",
+      Id: "",
     },
   ];
 
   const tableRow = departmentData?.allDepartment?.map((item) => {
     return {
       Name: item?.name,
-      deptCode: item?.code,
+      DeptCode: item?.code,
       Faculty: item?.faculty?.name,
       Id: item?.id,
     };

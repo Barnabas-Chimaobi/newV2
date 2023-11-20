@@ -9,10 +9,16 @@ import * as XLSX from "xlsx";
 import { SAVE_DEPARTMENT_BULK } from "@/pages/api/mutations/adminMutation";
 import { GET_ALL_FACULTY } from "@/pages/api/queries/admin";
 import { Dropdown } from "primereact/dropdown";
+import { useRouter } from "next/router";
 
 export default function bulkUpload() {
   const [departmentList, setDepartmentList] = useState([]);
   const [facultyId, setFacultyId] = useState("");
+  const router = useRouter();
+
+  const handleReload = () => {
+    router.reload();
+  };
 
   const [
     departmentBulk,
@@ -31,6 +37,8 @@ export default function bulkUpload() {
         model: departmentList,
       },
     });
+    toast.success("File Uploaded");
+    handleReload();
   };
 
   const facultydropdown = facultyList?.allFaculty?.map((item) => {
@@ -63,6 +71,7 @@ export default function bulkUpload() {
   }, []);
   return (
     <div>
+      <ToastContainer />
       <div className="card">
         <div className="row p-5">
           <div className="col-lg-4 col-sm-12">

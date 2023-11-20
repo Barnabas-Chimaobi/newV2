@@ -7,6 +7,7 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import * as XLSX from "xlsx";
 import { SAVE_COURSE_BULK } from "@/pages/api/mutations/adminMutation";
+import { ALL_COURSE } from "@/pages/api/queries/admin";
 
 export default function bulkCourseUpload() {
   const [courses, setCourses] = useState([]);
@@ -16,13 +17,19 @@ export default function bulkCourseUpload() {
     { loading: saveBulkLoad, error: saveBulkError, data: saveBulkData },
   ] = useMutation(SAVE_COURSE_BULK);
 
+  const [
+    getAllCourse,
+    { loading: allCourseLoad, error: allCourseError, data: allCourseData },
+  ] = useLazyQuery(ALL_COURSE);
+
   const courseBulkFunc = async () => {
     const bulkData = await courseBulk({
       variables: {
         model: courses,
       },
     });
-    console.log(bulkData, "bulkdataa");
+    getAllCourse();
+    // console.log(bulkData, "bulkdataa");
     toast.success(bulkData?.status);
   };
 
@@ -31,20 +38,22 @@ export default function bulkCourseUpload() {
 
     if (file) {
       const reader = new FileReader();
-
       reader.onload = (e) => {
         const data = e.target.result;
         const workbook = XLSX.read(data, { type: "binary" });
         const sheetName = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[sheetName];
         const courseData = XLSX.utils.sheet_to_json(worksheet);
-
         setCourses(courseData);
       };
 
       reader.readAsArrayBuffer(file);
     }
   };
+
+  useEffect(() => {
+    getAllCourse();
+  }, []);
 
   return (
     <div>

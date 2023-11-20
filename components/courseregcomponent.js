@@ -332,9 +332,6 @@ export default function Courseregcomponent() {
                           Current Semester: {courses?.currentSemester}{" "}
                         </p>
                       </Card>
-                      {/* <Card title="Carry Over" subTitle="" className="md:w-25rem">
-                                                <DataView value={carryOvers} itemTemplate={itemTemplate} />
-                                            </Card> */}
                     </div>
                   </div>
                 </div>

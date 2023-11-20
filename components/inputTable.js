@@ -43,7 +43,7 @@ export default function RowEditingDemo({
 
   const triggerDialog = () => {};
   useEffect(() => {
-    console.log(Data, "77777777777777777777777777");
+    // console.log(Data, "77777777777777777777777777");
     setProducts(Data);
   }, []);
 
@@ -87,7 +87,7 @@ export default function RowEditingDemo({
     }
     setSelectionCheck([...checkSelections, newdata]);
     setSelectedProducts([...selectedProducts, incomingData]);
-    console.log(selectedProducts);
+    // console.log(selectedProducts);
   };
 
   const handleCheckSelection = (selectedValues, setSelectionCheck) => {
@@ -136,12 +136,8 @@ export default function RowEditingDemo({
         <Dropdown
           value={options.value}
           options={statuses}
-          // optionLabel="Name"
           onChange={(e) => options.editorCallback(e.value)}
           placeholder="Select Course Type"
-          //   itemTemplate={(option) => {
-          //     return <Tag value={option} severity={getSeverity(option)}></Tag>;
-          //   }}
         />
       </>
     );
@@ -167,13 +163,13 @@ export default function RowEditingDemo({
   };
   const header = (
     <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
-      <h4 className="m-0">Manage Products</h4>
+      <h4 className="m-0">Assign Courses</h4>
       <span className="p-input-icon-left">
         <i className="pi pi-search" />
         <InputText
           type="search"
           onInput={(e) => setGlobalFilter(e.target.value)}
-          placeholder="Search..."
+          placeholder="Search Courses..."
         />
       </span>
     </div>
@@ -234,28 +230,6 @@ export default function RowEditingDemo({
       >
         <div className="confirmation-content">
           <p>Do you want to continue?</p>
-          {/* <i
-            className="pi pi-exclamation-triangle mr-3"
-            style={{ fontSize: "2rem" }} */}
-
-          {/* {product && (
-            <span>
-              Are you sure you want to delete{" "}
-              <b>
-                {Object.keys(product).map((field) =>
-                  field !== "Id" ? (
-                    <div key={field} className="field">
-                      <label htmlFor={field} className="font-bold">
-                        {toSentenceCase(field)} : {product[field]}
-                      </label>
-                    </div>
-                  ) : (
-                    <></>
-                  )
-                )}
-              </b>
-            </span>
-          )} */}
         </div>
       </Dialog>
     </div>

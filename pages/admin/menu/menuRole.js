@@ -14,7 +14,10 @@ import Link from "next/link";
 //   ALL_MENU,
 //   ALL_ROLE,
 // } from "../../../api/queries/admin";
-import { SAVE_MENU_IN_ROLE } from "@/pages/api/mutations/admin";
+import {
+  SAVE_MENU_IN_ROLE,
+  DELETE_MENU_IN_ROLE,
+} from "@/pages/api/mutations/admin";
 import {
   ALL_MENU,
   ALL_ROLE,
@@ -42,6 +45,15 @@ export default function menuRole() {
     },
   ] = useMutation(SAVE_MENU_IN_ROLE);
 
+  const [
+    deleteMenuRole,
+    {
+      loading: deleteMenuRoleLoad,
+      error: deleteMenuRoleError,
+      data: deleteMenuRoleData,
+    },
+  ] = useMutation(DELETE_MENU_IN_ROLE);
+
   const {
     loading: allMenuLoad,
     error: allMenuError,
@@ -57,8 +69,6 @@ export default function menuRole() {
     },
   ] = useLazyQuery(MENUROLE_BY_ROLEID);
 
-  // console.log(menuRoleByRoleIdData, "menuDataaaaaaa");
-
   const menuList = allMenuData?.allMenu?.map((item) => {
     return {
       Id: item?.id,
@@ -73,7 +83,7 @@ export default function menuRole() {
     };
   });
 
-  const roleArr = [{ Name: "admin" }, { Name: "Student" }];
+  // const roleArr = [{ Name: "admin" }, { Name: "Student" }];
 
   const TableObj = {
     Menu: "",
@@ -130,6 +140,7 @@ export default function menuRole() {
     return {
       Menu: item?.menu?.name,
       Role: item?.role?.roleName,
+      Id: item?.id,
     };
   });
 
@@ -141,6 +152,20 @@ export default function menuRole() {
           roleid: data?.Role?.Id,
         },
       });
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
+
+  const deleteMenuRoleFunc = async (data) => {
+    console.log(data);
+    try {
+      const delPayload = await deleteMenuRole({
+        variables: {
+          deleteMenuInRoleId: data?.Id,
+        },
+      });
+      setShowTable(false);
     } catch (err) {
       toast.error(err.message);
     }
@@ -215,8 +240,7 @@ export default function menuRole() {
                     variablesForQuery={{}}
                     tableContent={tableRow}
                     dropDownObjects={DropDownObjects}
-                    editFunc={{}}
-                    deleteFunc={{}}
+                    deleteFunc={deleteMenuRoleFunc}
                   />
                 </div>
               ) : null}

@@ -76,9 +76,10 @@ export default function assignCourses() {
         },
       });
       toast.success("Course Allocation Successful");
+      initTableData();
 
-      console.log(bulkResponse, "responseee");
-      setSaveResponse(bulkResponse?.data?.saveCourseAssignmentBulk);
+      // console.log(bulkResponse, "responseee");
+      // setSaveResponse(bulkResponse?.data?.saveCourseAssignmentBulk);
       //   if (bulkResponse?.data?.saveCourseAssignmentBulk?.failedCount == 0) {
       //     toast.success("All Selected Courses have been assigned");
       //   }
@@ -130,7 +131,7 @@ export default function assignCourses() {
     initTableData,
     { loading: tableDataLoad, error: tableDataError, data: allCourseData },
   ] = useLazyQuery(ALL_COURSE);
-  console.log(allCourseData, ">>>>>>>>>>>>>>>");
+  // console.log(allCourseData, ">>>>>>>>>>>>>>>");
   const tableRow = allCourseData?.allCourse?.map((item, index) => {
     return {
       CourseName: item.name,
@@ -139,7 +140,7 @@ export default function assignCourses() {
       CourseType: "",
     };
   });
-  console.log(tableRow, ">>>>>>>>>@@@@@@@@@@@@@@@>>>>>>");
+  // console.log(tableRow, ">>>>>>>>>@@@@@@@@@@@@@@@>>>>>>");
 
   useEffect(() => {
     initTableData();
