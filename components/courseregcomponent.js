@@ -133,7 +133,7 @@ export default function Courseregcomponent() {
   };
   const PullData = async () => {
     const regDetails = await CourseRegDetails();
-    console.log(regDetails?.data, "dataaa aaaaaaaaaa");
+    console.log(regDetails?.data?.courseRegisterForAll, "dataaaaaaaaaaaaa");
     setcourses(regDetails?.data?.courseRegisterForAll);
     console.log(courses, "coursesss  sss");
     setisLoading(false);
@@ -142,7 +142,17 @@ export default function Courseregcomponent() {
     PullData();
   }, []);
 
-  const header = <img alt="Card" src={courses?.passportUrl} />;
+  const header = (
+    <img
+      alt="Card"
+      className="ml-5 rounded p-2"
+      src={courses?.passportUrl}
+      style={{
+        width: "200px",
+        height: "200px",
+      }}
+    />
+  );
   const itemTemplate = (product) => {
     return (
       <div className="col-12">
@@ -320,13 +330,13 @@ export default function Courseregcomponent() {
                 <div className="row">
                   <div className="col-sm-12 col-lg-8">{RenderInputs()}</div>
                   <div className="col-sm-12 col-lg-3">
-                    <div className="card flex justify-content-center">
+                    <div className="card flex justify-content-center ">
                       <Card
                         title={courses?.fullName}
                         subTitle={`Current Level: ${courses?.currentLevel}`}
                         footer={null}
                         header={header}
-                        className="md:w-25rem"
+                        className="md:w-25rem justify-center mx-auto"
                       >
                         <p className="m-0">
                           Current Semester: {courses?.currentSemester}{" "}

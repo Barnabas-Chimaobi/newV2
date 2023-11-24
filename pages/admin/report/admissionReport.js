@@ -27,8 +27,8 @@ export default function () {
       style: { minWidth: "12rem", backgroundColor: "white" },
     },
     {
-      field: "Application Number",
-      header: " ApplicationNumber",
+      field: "ApplicationNumber",
+      header: " Application Number",
       sortable: true,
       style: { minWidth: "12rem", backgroundColor: "white" },
     },
@@ -117,7 +117,7 @@ export default function () {
     return {
       Name: item?.personName,
       ApplicationNumber: item?.applicantionFormNumber,
-      Session: item?.session?.name,
+      Session: item?.sessionName,
       Programme: item?.programmeName,
       Department: item?.departmentName,
       Id: item?.id,
