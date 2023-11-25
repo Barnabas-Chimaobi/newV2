@@ -1220,6 +1220,7 @@ export const STUDENT_COURSE_REG = gql`
 						isCarryOver
 						lastModified
 						score
+						courseAssignmentId
 					}
 					semesterId
 					semesterName
