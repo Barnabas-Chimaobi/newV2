@@ -15,6 +15,7 @@ import { Dialog } from "primereact/dialog";
 import { SAVE_STUDENT_COURSE_REGISTER } from "@/pages/api/mutations/adminMutation";
 import { useRouter } from "next/router";
 import { Constant } from "../constant";
+import { classNames } from "primereact/utils";
 
 export default function Courseregcomponent() {
   const router = useRouter();
@@ -25,6 +26,8 @@ export default function Courseregcomponent() {
   const [sessionId, setsessionId] = useState("");
   const [semesterId, setsemesterId] = useState("");
   const [allData, setallData] = useState("");
+
+  console.log(courses, "coursessss");
   const [
     CourseRegDetails,
     {
@@ -133,9 +136,9 @@ export default function Courseregcomponent() {
   };
   const PullData = async () => {
     const regDetails = await CourseRegDetails();
-    console.log(regDetails?.data?.courseRegisterForAll, "dataaaaaaaaaaaaa");
+    // console.log(regDetails?.data?.courseRegisterForAll, "dataaaaaaaaaaaaa");
     setcourses(regDetails?.data?.courseRegisterForAll);
-    console.log(courses, "coursesss  sss");
+    // console.log(courses, "coursessssss");
     setisLoading(false);
   };
   useEffect(() => {
@@ -178,7 +181,7 @@ export default function Courseregcomponent() {
   };
 
   const RenderInputs = () => {
-    console.log(courses?.activeIndex, "active indexxxx");
+    // console.log(courses?.activeIndex, "active indexxxx");
     return (
       <>
         <>
@@ -317,7 +320,7 @@ export default function Courseregcomponent() {
     );
   };
 
-  console.log(RenderInputs(), "rendered inputs ......");
+  // console.log(RenderInputs(), "rendered inputs ......");
   return (
     <>
       <div>
@@ -329,19 +332,20 @@ export default function Courseregcomponent() {
               <div className="card">
                 <div className="row">
                   <div className="col-sm-12 col-lg-8">{RenderInputs()}</div>
-                  <div className="col-sm-12 col-lg-3">
-                    <div className="card flex justify-content-center ">
+                  <div className="col-sm-12 col-lg-3  ">
+                    <div className="card ">
                       <Card
                         title={courses?.fullName}
-                        subTitle={`Current Level: ${courses?.currentLevel}`}
+                        subTitle={`Current Level: ${courses?.currentLevel} ${(
+                          <br className="hidden" />
+                        )} Current Semester: ${courses?.currentSemester}`}
                         footer={null}
                         header={header}
-                        className="md:w-25rem justify-center mx-auto"
-                      >
-                        <p className="m-0">
-                          Current Semester: {courses?.currentSemester}{" "}
-                        </p>
-                      </Card>
+                        className="md:w-25rem  flex justify-center p-5 "
+                      ></Card>
+                      {/* <p className="m-0 flex-col">
+                        Current Semester: {courses?.currentSemester}{" "}
+                      </p> */}
                     </div>
                   </div>
                 </div>

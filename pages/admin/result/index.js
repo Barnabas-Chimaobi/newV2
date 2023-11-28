@@ -144,7 +144,7 @@ export default function index() {
   };
 
   const handleDownload = (data) => {
-    console.log(data, "dataaaa");
+    // console.log(data, "dataaaa");
     uploadSheetFunc(data);
   };
 
@@ -156,7 +156,7 @@ export default function index() {
           courseId: data.Id,
         },
       });
-      console.log(sheetResponse, "shettttdataaaa");
+      // console.log(sheetResponse, "shettttdataaaa");
 
       if (sheetResponse?.data?.uploadSheet?.resultDetails?.length > 0) {
         processExcelSheet(sheetResponse?.data?.uploadSheet?.resultDetails);
@@ -171,8 +171,8 @@ export default function index() {
   const processExcelSheet = (data) => {
     const XLSX = require("xlsx");
 
-    console.log(data.length, "dataaaasss");
-    console.log(data, "EXCELDATAAAAAA");
+    // console.log(data.length, "dataaaasss");
+    // console.log(data, "EXCELDATAAAAAA");
     const megaArr = [];
     const excelHeader = [
       "S/N",
@@ -228,16 +228,16 @@ export default function index() {
 
   const handleFileUpload = (event) => {
     setArr([]);
-    console.log(event, "eventt");
+    // console.log(event, "eventt");
     const file = event?.target?.files[0];
-    console.log(file, "seleceteddddfile");
+    // console.log(file, "seleceteddddfile");
 
     if (file) {
-      console.log(file, "fileeee");
+      // console.log(file, "fileeee");
       const reader = new FileReader();
 
       reader.onload = function (e) {
-        console.log("File read successfully");
+        // console.log("File read successfully");
         const data = new Uint8Array(e.target.result);
         const workbook = read(data, { type: "array" });
 
@@ -249,13 +249,10 @@ export default function index() {
           true
         );
 
-        // setShowTable(true);
-        // console.log(sheetData, "sheetdata");
         sheetData?.map((item, index) => {
           if (index != 0) {
             let obj = {
               courseCode: item[12],
-
               matriculationNumber: item[1],
               quiz1: item[2] == "" || item[2] == 0 ? "-" : item[2],
               quiz2: item[3] == "" || item[3] == 0 ? "-" : item[3],
@@ -269,9 +266,9 @@ export default function index() {
               exam: item[11] == "" ? 0 : item[11],
             };
             // arr.push(obj);
-            console.log(obj, "itemmm");
+            // console.log(obj, "itemmm");
             setArr([...arr, obj]);
-            console.log(arr, "afterrrr");
+            // console.log(arr, "afterrrr");
           }
         });
 
@@ -280,17 +277,17 @@ export default function index() {
         setHeaderArr(sheetData[0]);
         setMapArr(sheetData);
         // setArr(sheetData);
-        console.log(sheetData, "sheetData");
-        console.log(mapArr, "mapArr");
+        // console.log(sheetData, "sheetData");
+        // console.log(mapArr, "mapArr");
         setTimeout(() => {
           console.log(arr, "Arr");
         }, 2000);
-        console.log("Arr length:", arr.length);
+        // console.log("Arr length:", arr.length);
         renderUploadedDataTable();
       };
       reader.readAsArrayBuffer(file);
     } else {
-      console.log("file not selected");
+      // console.log("file not selected");
     }
   };
 
