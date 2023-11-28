@@ -12,6 +12,7 @@ import {
   DELETE_DEPARTMENT,
 } from "../../../pages/api/mutations/admin";
 import Spinner from "../../../components/spinner";
+
 export default function createDepartment() {
   const [getfacultyList, setGetFaculty] = useState([]);
   const [isLoading, setIsLoading] = useState(true); // Initially set loading to true

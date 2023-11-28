@@ -28,7 +28,7 @@ export default function AcknowledgementSlip({ data }) {
 					applicationformid: parseInt(Number),
 				},
 			});
-			console.log(Response.data, "response===");
+			console.log(Response);
 			setDetails(Response?.data?.acknowledgementPage);
 			setloading(false);
 		} catch (error) {
@@ -166,18 +166,20 @@ export default function AcknowledgementSlip({ data }) {
 													<p>Email</p>
 													<h4>{details?.email}</h4>
 												</div>
-												<div className="col-4 mt-n5">
+												<div
+													className="col-4 mt-n5"
+													style={{ maxWidth: "100%" }}>
 													<img
+														className=""
 														src={details?.person?.passportUrl}
 														alt="Passport"
 														style={{
-															height: "auto",
-															// width: "auto",
-															// maxWidth: "100%",
-															// width: "100%",
+															width: "200px",
+															height: "200px",
 														}}
-														width={200}
-														height={200}
+
+														// width={200}
+														// height={200}
 													/>
 												</div>
 											</div>
