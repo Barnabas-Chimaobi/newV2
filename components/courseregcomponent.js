@@ -15,6 +15,7 @@ import { Dialog } from "primereact/dialog";
 import { SAVE_STUDENT_COURSE_REGISTER } from "@/pages/api/mutations/adminMutation";
 import { useRouter } from "next/router";
 import { Constant } from "../constant";
+import { classNames } from "primereact/utils";
 
 export default function Courseregcomponent() {
 	const router = useRouter();
