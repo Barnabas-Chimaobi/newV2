@@ -167,10 +167,7 @@ export default function manageAdmission() {
             sessionid: sessionName?.Id,
           },
         });
-        // console.log(
-        //   unadmitted?.data?.unadmittedApplicants,
-        //   "Unadddddddddddddddddddddddddddd$$$$"
-        // );
+
         let unadmittedMap = unadmitted?.data?.unadmittedApplicants?.map(
           (item) => {
             return {
@@ -199,8 +196,6 @@ export default function manageAdmission() {
           admissionlistformnumber: previewList,
         },
       });
-      // console.log(admissionList?.data?.admissionListDtoNames, "gdgdgdgdgdg");
-      //   setverifyingbutton(true);
       setShowTable(true);
       setPostArr(admissionList?.data?.admissionListDtoNames);
       let mapRow = admissionList?.data?.admissionListDtoNames?.map((item) => {

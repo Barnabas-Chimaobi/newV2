@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
 import { Dropdown } from "primereact/dropdown";
@@ -13,11 +13,26 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Button } from "primereact/button";
 import { read, utils, writeFile } from "xlsx";
+import { SAVE_STUDENT_RESULT } from "@/pages/api/mutations/adminMutation";
 
 export default function index() {
   const [sessionName, setSession] = useState("");
   const [programmeName, setProgramme] = useState("");
   const [showTable, setShowTable] = useState(false);
+  const fileInputRef = useRef();
+  const [mapArr, setMapArr] = useState([]);
+  const [headerArr, setHeaderArr] = useState([]);
+  const [isFileUploaded, setIsFileUploaded] = useState(false);
+  const [arr, setArr] = useState([]);
+
+  const [
+    saveStudentResult,
+    {
+      loading: saveStudentResultLoad,
+      error: saveStudentResultError,
+      data: saveStudentResultData,
+    },
+  ] = useMutation(SAVE_STUDENT_RESULT);
 
   const {
     loading: loadingProgramme,
@@ -129,7 +144,7 @@ export default function index() {
   };
 
   const handleDownload = (data) => {
-    console.log(data, "dataaaa");
+    // console.log(data, "dataaaa");
     uploadSheetFunc(data);
   };
 
@@ -141,7 +156,7 @@ export default function index() {
           courseId: data.Id,
         },
       });
-      console.log(sheetResponse, "shettttdataaaa");
+      // console.log(sheetResponse, "shettttdataaaa");
 
       if (sheetResponse?.data?.uploadSheet?.resultDetails?.length > 0) {
         processExcelSheet(sheetResponse?.data?.uploadSheet?.resultDetails);
@@ -156,12 +171,12 @@ export default function index() {
   const processExcelSheet = (data) => {
     const XLSX = require("xlsx");
 
-    console.log(data.length, "dataaaasss");
-    console.log(data, "EXCELDATAAAAAA");
+    // console.log(data.length, "dataaaasss");
+    // console.log(data, "EXCELDATAAAAAA");
     const megaArr = [];
     const excelHeader = [
       "S/N",
-      "Matric Number",
+      "MatricNumber",
       "quiz1",
       "quiz2",
       "quiz3",
@@ -212,60 +227,147 @@ export default function index() {
   };
 
   const handleFileUpload = (event) => {
+    setArr([]);
+    // console.log(event, "eventt");
     const file = event?.target?.files[0];
-    const reader = new FileReader();
+    // console.log(file, "seleceteddddfile");
 
-    reader.onload = function (e) {
-      const data = new Uint8Array(e.target.result);
-      const workbook = read(data, { type: "array" });
+    if (file) {
+      // console.log(file, "fileeee");
+      const reader = new FileReader();
 
-      const sheetName = workbook.SheetNames[0];
-      const sheet = workbook.Sheets[sheetName];
-      const sheetData = utils.sheet_to_json(
-        sheet,
-        { header: 1, defval: null },
-        true
-      );
+      reader.onload = function (e) {
+        // console.log("File read successfully");
+        const data = new Uint8Array(e.target.result);
+        const workbook = read(data, { type: "array" });
 
-      setShowTable(true);
-      console.log(sheetData, "sheetdata");
-      sheetData?.map((item, index) => {
-        if (index != 0) {
-          let obj = {
-            courseCode: item[12],
-            exam: item[11] == "" ? 0 : item[11],
-            matriculationNumber: item[1],
-            quiz1: item[2] == "" || item[2] == 0 ? "-" : item[2],
-            quiz2: item[3] == "" || item[3] == 0 ? "-" : item[3],
-            quiz3: item[4] == "" || item[4] == 0 ? "-" : item[4],
-            quiz4: item[5] == "" || item[5] == 0 ? "-" : item[5],
-            quiz5: item[6] == "" || item[6] == 0 ? "-" : item[6],
-            quiz6: item[7] == "" || item[7] == 0 ? "-" : item[7],
-            quiz7: item[8] == "" || item[8] == 0 ? "-" : item[8],
-            quiz8: item[9] == "" || item[9] == 0 ? "-" : item[9],
-            quiz9: item[10] == "" || item[10] == 0 ? "-" : item[10],
-          };
-          arr.push(obj);
-        }
+        const sheetName = workbook.SheetNames[0];
+        const sheet = workbook.Sheets[sheetName];
+        const sheetData = utils.sheet_to_json(
+          sheet,
+          { header: 1, defval: null },
+          true
+        );
+
+        sheetData?.map((item, index) => {
+          if (index != 0) {
+            let obj = {
+              courseCode: item[12],
+              matriculationNumber: item[1],
+              quiz1: item[2] == "" || item[2] == 0 ? "-" : item[2],
+              quiz2: item[3] == "" || item[3] == 0 ? "-" : item[3],
+              quiz3: item[4] == "" || item[4] == 0 ? "-" : item[4],
+              quiz4: item[5] == "" || item[5] == 0 ? "-" : item[5],
+              quiz5: item[6] == "" || item[6] == 0 ? "-" : item[6],
+              quiz6: item[7] == "" || item[7] == 0 ? "-" : item[7],
+              quiz7: item[8] == "" || item[8] == 0 ? "-" : item[8],
+              quiz8: item[9] == "" || item[9] == 0 ? "-" : item[9],
+              quiz9: item[10] == "" || item[10] == 0 ? "-" : item[10],
+              exam: item[11] == "" ? 0 : item[11],
+            };
+            // arr.push(obj);
+            // console.log(obj, "itemmm");
+            setArr([...arr, obj]);
+            // console.log(arr, "afterrrr");
+          }
+        });
+
+        setShowTable(false);
+        setIsFileUploaded(true);
+        setHeaderArr(sheetData[0]);
+        setMapArr(sheetData);
+        // setArr(sheetData);
+        // console.log(sheetData, "sheetData");
+        // console.log(mapArr, "mapArr");
+        setTimeout(() => {
+          console.log(arr, "Arr");
+        }, 2000);
+        // console.log("Arr length:", arr.length);
+        renderUploadedDataTable();
+      };
+      reader.readAsArrayBuffer(file);
+    } else {
+      // console.log("file not selected");
+    }
+  };
+
+  // useEffect(() => {
+  //   if (isFileUploaded) {
+  //     renderUploadedDataTable();
+  //   }
+  // }, [isFileUploaded]);
+
+  const renderUploadedDataTable = () => {
+    console.log("Arr length in renderUploadedDataTable:", arr, headerArr);
+    return (
+      <div class="card card-table mt-3">
+        <DataTable value={arr} tableStyle={{ minWidth: "60rem" }}>
+          {/* {headerArr?.map((x, i) => {
+            console.log(x, "parammmm");
+            return <Column field={x} header={x.toUpperCase()} />;
+          })} */}
+
+          <Column field="s/n" header="S/N" />
+          <Column field="courseCode" header="courseCode" />
+          <Column field="matriculationNumber" header="Matric Number" />
+          <Column field="quiz1" header="Quiz 1" />
+          <Column field="quiz2" header="Quiz 2" />
+          <Column field="quiz3" header="Quiz 3" />
+          <Column field="quiz4" header="Quiz 4" />
+          <Column field="quiz5" header="Quiz 5" />
+          <Column field="quiz6" header="Quiz 6" />
+          <Column field="quiz7" header="Quiz 7" />
+          <Column field="quiz8" header="Quiz 8" />
+          <Column field="quiz9" header="Quiz 9" />
+          <Column field="exam" header="Exam" />
+        </DataTable>
+        <div className="ml-auto mt-2">
+          <Button
+            label="Save"
+            severity="success"
+            onClick={() => saveStudentResultFunc()}
+          />
+        </div>
+      </div>
+    );
+  };
+
+  const saveStudentResultFunc = async () => {
+    try {
+      const saveStudentResultResponse = await saveStudentResult({
+        variables: {
+          sessionid: sessionName?.Id,
+          result: arr,
+        },
       });
-      setMapArr(sheetData);
-    };
-    reader.readAsArrayBuffer(file);
+      // setShowModal(false);
+      console.log(saveStudentResultResponse, "resultttt");
+      if (saveStudentResultResponse?.data?.saveStudentResult) {
+        toast.success("Result has been uploaded");
+      } else {
+        toast.error("Error occured while uploading");
+      }
+    } catch (err) {
+      toast.error(err.message);
+    }
   };
 
   const renderUploadButton = (rowData) => {
     return (
-      <Button
-        icon="pi pi-upload"
-        label="Upload"
-        onClick={() => handleFileUpload(rowData)}
-      />
+      <div>
+        <input
+          type="file"
+          style={{ display: "none" }}
+          onChange={(e) => handleFileUpload(e)}
+          ref={fileInputRef}
+        />
+        <Button
+          icon="pi pi-upload"
+          label="Upload"
+          onClick={() => fileInputRef.current.click()}
+        />
+      </div>
     );
-  };
-
-  const createExcelSheet = (data) => {
-    console.log(data, "dataaaa");
-    uploadSheetFunc(data);
   };
 
   const tableRow = assignedCoursesData?.assignedCourses?.map((item, index) => {
@@ -331,6 +433,9 @@ export default function index() {
             </div>
 
             <div class="col-sm-12">
+              <div className="col-sm-12">
+                {isFileUploaded && renderUploadedDataTable()}
+              </div>
               {showTable ? (
                 <div class="card card-table">
                   <DataTable
@@ -339,8 +444,8 @@ export default function index() {
                   >
                     <Column field="Code" header="Code"></Column>
                     <Column field="Title" header="Title"></Column>
-                    <Column body={renderDownloadButton} />
-                    <Column body={renderUploadButton} />
+                    <Column body={(item) => renderDownloadButton(item)} />
+                    <Column body={() => renderUploadButton()} />
                   </DataTable>
                 </div>
               ) : null}

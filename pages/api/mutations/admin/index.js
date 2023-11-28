@@ -1073,3 +1073,31 @@ export const DELETE_COURSE = gql`
     deleteCourse(id: $deleteCourseId)
   }
 `;
+
+export const SAVE_GRADE = gql`
+  mutation SaveGrade(
+    $gradevalue: String!
+    $gradeweight: Int!
+    $lowestno: Int!
+    $highestno: Int!
+    $sessionid: Int!
+    $gradedescription: String!
+  ) {
+    saveGrade(
+      gradevalue: $gradevalue
+      gradeweight: $gradeweight
+      lowestno: $lowestno
+      highestno: $highestno
+      sessionid: $sessionid
+      gradedescription: $gradedescription
+    ) {
+      id
+      gradeValue
+      gradeWeight
+      lowestNo
+      highestNo
+      sessionId
+      gradeDescription
+    }
+  }
+`;

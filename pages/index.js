@@ -145,9 +145,7 @@ const Home = () => {
 						aria-label="Toggle navigation">
 						<i class="fas fa-bars"></i>
 					</button> */}
-					<div
-						class="collapse navbar-collapse justify-content-end mr-8"
-						id="navbarNav">
+					<div class=" navbar-collapse justify-content-end mr-8" id="navbarNav">
 						<ul class="navbar-nav">
 							<li class="nav-item">
 								<a

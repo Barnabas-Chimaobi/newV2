@@ -1472,3 +1472,17 @@ export const ALL_USER = gql`
     }
   }
 `;
+
+export const ALL_GRADES = gql`
+  query AllGrades {
+    allGrades {
+      id
+      gradeValue
+      gradeWeight
+      lowestNo
+      highestNo
+      sessionId
+      gradeDescription
+    }
+  }
+`;
