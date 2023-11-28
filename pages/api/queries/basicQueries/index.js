@@ -1221,6 +1221,8 @@ export const STUDENT_COURSE_REG = gql`
 						lastModified
 						score
 						courseAssignmentId
+						examScore
+						caScore
 					}
 					semesterId
 					semesterName
