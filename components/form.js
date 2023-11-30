@@ -303,6 +303,7 @@ export default function GenericForm({
 		let secondSittingSelected = secondexamNumber !== null;
 		console.log(
 			checkFirstSittingSelected,
+			isEmptySubject1,
 			secondSittingSelected,
 			firstexamNumber,
 			secondexamNumber,
@@ -360,6 +361,17 @@ export default function GenericForm({
 				severity: "info",
 				summary: "Info",
 				detail: "Please ensure you choose grade for all selected subjects",
+			});
+		} else if (
+			!checkFirstSittingSelected &&
+			isEmptySubject1 &&
+			!secondSittingSelected &&
+			isEmptySubjectSecond
+		) {
+			toasts.current.show({
+				severity: "info",
+				summary: "Info",
+				detail: "Please provide your O-Level details",
 			});
 		} else {
 			console.log("jhgfdsfghjklkjhgfdghjk======");
