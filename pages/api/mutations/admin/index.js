@@ -1101,3 +1101,132 @@ export const SAVE_GRADE = gql`
     }
   }
 `;
+
+export const SAVE_HOSTEL_TYPE = gql`
+  mutation SaveHostelType(
+    $hostelTypeName: String!
+    $hostelTypeDescription: String!
+  ) {
+    saveHostelType(
+      hostelTypeName: $hostelTypeName
+      hostelTypeDescription: $hostelTypeDescription
+    ) {
+      id
+      hostel_Type_Name
+      hostel_Type_Description
+    }
+  }
+`;
+
+export const SAVE_HOSTEL = gql`
+  mutation SaveHostel(
+    $name: String!
+    $description: String!
+    $capacity: Int!
+    $activated: Boolean!
+    $hostelTypeId: Int!
+  ) {
+    saveHostel(
+      name: $name
+      description: $description
+      capacity: $capacity
+      activated: $activated
+      hostelTypeId: $hostelTypeId
+    ) {
+      id
+      name
+      description
+      capacity
+      hostelType {
+        id
+        hostel_Type_Name
+      }
+      activated
+    }
+  }
+`;
+
+export const SAVE_HOSTEL_SERIES = gql`
+  mutation SaveHostelSeries(
+    $name: String!
+    $activated: Boolean!
+    $hostelId: Int!
+  ) {
+    saveHostelSeries(name: $name, activated: $activated, hostelId: $hostelId) {
+      id
+      name
+      activated
+      hostel {
+        name
+        id
+      }
+    }
+  }
+`;
+
+export const SAVE_HOSTEL_ROOMS = gql`
+  mutation SaveHostelRoom(
+    $number: String!
+    $reserved: Boolean!
+    $activated: Boolean!
+    $seriesId: Int!
+    $hostelId: Int!
+    $roomCapacity: Int!
+    $corners: Int!
+    $allocated: Boolean!
+  ) {
+    saveHostelRoom(
+      number: $number
+      reserved: $reserved
+      activated: $activated
+      seriesId: $seriesId
+      hostelId: $hostelId
+      roomCapacity: $roomCapacity
+      corners: $corners
+      allocated: $allocated
+    ) {
+      id
+      number
+      reserved
+      activated
+      series {
+        id
+        name
+      }
+      hostel {
+        id
+        name
+      }
+      roomCapacity
+      corners
+    }
+  }
+`;
+
+export const UPDATE_COURSE = gql`
+  mutation UpdateCourse($updateCourseId: Int!, $name: String!, $code: String!) {
+    updateCourse(id: $updateCourseId, name: $name, code: $code) {
+      id
+      name
+      code
+    }
+  }
+`;
+
+export const UPDATE_FORM_PREFIX = gql`
+  mutation UpdateApplicationFormPrefix(
+    $updateApplicationFormPrefixId: Long!
+    $prefix: String!
+  ) {
+    updateApplicationFormPrefix(
+      id: $updateApplicationFormPrefixId
+      prefix: $prefix
+    )
+  }
+`;
+
+export const DELETE_PREFIX = gql`
+  mutation DeleteApplicationFormPrefix($deleteApplicationFormPrefixId: Long!) {
+    deleteApplicationFormPrefix(id: $deleteApplicationFormPrefixId)
+  }
+`;

@@ -280,7 +280,7 @@ export default function index() {
         // console.log(sheetData, "sheetData");
         // console.log(mapArr, "mapArr");
         setTimeout(() => {
-          console.log(arr, "Arr");
+          // console.log(arr, "Arr");
         }, 2000);
         // console.log("Arr length:", arr.length);
         renderUploadedDataTable();
@@ -344,6 +344,7 @@ export default function index() {
       console.log(saveStudentResultResponse, "resultttt");
       if (saveStudentResultResponse?.data?.saveStudentResult) {
         toast.success("Result has been uploaded");
+        setShowTable(falseq);
       } else {
         toast.error("Error occured while uploading");
       }

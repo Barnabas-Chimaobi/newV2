@@ -61,7 +61,7 @@ export default function fee() {
     try {
       const delResponse = await deleteFee({
         variables: {
-          deleteFeeId: id,
+          deleteFeeId: data?.Id,
         },
       });
       allFee();
