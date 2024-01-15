@@ -4,7 +4,11 @@ import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
 import { Column } from "primereact/column";
 import { isNullableType } from "graphql";
 import Table from "../../../components/table";
-import { SAVE_COURSE, DELETE_COURSE } from "@/pages/api/mutations/admin";
+import {
+  SAVE_COURSE,
+  DELETE_COURSE,
+  UPDATE_COURSE,
+} from "@/pages/api/mutations/admin";
 import { ALL_COURSE } from "@/pages/api/queries/admin";
 
 export default function createCourse() {
@@ -17,6 +21,15 @@ export default function createCourse() {
     getAllCourse,
     { loading: allCourseLoad, error: allCourseError, data: allCourseData },
   ] = useLazyQuery(ALL_COURSE);
+
+  const [
+    updateCourse,
+    {
+      loading: updateCourseLoad,
+      error: updateCourseError,
+      data: updateCourseData,
+    },
+  ] = useMutation(UPDATE_COURSE);
 
   const [
     deleteCourse,
@@ -45,6 +58,21 @@ export default function createCourse() {
     }
   };
 
+  const updateCourseFunc = async (data) => {
+    try {
+      const updateCoursePayload = await updateCourse({
+        variables: {
+          updateCourseId: data?.Id,
+          name: data?.CourseName,
+          code: data?.CourseCode,
+        },
+      });
+      getAllCourse();
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
+
   const deleteCourseFunc = async (data) => {
     console.log(data, "coursedata");
     try {
@@ -53,6 +81,7 @@ export default function createCourse() {
           deleteCourseId: data?.Id,
         },
       });
+      getAllCourse();
     } catch (err) {
       toast.error(err.message);
     }
@@ -136,7 +165,7 @@ export default function createCourse() {
           variablesForQuery={{}}
           tableContent={tableRow}
           dropDownObjects={DropDownObjects}
-          editFunc={{}}
+          editFunc={updateCourseFunc}
           deleteFunc={deleteCourseFunc}
         />
       </div>

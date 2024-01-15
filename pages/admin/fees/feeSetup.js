@@ -196,6 +196,14 @@ export default function feeSetup() {
       });
       console.log(details, "detailsssss");
       toast.success("Fee Setup added");
+      setSelectedDept([]);
+      setSelectedFees([]);
+      setFeeType("");
+      setLevel("");
+      setSession("");
+      setProgramme("");
+      setPaymentMode("");
+      setFeeSetupName("");
     } catch (err) {
       toast.error(err.message);
     }
