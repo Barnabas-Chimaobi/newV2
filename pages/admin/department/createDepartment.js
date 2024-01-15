@@ -77,7 +77,7 @@ export default function createDepartment() {
       const saveResponse = await saveDept({
         variables: {
           name: data?.Name,
-          facultyid: data?.Faculty?.Id,
+          facultyid: data?.FacultyId?.Id,
           deptCode: data?.DeptCode,
         },
       });
@@ -95,10 +95,10 @@ export default function createDepartment() {
         variables: {
           updateDepartmentId: data?.Id,
           name: data?.Name,
-          facultyId: data?.Faculty?.Id,
+          facultyId: data?.FacultyId,
         },
       });
-      //console.log(editResponse, "responseedit");
+      console.log(editResponse, "responseedit");
       allDepartment();
     } catch (err) {
       toast.error(err.message);
@@ -185,6 +185,7 @@ export default function createDepartment() {
       DeptCode: item?.code,
       Faculty: item?.faculty?.name,
       Id: item?.id,
+      FacultyId: item?.faculty?.id,
     };
   });
 

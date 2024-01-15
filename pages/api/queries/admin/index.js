@@ -1486,3 +1486,66 @@ export const ALL_GRADES = gql`
     }
   }
 `;
+
+export const ALL_HOSTEL_TYPES = gql`
+  query AllHostelTypes {
+    allHostelTypes {
+      id
+      hostel_Type_Name
+      hostel_Type_Description
+    }
+  }
+`;
+
+export const ALL_HOSTEL = gql`
+  query AllHostels {
+    allHostels {
+      id
+      name
+      description
+      capacity
+      hostelType {
+        hostel_Type_Name
+        id
+      }
+    }
+  }
+`;
+
+export const ALL_HOSTEL_SERIES = gql`
+  query AllHostelSeries {
+    allHostelSeries {
+      id
+      name
+      hostel {
+        id
+        name
+        capacity
+        hostelType {
+          id
+          hostel_Type_Name
+        }
+      }
+    }
+  }
+`;
+
+export const ALL_HOSTEL_ROOMS = gql`
+  query AllHostelRooms {
+    allHostelRooms {
+      id
+      number
+      reserved
+      series {
+        id
+        name
+      }
+      hostel {
+        id
+        name
+      }
+      corners
+      roomCapacity
+    }
+  }
+`;
