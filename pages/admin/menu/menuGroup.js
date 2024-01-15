@@ -23,6 +23,7 @@ export default function menuGroup() {
       data: allMenuGroupData,
     },
   ] = useLazyQuery(ALL_MENU_GROUP);
+
   const [
     saveMenuGroup,
     {
@@ -31,6 +32,7 @@ export default function menuGroup() {
       data: saveMenuGroupData,
     },
   ] = useMutation(SAVE_MENU_GROUP);
+
   const [
     deleteMenuGroup,
     {
@@ -106,7 +108,7 @@ export default function menuGroup() {
   };
 
   const tableRow = allMenuGroupData?.allMenuGroup?.map((item) => {
-    console.log(item, "itemmmm");
+    // console.log(item, "itemmmm");
     return {
       Name: item?.name,
       Icon: item?.icon,

@@ -4,7 +4,11 @@ import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
 import { Column } from "primereact/column";
 import { isNullableType } from "graphql";
 import Table from "../../../components/table";
-import { CREATE_PREFIX } from "@/pages/api/mutations/admin";
+import {
+  CREATE_PREFIX,
+  UPDATE_FORM_PREFIX,
+  DELETE_PREFIX,
+} from "@/pages/api/mutations/admin";
 import { VIEW_ALL_PREFIX, ALL_PROGRAMME } from "@/pages/api/queries/admin";
 
 export default function index() {
@@ -17,6 +21,25 @@ export default function index() {
       data: createPrefixData,
     },
   ] = useMutation(CREATE_PREFIX);
+
+  const [
+    updateFormPrefix,
+    {
+      loading: updatePrefixLoad,
+      error: updatePrefixError,
+      data: updatePrefixData,
+    },
+  ] = useMutation(UPDATE_FORM_PREFIX);
+
+  const [
+    deletePrefix,
+    {
+      loading: deletePrefixLoad,
+      error: deletePrefixError,
+      data: deletePrefixData,
+    },
+  ] = useMutation(DELETE_PREFIX);
+
   const [
     viewPrefix,
     { loading: viewPrefixLoad, error: viewPrefixError, data: viewPrefixData },
@@ -34,6 +57,25 @@ export default function index() {
           applicationNumberPrefix: data?.ApplicationFormPrefix,
           programmeId: data?.Programme?.Id,
         },
+      },
+    });
+    viewPrefix();
+  };
+
+  const editFunc = async (data) => {
+    const updatePayload = await updateFormPrefix({
+      variables: {
+        updateApplicationFormPrefixId: data?.Id,
+        prefix: data?.ApplicationFormPrefix,
+      },
+    });
+    viewPrefix();
+  };
+
+  const deletePrefixFunc = async (data) => {
+    const deletePayload = await deletePrefix({
+      variables: {
+        deleteApplicationFormPrefixId: data?.Id,
       },
     });
     viewPrefix();
@@ -99,6 +141,7 @@ export default function index() {
       return {
         ApplicationFormPrefix: item?.applicationNumberPrefix,
         Programme: item?.programme?.name,
+        Id: item?.id,
       };
     }
   );
@@ -147,7 +190,8 @@ export default function index() {
                 variablesForQuery={{}}
                 tableContent={tableRow}
                 dropDownObjects={DropDownObjects}
-                deleteFunc={{}}
+                deleteFunc={deletePrefixFunc}
+                editFunc={editFunc}
               />
             </div>
           )}
