@@ -121,7 +121,7 @@ export default function courseAssignment() {
         },
       });
       setShowTable(true);
-      console.log(courseAssignResponse, "responseee");
+      // console.log(courseAssignResponse, "responseee");
     } catch (err) {
       toast.error(err.message);
     }
@@ -160,7 +160,6 @@ export default function courseAssignment() {
       sortable: true,
       style: { minWidth: "12rem", backgroundColor: "white" },
     },
-    // Add more headers as needed
   ];
 
   const generateColumnTemplates = (headers) => {
@@ -313,7 +312,7 @@ export default function courseAssignment() {
         {showTable ? (
           <div className="px-5">
             <Table
-              saveFunc={{}}
+              saveFunc={false}
               headers={headers}
               generateColumnTemplates={generateColumnTemplates}
               tableName={"Course Assignment"}

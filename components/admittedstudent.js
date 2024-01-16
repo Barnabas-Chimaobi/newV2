@@ -28,6 +28,7 @@ import { useSelector } from "react-redux";
 export default function Admittedstudent({}) {
   const statusState = useSelector((state) => state.invoice.statuses);
   const status = statusState.status;
+  console.log(status, "statuss");
   const formNo = statusState.formNo;
   const dispatch = useDispatch();
   const router = useRouter();
@@ -68,11 +69,11 @@ export default function Admittedstudent({}) {
         status: status?.data?.checkAdmissionStatus,
         formNo: formNo,
       };
-      console.log(status, "status========ss");
+      // console.log(status, "status========ss");
 
       dispatch(statuses(object));
     } catch (err) {
-      console.log(err, "errr========ss");
+      // console.log(err, "errr========ss");
     }
   };
 
@@ -187,11 +188,11 @@ export default function Admittedstudent({}) {
           invoicenumber: invoiceNumber,
         },
       });
-      console.log(invoiceResponse, "invoice====");
+      // console.log(invoiceResponse, "invoice====");
       // setDetails(invoiceResponse?.data?.invoice);
       // setloading(false);
     } catch (error) {
-      console.error("Error fetching invoice:", error);
+      // console.error("Error fetching invoice:", error);
     }
   };
 
@@ -238,11 +239,11 @@ export default function Admittedstudent({}) {
           invoicenumber: invoice,
         },
       });
-      console.log(receiptResponse.data, "recepp=========");
+      // console.log(receiptResponse.data, "recepp=========");
       // setDetails(receiptResponse?.data?.receipt);
       // setloading(false);
     } catch (error) {
-      console.error("Error Receipt invoice:", error);
+      // console.error("Error Receipt invoice:", error);
     }
   };
 
@@ -254,7 +255,7 @@ export default function Admittedstudent({}) {
       let newUrl = `/common/receipt/ ${Encrypt(invoiceNo)}`;
       window.open(newUrl, "_blank");
       // router.push(Constant.BASE_URL + `/common/receipt/` + Encrypt(invoiceNo));
-      console.log(invoiceNo, "invnooo");
+      // console.log(invoiceNo, "invnooo");
       window.location.reload();
     } catch (error) {
       // console.error("Error fetching form:", error);
