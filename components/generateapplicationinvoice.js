@@ -23,6 +23,7 @@ import { useRouter } from "next/router";
 import { Constant } from "../constant";
 import NairaFormatter from "./nairaformatter";
 import Encrypt from "@/components/encrypt";
+import Loader from "./loadingpage";
 
 export default function Generateapplicationinvoice() {
 	const router = useRouter();
@@ -60,7 +61,7 @@ export default function Generateapplicationinvoice() {
 	const [formAmount, setformAmount] = useState("0");
 	const [departmentOptions, setdepartmentOptions] = useState([]);
 	const [departmentOption, setdepartmentOption] = useState("");
-
+	const [loading, setLoading] = useState(false);
 	const headers = [
 		{
 			field: "Programme",
@@ -413,11 +414,17 @@ export default function Generateapplicationinvoice() {
 		});
 		console.log(invoice.data, "Invoiceeeeeeeeeee");
 		setverifyingbutton(false);
-		router.push(
+		// router.push(
+		// 	Constant.BASE_URL +
+		// 		`/common/invoice/` +
+		// 		Encrypt(invoice?.data?.generateApplicationInvoice)
+		// );
+		getPreviousApplication();
+		let link =
 			Constant.BASE_URL +
-				`/common/invoice/` +
-				Encrypt(invoice?.data?.generateApplicationInvoice)
-		);
+			`/common/invoice/` +
+			Encrypt(invoice?.data?.generateApplicationInvoice);
+		window.open(link, "_blank");
 	};
 
 	const openApplyPage = () => {
@@ -426,7 +433,6 @@ export default function Generateapplicationinvoice() {
 		setpageThree("");
 		setTabFour("Active");
 		setpageFour("Active Show");
-
 		//console.log(tabThree, pageThree, tabFour, pageFour, "Page buttonssss")
 	};
 	const openSpecificPage = (no) => {
@@ -447,10 +453,40 @@ export default function Generateapplicationinvoice() {
 		// }
 	};
 
+	const getPreviousApplication = async () => {
+		// setLoading(true);
+		const previousApplicationsResponse = await getPreviousApplications({
+			variables: {
+				email: email,
+			},
+		});
+		// setLoading(false);
+		var data = previousApplicationsResponse?.data?.allApplications;
+		if (data != null) {
+			var remappeddata = data.map((item) => ({
+				Programme: item?.programmeName,
+				Department: item?.departmentName,
+				Session: item?.sessionName,
+				Status: item?.status,
+				InvoiceNumber: item?.invoiceNumber,
+				Id: item?.id,
+				IsAdmitted: item?.isAdmitted,
+			}));
+			console.log(remappeddata, data, "Daataaa for Table");
+			settableData(remappeddata);
+			setTabFour("");
+			setpageFour("");
+			setTabThree("Active");
+			setpageThree("Active Show");
+		}
+
+		console.log(previousApplicationsResponse.data, "data=======");
+	};
+
 	return (
 		<>
 			<ToastContainer />
-
+			{loading && <Loader />}
 			<Header>
 				<div className="Homepage-wrapper">
 					<div className="content container-fluid">
@@ -789,6 +825,9 @@ export default function Generateapplicationinvoice() {
 																		tableContent={tableData}
 																		showInvoiceButton={true}
 																		fillApplicationForm={true}
+																		refetch={() => {
+																			getPreviousApplication();
+																		}}
 																	/>
 																</div>
 															</div>
