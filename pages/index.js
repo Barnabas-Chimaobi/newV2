@@ -12,6 +12,9 @@ import { toast, ToastContainer } from "react-toastify";
 import Spinner from "@/components/spinner";
 
 import formatTime from "@/components/timeconverter";
+import Navbar from "@/components/ugoComponent/Navbar";
+import CarouselComponent from "@/components/ugoComponent/CarouselComponent";
+import BlueHomeNav from "@/components/ugoComponent/BlueHomeNav";
 
 const Home = () => {
   // what is code
@@ -128,143 +131,16 @@ const Home = () => {
       {isLoading && <Spinner />}
       {/* <div class=""> */}
       {/* <HeaderLanding /> */}
-      <nav
-        class="navbar navbar-expand-lg navbar-light"
-        style={{ backgroundColor: "#2A166D" }}>
-        <div class="container-fluid">
-          {/* <a class="navbar-brand" href="#">
-						Navbar
-					</a>
-					<button
-						class="navbar-toggler"
-						type="button"
-						data-mdb-toggle="collapse"
-						data-mdb-target="#navbarNav"
-						aria-controls="navbarNav"
-						aria-expanded="false"
-						aria-label="Toggle navigation">
-						<i class="fas fa-bars"></i>
-					</button> */}
 
-          <div
-            class="collapse navbar-collapse justify-content-end mr-8"
-            id="navbarNav">
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                <a
-                  class="nav-link text-white pr-5"
-                  aria-current="page"
-                  href="#">
-                  School Website
-                </a>
-              </li>
+      <BlueHomeNav />
 
-              <li class="nav-item">
-                <a class="nav-link text-white" href="#">
-                  Staff portal
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-          <a class="navbar-brand me-2" href="https://mdbgo.com/">
-            <img
-              src={Constant.SCHOOL_LOGO}
-              height="35"
-              alt="MDB Logo"
-              loading="lazy"
-              // style="margin-top: -1px;"
-            />
-          </a>
-
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-mdb-toggle="collapse"
-            data-mdb-target="#navbarButtonsExample"
-            aria-controls="navbarButtonsExample"
-            aria-expanded="false"
-            aria-label="Toggle navigation">
-            <i class="fas fa-bars"></i>
-          </button>
-
-          <div class="collapse navbar-collapse" id="navbarButtonsExample">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a style={{ marginBottom: 0 }} class="nav-link" href="#">
-                  <h4
-                    class="text-black font-bold"
-                    style={{ fontSize: 16, marginBottom: 0 }}>
-                    {Constant.SCHOOL_NAME}
-                  </h4>
-                  <p
-                    class="text-black font-bold"
-                    style={{ fontSize: 12, marginBottom: 0 }}>
-                    {Constant.SCHOOL_ADDRESS}
-                  </p>
-                </a>
-              </li>
-            </ul>
-
-            <div class="row  col-sm-12 col-lg-4">
-              <a
-                aria-current="page"
-                class=" nav-link  btn-link text-black  dropdown-toggle col-3 col-lg-5"
-                // type="button"
-                // id="dropdownMenuButton"
-                // data-mdb-toggle="dropdown"
-                aria-expanded="false">
-                Returning Students
-              </a>
-
-              <div class="dropdown col-lg-4">
-                <a
-                  class="nav-link btn-link text-black  dropdown-toggle "
-                  type="button"
-                  id="dropdownMenuButton"
-                  data-mdb-toggle="dropdown"
-                  aria-expanded="false">
-                  Applicant
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <li>
-                    <a class="dropdown-item" href="#">
-                      Application Guide
-                    </a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="/applicant/applicationform">
-                      Manage Application
-                    </a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="/applicant/checkAdmission">
-                      Check Admission Status
-                    </a>
-                  </li>
-                </ul>
-              </div>
-
-              <a
-                class="nav-link text-black btn-link px-3 me-2 col-lg-2 col-4"
-                href="./login"
-                // onClick={() => router.push("./login")}
-              >
-                Login
-              </a>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <Navbar />
+      {/* <CarouselComponent /> */}
 
       <div
         // style={{ height: 500 }}
         id="carouselExampleCrossfade"
-        class="carousel slide carousel-fade"
+        class="carousel slide carousel-fade mb-lg-0 mb-4"
         data-mdb-ride="carousel">
         <div class="carousel-indicators justify-content-start">
           <button
@@ -309,7 +185,7 @@ const Home = () => {
             </div>
             <img
               src={Constant.ILAROGATE}
-              class="d-block w-100 h-50"
+              class="d-block w-100 h-100"
               alt="Wild Landscape"
             />
           </div>
@@ -398,7 +274,7 @@ const Home = () => {
 			/> */}
 
       <div
-        class="sideIcon col-lg-6 col-sm-6 mb-8"
+        className="sideIcon col-lg-6 col-sm-6 mb-8 mt-sm-8"
         style={{
           position: "relative",
           float: "right",
@@ -409,32 +285,32 @@ const Home = () => {
         }}>
         <div class="nav-center p-5 py-3  d-flex  justify-content-around">
           <div class=" p-2">
-            <a href="#" class=" text-white font-bold">
+            <a href="/login" class=" text-white font-bold">
               Generate Invoice
             </a>
           </div>
           <div class=" p-2">
-            <a href="#" class="text-white font-bold">
-              Fill appliction form
+            <a href="/applicant/applicationform" class="text-white font-bold">
+              Fill application form
             </a>
           </div>
 
           <div class=" p-2">
-            <a href="#" class="text-white font-bold">
+            <a href="/applicant/checkAdmission" class="text-white font-bold">
               Application Status
             </a>
           </div>
         </div>
       </div>
       <div class=" container flex justify-content-center col-lg-9">
-        <h4 class="font-bold pb-3 text-decoration-underline">INSTRUCTIONS</h4>
+        <h4 class="font-bold pb-3 text">INSTRUCTIONS</h4>
       </div>
       <div class=" container flex justify-content-center col-lg-9">
         <div class="card mb-3 ">
           <div class="row g-0" style={{ backgroundColor: "#2A166D" }}>
             <div class="col-md-3">
               <img
-                style={{ width: 320, height: 320 }}
+                style={{ width: "auto", height: "auto" }}
                 src={Constant.Rectangle}
                 alt="Trendy Pants and Shoes"
                 class="img-fluid rounded-start d-block w-100"

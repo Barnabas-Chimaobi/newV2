@@ -40,7 +40,7 @@ const Layout = ({ children }) => {
               </a>
               <a href="index.html" className="logo logo-small">
                 <img
-                  src={Constant.SMALL_SCHOOL_LOGO}
+                  src={Constant.SCHOOL_LOGO}
                   alt="Logo"
                   width={30}
                   height={30}
@@ -53,14 +53,18 @@ const Layout = ({ children }) => {
               </a>
             </div>
 
-            <a className="mobile_btn" id="mobile_btn"></a>
+            <a
+              href="javascript:void(0);"
+              className="mobile_btn"
+              id="mobile_btn">
+              <i className="fas fa-bars" />
+            </a>
             <ul className="nav user-menu">
               <li className="nav-item dropdown has-arrow new-user-menus">
                 <a
                   href="#"
                   className="dropdown-toggle nav-link"
-                  data-bs-toggle="dropdown"
-                >
+                  data-bs-toggle="dropdown">
                   <span className="user-img">
                     <img
                       className="rounded-circle"
@@ -94,8 +98,7 @@ const Layout = ({ children }) => {
 
                   <Link
                     className="dropdown-item"
-                    href={Constant.BASE_URL + `/login`}
-                  >
+                    href={Constant.BASE_URL + `/login`}>
                     Logout
                   </Link>
                 </div>

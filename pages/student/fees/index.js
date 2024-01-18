@@ -135,10 +135,9 @@ function index() {
                         <AccordionTab
                           className="invoice-details invoice-details-two"
                           headerStyle={{}}
-                          header={item.level.name}
-                        >
-                          <div className="flex">
-                            <div className="col-7 card shadow">
+                          header={item.level.name}>
+                          <div className="d-block d-md-flex d-lg-flex gap-2">
+                            <div className="col-sm card shadow">
                               {item.listOfFees?.map((item) => {
                                 console.log(item?.payment?.feeDetail?.fees);
                                 return item?.payment?.feeDetail?.fees[0]
@@ -155,15 +154,14 @@ function index() {
                                         )
                                       }
                                       type="button"
-                                      class="btn btn-primary"
-                                    >
+                                      class="btn btn-primary">
                                       Generate Invoice
                                     </button>
                                   </div>
                                 );
                               })}
                             </div>
-                            <div className="card col-4 ml-8 flex justify-content-center">
+                            <div className="card p-3 col-sm ml-0 mr-0 ml-lg-8 ml-md-8 flex justify-content-center">
                               <p className=" font-bold">Other Fees </p>
                               <Dropdown
                                 // id={field.name}

@@ -82,14 +82,15 @@ const AdminLayout = ({ children }) => {
             <span className="ml-4">Admin Menu</span>
           </li>
 
-          {showMenu?.menu?.map((item) => (
-            // console.log(item, "items======"),
-            <Menu>
+          {/* <Sidebar breakPoint="sm" style={{ height: "100vh" }}> */}
+          <Menu>
+            {showMenu?.menu?.map((item) => (
+              // console.log(item, "items======"),
+
               <SubMenu
                 style={{ fontWeight: "bolder" }}
                 icon={<i className={item.icon} />}
-                label={item?.name}
-              >
+                label={item?.name}>
                 {item?.dropdowns?.map((drops) => (
                   <MenuItem onClick={() => gotoPath(drops?.path)}>
                     {" "}
@@ -97,8 +98,9 @@ const AdminLayout = ({ children }) => {
                   </MenuItem>
                 ))}
               </SubMenu>
-            </Menu>
-          ))}
+            ))}
+          </Menu>
+          {/* </Sidebar> */}
         </ul>
       </>
     );
@@ -112,12 +114,7 @@ const AdminLayout = ({ children }) => {
             <img src={Constant.SCHOOL_LOGO} alt="Logo" width={90} height={90} />
           </a>
           <a href="index.html" className="logo logo-small">
-            <img
-              src={Constant.SMALL_SCHOOL_LOGO}
-              alt="Logo"
-              width={30}
-              height={30}
-            />
+            <img src={Constant.SCHOOL_LOGO} alt="Logo" width={30} height={30} />
           </a>
         </div>
         <div className="menu-toggle">
@@ -126,7 +123,7 @@ const AdminLayout = ({ children }) => {
           </a>
         </div>
 
-        <a className="mobile_btn" id="mobile_btn">
+        <a href="javascript:void(0);" className="mobile_btn" id="mobile_btn">
           <i className="fas fa-bars" />
         </a>
         <ul className="nav user-menu">
@@ -134,8 +131,7 @@ const AdminLayout = ({ children }) => {
             <a
               href="#"
               className="dropdown-toggle nav-link"
-              data-bs-toggle="dropdown"
-            >
+              data-bs-toggle="dropdown">
               <span className="user-img">
                 <img
                   className="rounded-circle"
@@ -164,28 +160,28 @@ const AdminLayout = ({ children }) => {
                 </div>
               </div> */}
 
-							<a
-								className="dropdown-item"
-								href={Constant.BASE_URL + "/admin/profile"}>
-								My Profile
-							</a>
+              <a
+                className="dropdown-item"
+                href={Constant.BASE_URL + "/admin/profile"}>
+                My Profile
+              </a>
 
-							<Link
-								className="dropdown-item"
-								href={Constant.BASE_URL + `/login`}>
-								Logout
-							</Link>
-						</div>
-					</li>
-				</ul>
+              <Link
+                className="dropdown-item"
+                href={Constant.BASE_URL + `/login`}>
+                Logout
+              </Link>
+            </div>
+          </li>
+        </ul>
 
-				<div className="sidebar" id="sidebar">
-					{isLoading ? renderfunction() : <></>}
-				</div>
-			</div>
-			<div class="">{children}</div>
-		</div>
-	);
+        <div className="sidebar" id="sidebar">
+          {isLoading ? renderfunction() : <></>}
+        </div>
+      </div>
+      <div class="">{children}</div>
+    </div>
+  );
 };
 
 export default dynamic(() => Promise.resolve(AdminLayout), { ssr: false });

@@ -187,6 +187,7 @@ export default function DashboardAdmin() {
           </div>
         </div>
       </div>
+      {/* <AdminSidebar /> */}
     </div>
   );
 }
