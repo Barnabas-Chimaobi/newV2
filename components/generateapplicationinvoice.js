@@ -23,99 +23,99 @@ import { useRouter } from "next/router";
 import { Constant } from "../constant";
 import NairaFormatter from "./nairaformatter";
 import Encrypt from "@/components/encrypt";
-import ApplicationFormNav from "./ugoComponent/ApplicationFormNav";
+import Loader from "./loadingpage";
 
 export default function Generateapplicationinvoice() {
-  const router = useRouter();
-  const [toastText, setToastText] = useState("");
-  const [toastType, setToastType] = useState("");
-  const [email, setEmail] = useState("");
-  const [tabOne, setTabOne] = useState("active");
-  const [tabTwo, setTabTwo] = useState("");
-  const [tabThree, setTabThree] = useState("");
-  const [tabFour, setTabFour] = useState("");
-  const [tabFive, setTabFive] = useState("");
-  const [pageOne, setpageOne] = useState("active show");
-  const [pageTwo, setpageTwo] = useState("");
-  const [pageThree, setpageThree] = useState("");
-  const [pageFour, setpageFour] = useState("");
-  const [pageFive, setpageFive] = useState("");
-  const [verifyingbutton, setverifyingbutton] = useState(false);
-  const [verified, setverified] = useState("Verify");
-  const [disableverifiedButton, setdisableverifiedButton] = useState(false);
-  const [emailPerson, setemailPerson] = useState([]);
-  const [nationalities, setnationalities] = useState([]);
-  const [firstname, setfirstname] = useState("");
-  const [othername, setothername] = useState("");
-  const [lastname, setlastname] = useState("");
-  const [userstate, setuserstate] = useState("");
-  const [usernationality, setusernationality] = useState("");
-  const [phonenumber, setphonenumber] = useState("");
-  const [states, setStates] = useState([]);
-  const [createdUser, setcreatedUser] = useState([]);
-  const [tableData, settableData] = useState([]);
-  const [programmes, setprogrammes] = useState([]);
-  const [departments, setdepartments] = useState([]);
-  const [programme, setprogramme] = useState("");
-  const [department, setdepartment] = useState("");
-  const [formAmount, setformAmount] = useState("0");
-  const [departmentOptions, setdepartmentOptions] = useState([]);
-  const [departmentOption, setdepartmentOption] = useState("");
-
-  const headers = [
-    {
-      field: "Programme",
-      header: "Programme",
-      sortable: true,
-      style: { minWidth: "12rem", backgroundColor: "white" },
-    },
-    {
-      field: "Department",
-      header: "Department",
-      sortable: true,
-      style: { minWidth: "16rem", backgroundColor: "white" },
-    },
-    {
-      field: "Session",
-      header: "Session",
-      sortable: true,
-      style: { minWidth: "16rem", backgroundColor: "white" },
-    },
-    {
-      field: "Status",
-      header: "Status",
-      sortable: true,
-      style: { minWidth: "16rem", backgroundColor: "white", display: "none" },
-    },
-    {
-      field: "InvoiceNumber",
-      header: "InvoiceNumber",
-      sortable: true,
-      style: { minWidth: "16rem", backgroundColor: "white", display: "none" },
-    },
-    {
-      field: "IsAdmitted",
-      header: "Admitted",
-      sortable: true,
-      style: { minWidth: "16rem", backgroundColor: "white", display: "none" },
-    },
-    {
-      field: "Id",
-      header: "id",
-      sortable: true,
-      style: { minWidth: "16rem", backgroundColor: "white", display: "none" },
-    },
-    // Add more headers as needed
-  ];
-  const TableObj = {
-    Programme: "",
-    Department: "",
-    Session: "",
-    Status: "",
-    InvoiceNumber: "",
-    IsAdmitted: "",
-    Id: "",
-  };
+	const router = useRouter();
+	const [toastText, setToastText] = useState("");
+	const [toastType, setToastType] = useState("");
+	const [email, setEmail] = useState("");
+	const [tabOne, setTabOne] = useState("active");
+	const [tabTwo, setTabTwo] = useState("");
+	const [tabThree, setTabThree] = useState("");
+	const [tabFour, setTabFour] = useState("");
+	const [tabFive, setTabFive] = useState("");
+	const [pageOne, setpageOne] = useState("active show");
+	const [pageTwo, setpageTwo] = useState("");
+	const [pageThree, setpageThree] = useState("");
+	const [pageFour, setpageFour] = useState("");
+	const [pageFive, setpageFive] = useState("");
+	const [verifyingbutton, setverifyingbutton] = useState(false);
+	const [verified, setverified] = useState("Verify");
+	const [disableverifiedButton, setdisableverifiedButton] = useState(false);
+	const [emailPerson, setemailPerson] = useState([]);
+	const [nationalities, setnationalities] = useState([]);
+	const [firstname, setfirstname] = useState("");
+	const [othername, setothername] = useState("");
+	const [lastname, setlastname] = useState("");
+	const [userstate, setuserstate] = useState("");
+	const [usernationality, setusernationality] = useState("");
+	const [phonenumber, setphonenumber] = useState("");
+	const [states, setStates] = useState([]);
+	const [createdUser, setcreatedUser] = useState([]);
+	const [tableData, settableData] = useState([]);
+	const [programmes, setprogrammes] = useState([]);
+	const [departments, setdepartments] = useState([]);
+	const [programme, setprogramme] = useState("");
+	const [department, setdepartment] = useState("");
+	const [formAmount, setformAmount] = useState("0");
+	const [departmentOptions, setdepartmentOptions] = useState([]);
+	const [departmentOption, setdepartmentOption] = useState("");
+	const [loading, setLoading] = useState(false);
+	const headers = [
+		{
+			field: "Programme",
+			header: "Programme",
+			sortable: true,
+			style: { minWidth: "12rem", backgroundColor: "white" },
+		},
+		{
+			field: "Department",
+			header: "Department",
+			sortable: true,
+			style: { minWidth: "16rem", backgroundColor: "white" },
+		},
+		{
+			field: "Session",
+			header: "Session",
+			sortable: true,
+			style: { minWidth: "16rem", backgroundColor: "white" },
+		},
+		{
+			field: "Status",
+			header: "Status",
+			sortable: true,
+			style: { minWidth: "16rem", backgroundColor: "white", display: "none" },
+		},
+		{
+			field: "InvoiceNumber",
+			header: "InvoiceNumber",
+			sortable: true,
+			style: { minWidth: "16rem", backgroundColor: "white", display: "none" },
+		},
+		{
+			field: "IsAdmitted",
+			header: "Admitted",
+			sortable: true,
+			style: { minWidth: "16rem", backgroundColor: "white", display: "none" },
+		},
+		{
+			field: "Id",
+			header: "id",
+			sortable: true,
+			style: { minWidth: "16rem", backgroundColor: "white", display: "none" },
+		},
+		// Add more headers as needed
+	];
+	const TableObj = {
+		Programme: "",
+		Department: "",
+		Session: "",
+		Status: "",
+		InvoiceNumber: "",
+		IsAdmitted: "",
+		Id: "",
+	};
 
   const generateColumnTemplates = (headers) => {
     return headers.map((header) => (
@@ -401,113 +401,154 @@ export default function Generateapplicationinvoice() {
     setverifyingbutton(false);
   };
 
-  const generateInvoice = async () => {
-    setverifyingbutton(true);
-    const invoice = await generateApplicationInvoice({
-      variables: {
-        programmeId: programme?.code,
-        departmentId: department?.code,
-        formtypeid: 1,
-        personid: createdUser?.id,
-        departmentOptions: departmentOption?.code,
-      },
-    });
-    console.log(invoice.data, "Invoiceeeeeeeeeee");
-    setverifyingbutton(false);
-    router.push(
-      Constant.BASE_URL +
-        `/common/invoice/` +
-        Encrypt(invoice?.data?.generateApplicationInvoice)
-    );
-  };
+	const generateInvoice = async () => {
+		setverifyingbutton(true);
+		const invoice = await generateApplicationInvoice({
+			variables: {
+				programmeId: programme?.code,
+				departmentId: department?.code,
+				formtypeid: 1,
+				personid: createdUser?.id,
+				departmentOptions: departmentOption?.code,
+			},
+		});
+		console.log(invoice.data, "Invoiceeeeeeeeeee");
+		setverifyingbutton(false);
+		// router.push(
+		// 	Constant.BASE_URL +
+		// 		`/common/invoice/` +
+		// 		Encrypt(invoice?.data?.generateApplicationInvoice)
+		// );
+		getPreviousApplication();
+		let link =
+			Constant.BASE_URL +
+			`/common/invoice/` +
+			Encrypt(invoice?.data?.generateApplicationInvoice);
+		window.open(link, "_blank");
+	};
 
-  const openApplyPage = () => {
-    clearActiveTabsAndPages();
-    setTabThree("");
-    setpageThree("");
-    setTabFour("Active");
-    setpageFour("Active Show");
+	const openApplyPage = () => {
+		clearActiveTabsAndPages();
+		setTabThree("");
+		setpageThree("");
+		setTabFour("Active");
+		setpageFour("Active Show");
+		//console.log(tabThree, pageThree, tabFour, pageFour, "Page buttonssss")
+	};
+	const openSpecificPage = (no) => {
+		// if (no === 2) {
+		//     clearActiveTabsAndPages();
+		//     setTabTwo('Active');
+		//     setpageTwo('Active Show');
+		// }
+		// if (no === 3) {
+		//     clearActiveTabsAndPages();
+		//     settableData('Active');
+		//     setpageThree('Active Show');
+		// }
+		// if (no === 4) {
+		//     clearActiveTabsAndPages();
+		//     setTabFour('Active');
+		//     setpageFour('Active Show');
+		// }
+	};
 
-    //console.log(tabThree, pageThree, tabFour, pageFour, "Page buttonssss")
-  };
-  const openSpecificPage = (no) => {
-    // if (no === 2) {
-    //     clearActiveTabsAndPages();
-    //     setTabTwo('Active');
-    //     setpageTwo('Active Show');
-    // }
-    // if (no === 3) {
-    //     clearActiveTabsAndPages();
-    //     settableData('Active');
-    //     setpageThree('Active Show');
-    // }
-    // if (no === 4) {
-    //     clearActiveTabsAndPages();
-    //     setTabFour('Active');
-    //     setpageFour('Active Show');
-    // }
-  };
+	const getPreviousApplication = async () => {
+		// setLoading(true);
+		const previousApplicationsResponse = await getPreviousApplications({
+			variables: {
+				email: email,
+			},
+		});
+		// setLoading(false);
+		var data = previousApplicationsResponse?.data?.allApplications;
+		if (data != null) {
+			var remappeddata = data.map((item) => ({
+				Programme: item?.programmeName,
+				Department: item?.departmentName,
+				Session: item?.sessionName,
+				Status: item?.status,
+				InvoiceNumber: item?.invoiceNumber,
+				Id: item?.id,
+				IsAdmitted: item?.isAdmitted,
+			}));
+			console.log(remappeddata, data, "Daataaa for Table");
+			settableData(remappeddata);
+			setTabFour("");
+			setpageFour("");
+			setTabThree("Active");
+			setpageThree("Active Show");
+		}
 
-  return (
-    <div>
-      <ToastContainer />
-      <ApplicationFormNav />
-      {/* <Header> */}
-      <div className="Homepage-wrapper">
-        <div className="content container-fluid">
-          <div className="row">
-            <div className="col-lg-10 offset-lg-1 col-sm-12 offset-sm-1">
-              <div className="card bg-white">
-                <div className="card-header">
-                  <h5 className="card-title">Steps To Apply</h5>
-                </div>
-                <div className="card-body">
-                  <ul className="nav nav-tabs nav-tabs-solid nav-tabs-rounded">
-                    <li className="nav-item">
-                      <a
-                        className={`nav-link ${tabOne !== "" ? "active" : ""}`}
-                        href="#solid-rounded-tab1"
-                        data-bs-toggle="tab"
-                        {...(email === "" ? { disabled: "disabled" } : {})}>
-                        Email Verification
-                      </a>
-                    </li>
-                    <li className="nav-item">
-                      <a
-                        className={`nav-link ${tabTwo !== "" ? "active" : ""}`}
-                        href="#solid-rounded-tab2"
-                        data-bs-toggle="tab"
-                        {...(email === ""
-                          ? { disabled: "disabled" }
-                          : { disabled: "disabled" })}>
-                        Save Profile
-                      </a>
-                    </li>
-                    <li className="nav-item">
-                      <a
-                        className={`nav-link ${
-                          tabThree !== "" ? "active" : ""
-                        }`}
-                        href="#solid-rounded-tab3"
-                        data-bs-toggle="tab"
-                        {...(email === ""
-                          ? { disabled: "disabled" }
-                          : { disabled: "disabled" })}>
-                        Previous Applications
-                      </a>
-                    </li>
-                    <li className="nav-item">
-                      <a
-                        className={`nav-link ${tabFour !== "" ? "active" : ""}`}
-                        href="#solid-rounded-tab4"
-                        data-bs-toggle="tab"
-                        {...(email === ""
-                          ? { disabled: "disabled" }
-                          : { disabled: "disabled" })}>
-                        Apply
-                      </a>
-                    </li>
-                    {/* <li className="nav-item">
+		console.log(previousApplicationsResponse.data, "data=======");
+	};
+
+	return (
+		<>
+			<ToastContainer />
+			{loading && <Loader />}
+			<Header>
+				<div className="Homepage-wrapper">
+					<div className="content container-fluid">
+						<div className="row">
+							<div className="col-lg-10 offset-lg-1 col-sm-12 offset-sm-1">
+								<div className="card bg-white">
+									<div className="card-header">
+										<h5 className="card-title">Steps To Apply</h5>
+									</div>
+									<div className="card-body">
+										<ul className="nav nav-tabs nav-tabs-solid nav-tabs-rounded">
+											<li className="nav-item">
+												<a
+													className={`nav-link ${
+														tabOne !== "" ? "active" : ""
+													}`}
+													href="#solid-rounded-tab1"
+													data-bs-toggle="tab"
+													{...(email === "" ? { disabled: "disabled" } : {})}>
+													Email Verification
+												</a>
+											</li>
+											<li className="nav-item">
+												<a
+													className={`nav-link ${
+														tabTwo !== "" ? "active" : ""
+													}`}
+													href="#solid-rounded-tab2"
+													data-bs-toggle="tab"
+													{...(email === ""
+														? { disabled: "disabled" }
+														: { disabled: "disabled" })}>
+													Save Profile
+												</a>
+											</li>
+											<li className="nav-item">
+												<a
+													className={`nav-link ${
+														tabThree !== "" ? "active" : ""
+													}`}
+													href="#solid-rounded-tab3"
+													data-bs-toggle="tab"
+													{...(email === ""
+														? { disabled: "disabled" }
+														: { disabled: "disabled" })}>
+													Previous Applications
+												</a>
+											</li>
+											<li className="nav-item">
+												<a
+													className={`nav-link ${
+														tabFour !== "" ? "active" : ""
+													}`}
+													href="#solid-rounded-tab4"
+													data-bs-toggle="tab"
+													{...(email === ""
+														? { disabled: "disabled" }
+														: { disabled: "disabled" })}>
+													Apply
+												</a>
+											</li>
+											{/* <li className="nav-item">
                         <a
                           className={`nav-link ${
                             tabFive !== "" ? "active" : ""
@@ -708,103 +749,106 @@ export default function Generateapplicationinvoice() {
                                   </div>
                                 </div>
 
-                                <div className="col-12">
-                                  <div className="student-submit">
-                                    {verifyingbutton == false ? (
-                                      <button
-                                        type="button"
-                                        className="btn btn-primary"
-                                        onClick={() => saveBioDataFunc()}>
-                                        Submit
-                                      </button>
-                                    ) : (
-                                      <button
-                                        className="btn btn-primary"
-                                        type="button"
-                                        disabled>
-                                        <span
-                                          className="spinner-grow spinner-grow-sm me-1"
-                                          role="status"
-                                          aria-hidden="true"></span>
-                                        Submitting...
-                                      </button>
-                                    )}
-                                  </div>
-                                </div>
-                              </div>
-                              {/* </form> */}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      className={`tab-pane  ${
-                        pageThree !== "" ? "show active" : ""
-                      }`}
-                      id="solid-rounded-tab3">
-                      <div className="row">
-                        <div className="col-sm-12">
-                          <div className="card card-table comman-shadow">
-                            <div className="card-body">
-                              <div className="page-header">
-                                <div className="row align-items-center">
-                                  <div className="col">
-                                    <h3 className="page-title"></h3>
-                                  </div>
-                                  <div className="col-auto text-end float-end ms-auto download-grp">
-                                    <button
-                                      className="btn btn-primary btn-lg btn-rounded"
-                                      type="button"
-                                      style={{
-                                        float: "right", // Float the button to the right
-                                        marginLeft: "10px", // Add some left margin for spacing
-                                      }}
-                                      onClick={openApplyPage}>
-                                      Apply
-                                    </button>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="table-responsive">
-                                <Table
-                                  headers={headers}
-                                  generateColumnTemplates={
-                                    generateColumnTemplates
-                                  }
-                                  tableName={"Previous Applications"}
-                                  allowEdit={false}
-                                  allowApply={false}
-                                  tableObjectBody={TableObj}
-                                  showExport={false}
-                                  showAddButton={false}
-                                  variablesForQuery={{ email: email }}
-                                  tableContent={tableData}
-                                  showInvoiceButton={true}
-                                  fillApplicationForm={true}
-                                />
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      className={`tab-pane  ${
-                        pageFour !== "" ? "show active" : ""
-                      }`}
-                      id="solid-rounded-tab4">
-                      <div className="row">
-                        <div className="col-sm-12">
-                          <div className="card">
-                            <div className="card-body">
-                              {/* <form> */}
-                              <div className="row">
-                                <div className="col-lg-8 col-md-12">
-                                  <h5 className="form-title">
-                                    <span>Generate Application Invoice</span>
-                                  </h5>
-                                </div>
+																	<div className="col-12">
+																		<div className="student-submit">
+																			{verifyingbutton == false ? (
+																				<button
+																					type="button"
+																					className="btn btn-primary"
+																					onClick={() => saveBioDataFunc()}>
+																					Submit
+																				</button>
+																			) : (
+																				<button
+																					className="btn btn-primary"
+																					type="button"
+																					disabled>
+																					<span
+																						className="spinner-grow spinner-grow-sm me-1"
+																						role="status"
+																						aria-hidden="true"></span>
+																					Submitting...
+																				</button>
+																			)}
+																		</div>
+																	</div>
+																</div>
+																{/* </form> */}
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div
+												className={`tab-pane  ${
+													pageThree !== "" ? "show active" : ""
+												}`}
+												id="solid-rounded-tab3">
+												<div className="row">
+													<div className="col-sm-12">
+														<div className="card card-table comman-shadow">
+															<div className="card-body">
+																<div className="page-header">
+																	<div className="row align-items-center">
+																		<div className="col">
+																			<h3 className="page-title"></h3>
+																		</div>
+																		<div className="col-auto text-end float-end ms-auto download-grp">
+																			<button
+																				className="btn btn-primary btn-lg btn-rounded"
+																				type="button"
+																				style={{
+																					float: "right", // Float the button to the right
+																					marginLeft: "10px", // Add some left margin for spacing
+																				}}
+																				onClick={openApplyPage}>
+																				Apply
+																			</button>
+																		</div>
+																	</div>
+																</div>
+																<div className="table-responsive">
+																	<Table
+																		headers={headers}
+																		generateColumnTemplates={
+																			generateColumnTemplates
+																		}
+																		tableName={"Previous Applications"}
+																		allowEdit={false}
+																		allowApply={false}
+																		tableObjectBody={TableObj}
+																		showExport={false}
+																		showAddButton={false}
+																		variablesForQuery={{ email: email }}
+																		tableContent={tableData}
+																		showInvoiceButton={true}
+																		fillApplicationForm={true}
+																		refetch={() => {
+																			getPreviousApplication();
+																		}}
+																	/>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div
+												className={`tab-pane  ${
+													pageFour !== "" ? "show active" : ""
+												}`}
+												id="solid-rounded-tab4">
+												<div className="row">
+													<div className="col-sm-12">
+														<div className="card">
+															<div className="card-body">
+																{/* <form> */}
+																<div className="row">
+																	<div className="col-lg-8 col-md-12">
+																		<h5 className="form-title">
+																			<span>Generate Application Invoice</span>
+																		</h5>
+																	</div>
 
                                 <div className="invoice-total-footer col-lg-4 col-md-12">
                                   <div className="card">
